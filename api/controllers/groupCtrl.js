@@ -11,17 +11,12 @@ var sendJsonResponse = function(res, status, content) {
 // Create a new group - POST
 module.exports.createGroup = function(req, res) {
     console.log('creating new group');
-    const group = new Group({
+    const group = {
         name: req.body.name,
         athletes: req.body.athletes
-    });
+    };
 
-    group.save((err) => {
-        if (err) {
-            sendJsonResponse(res, 404, err);
-            return err;
-        }
-    })
+
 
     // Get the team and add the new group to it
     if (req.params && req.params.teamid) {
@@ -38,8 +33,8 @@ module.exports.createGroup = function(req, res) {
                     sendJsonResponse(res, 404, err);
                     return;
                 }
-                newTeamGroups = team.groups.concat(group);
-                team.groups = newTeamGroups;
+                team.groups.push(group);
+
                 console.log(team);
                 team.save((err) => {
                     if (err) {
@@ -51,9 +46,9 @@ module.exports.createGroup = function(req, res) {
                 });
             });
     } else {
-        console.log('No groupid specified');
+        console.log('No teamid specified');
         sendJsonResponse(res, 404, {
-            "message": "No groupid in request"
+            "message": "No teamid in request"
         });
     }
 };
@@ -110,90 +105,17 @@ module.exports.getGroupById = function(req, res) {
 
 // Get all groups - GET, needs to be changed
 module.exports.getAllGroups = function(req, res) {
-    console.log('getting all groups');
-    Group
-        .find()
-        .exec(function(err, group) {
-            if (!group) {
-                sendJsonResponse(res, 404, {
-                    "message": "No gropus found"
-                });
-                return;
-            } else if (err) {
-                console.log(err)
-                sendJsonResponse(res, 404, err);
-                return;
-            }
-            sendJsonResponse(res, 200, group);
-        });
+
 }
 
 // Update a group by ID - PUT, probably needs to be changed
 module.exports.updateGroup = function(req, res) {
-    if (req.params && req.params.groupid) {
-        Group
-            .findById(req.params.groupid)
-            .exec(function(err, group) {
-                if (!group) {
-                    sendJsonResponse(res, 404, {
-                        "message": "groupid not found"
-                    });
-                    return;
-                } else if (err) {
-                    console.log(err)
-                    sendJsonResponse(res, 404, err);
-                    return;
-                }
-                group.name = req.body.name;
-                group.athletes = req.body.athletes;
-                group.save((err) => {
-                    if (err) {
-                        return next(err);
-                    }
-                    req.flash('success', { msg: 'Group information has been updated.' });
-                    console.log('group information was updated');
-                });
-                sendJsonResponse(res, 200, group);
-            });
-    } else {
-        console.log('No groupid specified');
-        sendJsonResponse(res, 404, {
-            "message": "No groupid in request"
-        });
-    }
+
 }
 
 // Delete a group by Id - DELETE, needs to be changed
 module.exports.deleteGroup = function(req, res) {
-    if (req.params && req.params.groupid) {
-        Group
-            .findById(req.params.groupid)
-            .exec(function(err, group) {
-                if (!group) {
-                    sendJsonResponse(res, 404, {
-                        "message": "groupid not found"
-                    });
-                    return;
-                } else if (err) {
-                    console.log(err)
-                    sendJsonResponse(res, 404, err);
-                    return;
-                }
-                group.remove((err) => {
-                    if (err) {
-                        return next(err);
-                    }
-                    req.flash('success', { msg: 'Group information has been deleted.' });
-                    console.log('group information was deleted');
-                });
-                sendJsonResponse(res, 200, group);
-            });
-    } else {
-        console.log('No groupid specified');
-        sendJsonResponse(res, 404, {
-            "message": "No groupid in request"
-        });
-    }
+
 }
 
 //Get all athletes - GET
@@ -206,7 +128,7 @@ module.exports.getAllAthletes = function(req, res) {
 module.exports.addUser = function(req, res) {
     console.log('adding a user to a group');
     if (req.params && req.params.teamid && req.params.groupid && req.params.userid) {
-        
+
 
         console.log(req.params.groupid)
         Group
