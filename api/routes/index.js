@@ -26,10 +26,10 @@ router.put('/updateTeam/:teamid', teamCtrl.updateTeam);
 router.put('/addUserToTeam/:teamid/:userid', teamCtrl.addUser);
 
 // groupCtrl routes
-router.get('/getGroup/:teamid/:groupid', groupCtrl.getGroupById);
-router.get('/allGroups', groupCtrl.getAllGroups);
-router.post('/createGroup/:teamid', groupCtrl.createGroup);
-router.put('/updateGroup/:groupid', groupCtrl.updateGroup);
+router.get('/getGroup/:teamid/:groupid', groupCtrl.getGroupById);//passed
+router.get('/allGroups/:teamid', groupCtrl.getAllGroups);//passed
+router.post('/createGroup/:teamid', groupCtrl.createGroup);//passed
+router.put('/updateGroup/:teamid/:groupid', groupCtrl.updateGroup);//passed
 router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
 router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);
 

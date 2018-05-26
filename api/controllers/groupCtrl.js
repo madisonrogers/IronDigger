@@ -11,6 +11,7 @@ var sendJsonResponse = function(res, status, content) {
 // Create a new group - POST
 module.exports.createGroup = function(req, res) {
     console.log('creating new group');
+
     const group = {
         name: req.body.name,
         athletes: req.body.athletes
@@ -57,8 +58,11 @@ module.exports.createGroup = function(req, res) {
 module.exports.getGroupById = function(req, res) {
     console.log('reading one group');
     console.log('Finding group details', req.params);
-    if (req.params && req.params.teamid && req.params.groupid) {
-        if (req.params.teamid) {
+
+    if (req.params.teamid) {
+
+        if (req.params.teamid && req.params.groupid) {
+
             Team
                 .findById(req.params.teamid)
                 .select('groups')
@@ -70,35 +74,29 @@ module.exports.getGroupById = function(req, res) {
                             //console.log(req.body);
                             //console.log(res);
                             //console.log(user);
-                            Group
-                                .findById(req.params.groupid)
-                                .exec(function(err, group) {
-                                    if (!group) {
-                                        sendJsonResponse(res, 404, {
-                                            "message": "groupid not found"
-                                        });
-                                        return;
-                                    } else if (err) {
-                                        console.log(err)
-                                        sendJsonResponse(res, 404, err);
-                                        return;
-                                    }
-                                    sendJsonResponse(res, 200, group);
+                            thisGroup = team.groups.id(req.params.groupid);
+                            if (!thisGroup) {
+                                sendJsonResponse(res, 404, {
+                                    "message": "groupid not found"
                                 });
+                            } else {
+                                console.log('group found');
+                                sendJsonResponse(res, 200, thisGroup);
+                            }
 
                         }
                     }
                 );
         } else {
             sendJsonResponse(res, 404, {
-                "message": "Not found, teamid required"
+                "message": "Not found, teamid and groupid required"
             });
         }
 
+
     } else {
-        console.log('Team or group id is incorrect');
         sendJsonResponse(res, 404, {
-            "message": "Team or group id is incorrect"
+            "message": "Not found, teamid required"
         });
     }
 }
@@ -106,11 +104,97 @@ module.exports.getGroupById = function(req, res) {
 // Get all groups - GET, needs to be changed
 module.exports.getAllGroups = function(req, res) {
 
+    if (req.params.teamid) {
+
+        Team
+            .findById(req.params.teamid)
+            .select('groups')
+            .exec(
+                function(err, team) {
+                    if (err) {
+                        sendJsonResponse(res, 400, err);
+                    } else {
+                        //console.log(req.body);
+                        //console.log(res);
+                        //console.log(user);
+                        if (team.groups)
+                            sendJsonResponse(res, 200, team.groups)
+                        else
+                            sendJsonResponse(res, 404, { "message": "No groups found." })
+
+                    }
+                }
+            );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid and groupid required"
+        });
+    }
+
+
+
 }
 
 // Update a group by ID - PUT, probably needs to be changed
 module.exports.updateGroup = function(req, res) {
+    console.log('reading one group');
+    console.log('Finding group details', req.params);
 
+    if (req.params.teamid) {
+
+        if (req.params.teamid && req.params.groupid) {
+
+            Team
+                .findById(req.params.teamid)
+                .select('groups')
+                .exec(
+                    function(err, team) {
+                        if (err) {
+                            sendJsonResponse(res, 400, err);
+                        } else {
+                            //console.log(req.body);
+                            //console.log(res);
+                            //console.log(user);
+                            thisGroup = team.groups.id(req.params.groupid);
+                            if (!thisGroup) {
+                                sendJsonResponse(res, 404, {
+                                    "message": "groupid not found"
+                                });
+                            } else {
+                                thisGroup.name = req.body.name;
+                                thisGroup.athletes = req.body.athletes;
+                                thisGroup.phases = req.body.phases;
+                            }
+
+                            //saves team 
+                            team.save(function(err, team) {
+                                // var thisPhase;
+                                if (err) {
+                                    console.log(err);
+                                    sendJsonResponse(res, 400, err);
+                                } else {
+
+
+                                    //console.log(thisAssignment);
+                                    sendJsonResponse(res, 201, thisGroup);
+                                }
+                            });
+
+                        }
+                    }
+                );
+        } else {
+            sendJsonResponse(res, 404, {
+                "message": "Not found, teamid and groupid required"
+            });
+        }
+
+
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid required"
+        });
+    }
 }
 
 // Delete a group by Id - DELETE, needs to be changed
