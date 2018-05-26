@@ -155,7 +155,7 @@ module.exports.updateGroup = function(req, res) {
                             //console.log(req.body);
                             //console.log(res);
                             //console.log(user);
-                            thisGroup = team.groups.id(req.params.groupid);
+                            var thisGroup = team.groups.id(req.params.groupid);
                             if (!thisGroup) {
                                 sendJsonResponse(res, 404, {
                                     "message": "groupid not found"
@@ -200,6 +200,66 @@ module.exports.updateGroup = function(req, res) {
 // Delete a group by Id - DELETE, needs to be changed
 module.exports.deleteGroup = function(req, res) {
 
+    if (req.params.teamid) {
+
+        if (req.params.teamid && req.params.groupid) {
+
+            Team
+                .findById(req.params.teamid)
+                .select('groups')
+                .exec(
+                    function(err, team) {
+                        if (err) {
+                            sendJsonResponse(res, 400, err);
+                        } else {
+                            //console.log(req.body);
+                            //console.log(res);
+                            //console.log(user);
+                            var thisGroup = team.groups.id(req.params.groupid);
+                            var index = team.groups.indexOf(thisGroup);
+
+                            console.log(thisGroup)
+                            console.log(index)
+
+                            
+
+                            if (!thisGroup) {
+                                sendJsonResponse(res, 404, {
+                                    "message": "groupid not found"
+                                });
+                            } else {
+                                console.log('group found');
+                                team.groups.splice(index,1);
+                                //saves team 
+                                team.save(function(err, team) {
+                                    // var thisPhase;
+                                    if (err) {
+                                        console.log(err);
+                                        sendJsonResponse(res, 400, err);
+                                    } else {
+                                        team.groups.splice(index);
+                                        sendJsonResponse(res, 204, team.groups)
+                                        //console.log(thisAssignment);
+
+                                    }
+                                });
+                            }
+
+                        }
+                    }
+                );
+        } else {
+            sendJsonResponse(res, 404, {
+                "message": "Not found, teamid and groupid required"
+            });
+        }
+
+
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid required"
+        });
+    }
 }
 
 //Get all athletes - GET

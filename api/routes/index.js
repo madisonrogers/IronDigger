@@ -30,7 +30,7 @@ router.get('/getGroup/:teamid/:groupid', groupCtrl.getGroupById);//passed
 router.get('/allGroups/:teamid', groupCtrl.getAllGroups);//passed
 router.post('/createGroup/:teamid', groupCtrl.createGroup);//passed
 router.put('/updateGroup/:teamid/:groupid', groupCtrl.updateGroup);//passed
-router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
+router.delete('/deleteGroup/:teamid/:groupid', groupCtrl.deleteGroup);//passed
 router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);
 
 //phaseCtrl routes
