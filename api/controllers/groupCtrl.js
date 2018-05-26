@@ -58,7 +58,7 @@ module.exports.createGroup = function(req, res) {
     }
 };
 
-// Get a group by ID - GET
+// Get a group by ID - GET - needs to be changed
 module.exports.getGroupById = function(req, res) {
 	console.log('reading one group');
     console.log('Finding group details', req.params);
@@ -86,7 +86,7 @@ module.exports.getGroupById = function(req, res) {
     }
 }
 
-// Get all groups - GET
+// Get all groups - GET, needs to be changed
 module.exports.getAllGroups = function(req, res) {
 	console.log('getting all groups');
     Group
@@ -106,7 +106,7 @@ module.exports.getAllGroups = function(req, res) {
         });
 }
 
-// Update a group by ID - PUT
+// Update a group by ID - PUT, probably needs to be changed
 module.exports.updateGroup = function(req, res) {
  	if (req.params && req.params.groupid) {
  		Group
@@ -141,7 +141,7 @@ module.exports.updateGroup = function(req, res) {
  	}  
 }
 
-// Delete a group by Id - DELETE
+// Delete a group by Id - DELETE, needs to be changed
 module.exports.deleteGroup = function(req, res) {
 	if (req.params && req.params.groupid) {
  		Group
@@ -180,7 +180,7 @@ module.exports.getAllAthletes = function(req, res) {
 }
 
 
-// Add a user to a group - PUT
+// Add a user to a group - PUT, works but needs to be changed? might need to use the team
 module.exports.addUser = function(req, res) {
 	console.log('adding a user to a group');
 	if (req.params && req.params.groupid && req.params.userid) {

@@ -18,6 +18,7 @@ router.get('/allWorkouts/:userid', userCtrl.getAllWorkouts);
 router.get('/workout/:userid/:workoutid', userCtrl.getWorkout);
 router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet)
 
+
 // teamCtrl routes
 router.get('/getTeam/:teamid', teamCtrl.getTeamById);
 router.post('/createTeam', teamCtrl.createTeam);
@@ -44,11 +45,11 @@ router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
 router.post('/:groupid/phase')
 
 // workoutCtrl routes
-router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
-router.post('/createWorkout/:phaseid', workoutCtrl.createWorkout);
-router.get('/getWorkout/:workoutid', workoutCtrl.getWorkout);
-router.get('/allWorkouts', workoutCtrl.getAllWorkouts);
-router.get('/allBlocks/:workoutid', workoutCtrl.getAllBlocks);
+// //router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
+// router.post('/createWorkout/:phaseid', workoutCtrl.createWorkout);
+// router.get('/getWorkout/:workoutid', workoutCtrl.getWorkout);
+// router.get('/allWorkouts', workoutCtrl.getAllWorkouts);
+//router.get('/allBlocks/:workoutid', workoutCtrl.getAllBlocks);
 
 
 module.exports = router;

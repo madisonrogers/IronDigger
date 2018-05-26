@@ -43,7 +43,128 @@ module.exports.createPhaseGroup = function(req, res) {
     //         "message": "Not found, teamid required"
     //     });
     // }
+    if (req.params.teamid) {
+        Team
+            .findById(req.params.teamid)
+            .select('groups')
+            .exec(
+                function(err, team) {
+                    if (err) {
+                        sendJsonResponse(res, 400, err);
+                    } else {
+                        //console.log(req.body);
+                        //console.log(res);
+                        //console.log(user);
+                        Group
+                            .findById(req.params.groupid)
+                            .select('phases athletes')
+                            .exec(
+                                function(err, team, group) {
+                                    if (err) {
+                                        sendJsonResponse(res, 400, err);
+                                    } else {
+                                        //console.log(req.body);
+                                        //console.log(res);
+                                        //console.log(user);
+                                        doAddPhaseGroup(req, res, team, group);
+                                    }
+                                }
+                            );
 
+                    }
+                }
+            );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid required"
+        });
+    }
+
+
+};
+
+var doAddPhaseGroup = function(req, res, team, group) {
+    if (!team) {
+        sendJsonResponse(res, 404, "teamid not found");
+    } else {
+        console.log('inside of doAddPhaseGroup');
+
+        if (!group) {
+            sendJsonResponse(res, 404, "groupid not found")
+        } else {
+
+            console.log(team);
+            console.log(group);
+            console.log(req.body);
+            //var d = new Date();
+
+            var phase = {
+                name: req.body.name,
+                start: req.body.start,
+                end: req.body.end,
+                workouts: req.body.workouts,
+                notes: req.body.notes
+            };
+
+            var athletes = team.athletes;
+            console.log(athletes);
+
+            for (var i = 0; i < athletes.length; i++) {
+                console.log(athletes[i]);
+                var user_id = athletes[i];
+
+                User
+                    .findById(user_id)
+                    .exec(function(err, user) {
+                        if (!user) {
+                            sendJsonResponse(res, 404, {
+                                "message": "userid not found"
+                            });
+                            return;
+                        } else if (err) {
+                            console.log(err)
+                            sendJsonResponse(res, 404, err);
+                            return;
+                        }
+
+                        console.log('inside of addUser about to log user');
+                        //console.log(user);
+                        // console.log(user._id);
+                        // var athlete_id = user._id;
+
+                        //team.athletes.push(athlete_id);
+                        user.athlete.phases.push(phase); //pushes phase to the user in the users collection
+
+
+                        user.save((err) => {
+                            if (err) {
+                                console.log(err);
+                                return err;
+                            } else {
+                                console.log('user saved successfully')
+                            }
+
+                        });
+                    })
+
+            }
+
+            team.phases.push(phase); //adds phase to the team document
+
+            team.save(function(err, team) {
+                // var thisPhase;
+                if (err) {
+                    console.log(err);
+                    sendJsonResponse(res, 400, err);
+                } else {
+
+                    thisPhase = team.phases[team.phases.length - 1];
+                    //console.log(thisAssignment);
+                    sendJsonResponse(res, 201, thisPhase);
+                }
+            });
+        }
+    }
 };
 
 // Create a new phase for a Team and adds that phase to each athlete on the team
@@ -117,7 +238,7 @@ var doAddPhaseTeam = function(req, res, team) {
                     // var athlete_id = user._id;
 
                     //team.athletes.push(athlete_id);
-                    user.athlete.phases.push(phase);//pushes phase to the user in the users collection
+                    user.athlete.phases.push(phase); //pushes phase to the user in the users collection
 
 
                     user.save((err) => {
@@ -133,7 +254,7 @@ var doAddPhaseTeam = function(req, res, team) {
 
         }
 
-        team.phases.push(phase);//adds phase to the team document
+        team.phases.push(phase); //adds phase to the team document
 
         team.save(function(err, team) {
             // var thisPhase;
