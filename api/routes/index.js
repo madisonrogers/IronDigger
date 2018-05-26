@@ -6,8 +6,6 @@ var groupCtrl = require('../controllers/groupCtrl');
 var phaseCtrl = require('../controllers/phaseCtrl');
 var workoutCtrl = require('../controllers/workoutCtrl');
 
-
-
 // userCtrl routes
 router.get('/getUser/:userid', userCtrl.getUserById);
 router.get('/allUsers', userCtrl.getAllUsers);
@@ -16,7 +14,8 @@ router.put('/deletePhase/:userid/:phaseid', userCtrl.deletePhase);
 router.get('/allPhases/:userid', userCtrl.getAllPhases);
 router.get('/allWorkouts/:userid', userCtrl.getAllWorkouts);
 router.get('/workout/:userid/:workoutid', userCtrl.getWorkout);
-router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet)
+router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet);
+// router.get('/allExercises/:userid', userCtrl.getAllExercises);
 
 
 // teamCtrl routes
@@ -45,11 +44,18 @@ router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
 router.post('/:groupid/phase')
 
 // workoutCtrl routes
-// //router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise);
-// router.post('/createWorkout/:phaseid', workoutCtrl.createWorkout);
-// router.get('/getWorkout/:workoutid', workoutCtrl.getWorkout);
-// router.get('/allWorkouts', workoutCtrl.getAllWorkouts);
-//router.get('/allBlocks/:workoutid', workoutCtrl.getAllBlocks);
+
+router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise); // works
+router.post('/createWorkout/:phaseid', workoutCtrl.createWorkout); // works
+router.get('/getWorkout/:workoutid', workoutCtrl.getWorkout); // works
+router.put('/updateWorkout/:workoutid', workoutCtrl.updateWorkout); // works
+router.get('/allWorkouts', workoutCtrl.getAllWorkouts); // works
+router.get('/allBlocks/:workoutid', workoutCtrl.getAllBlocks); // works
+router.get('/getBlock/:workoutid/:blockid', workoutCtrl.getBlock); // works
+router.get('/allExercises/:workoutid/:blockid', workoutCtrl.getAllExercises); // works
+router.get('/getExercise/:workoutid/:blockid/:exerciseid', workoutCtrl.getExercise); // works
+router.get('/allSets/:workoutid/:blockid/:exerciseid', workoutCtrl.getAllSets); // works
+router.get('/getSet/:workoutid/:blockid/:exerciseid/:setid', workoutCtrl.getSet); // works
 
 
 module.exports = router;
