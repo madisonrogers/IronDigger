@@ -48,22 +48,11 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  steam: String,
-  tokens: Array,
-
   profile: {
     first: {type: String, require: true},
     last: {type: String, require: true},
     phone: {type: String, require: true},
     gender: String,
-    location: String,
-    website: String,
     picture: String
   },
   isCoach: {type: Boolean, default: false},
@@ -83,8 +72,8 @@ const userSchema = new mongoose.Schema({
     maxClean: Number,
     maxSquat: Number,
     maxDeadlift: Number,
-    groups: [], // Array[groupSchema], array of groups the athlete is apart of 
-    phases: [phaseSchema] // Array[workoutSchema]
+    groups: [], 
+    phases: [phaseSchema] 
   }
 }, { timestamps: true });
 
@@ -142,18 +131,19 @@ userSchema.methods.gravatar = function gravatar(size) {
 
 const User = mongoose.model('User', userSchema);
 const Team = mongoose.model('Team', teamSchema);
-const Group = mongoose.model('Group', groupSchema);
-const Phase = mongoose.model('Phase', phaseSchema);
-const SetSchema = mongoose.model('Set', setSchema);
-const ExerciseWithReps = mongoose.model('ExerciseWithReps', exerciseWithRepsSchema);
-const Block = mongoose.model('Block', blockSchema);
+// const Group = mongoose.model('Group', groupSchema);
+// const Phase = mongoose.model('Phase', phaseSchema);
+// const SetSchema = mongoose.model('Set', setSchema);
+// const ExerciseWithReps = mongoose.model('ExerciseWithReps', exerciseWithRepsSchema);
+// const Block = mongoose.model('Block', blockSchema);
 const Workout = mongoose.model('Workout', workoutSchema);
 
-module.exports = User;
+
 module.exports = Team;
-module.exports = Group;
-module.exports = Phase;
-module.exports = SetSchema;
-module.exports = ExerciseWithReps;
-module.exports = Block;
+// module.exports = Group;
+// module.exports = Phase;
+// module.exports = SetSchema;
+// module.exports = ExerciseWithReps;
+// module.exports = Block;
 module.exports = Workout;
+module.exports = User;

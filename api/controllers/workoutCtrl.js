@@ -1,57 +1,62 @@
 var mongoose = require('mongoose');
-var ExerciseWithReps = mongoose.model('ExerciseWithReps');
-var SetSchema = mongoose.model('Set');
-var Block = mongoose.model('Block');
+// var ExerciseWithReps = mongoose.model('ExerciseWithReps');
+// var SetSchema = mongoose.model('Set');
+// var Block = mongoose.model('Block');
 var Workout = mongoose.model('Workout');
-var Phase = mongoose.model('Phase');
+// var Phase = mongoose.model('Phase');
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
     res.json(content);
 };
 
-// Add a exercise to a workout - PUT
-// passed the workoutid, blockid in params and exercise in the body
+// // Add a exercise to a workout - PUT
+// // passed the workoutid, blockid in params and exercise in the body
 module.exports.addExercise = function(req, res) {
 	console.log('adding exercise to workout');
 	if(req.params && req.params.workoutid && req.params.blockid) {
 		Workout
 			.findById(req.params.workoutid)
 			.exec(function(err, workout) {
-                if (!workout) {
-                    sendJsonResponse(res, 404, {
-                        "message": "workoutid not found"
-                    });
-                    return;
-                } else if (err) {
-                    console.log(err)
-                    sendJsonResponse(res, 404, err);
-                    return;
-                }
-                Block
-                	.findById(req.params.blockid)
-                	.exec(function(err, block) {
-	                if (!block) {
-	                    sendJsonResponse(res, 404, {
-	                        "message": "blockid not found"
-	                    });
-	                    return;
-	                } else if (err) {
-	                    console.log(err)
-	                    sendJsonResponse(res, 404, err);
-	                    return;
-	                }
-	                newExerciseArr = block.exercises.concat([req.body.exercise])
-	                block.exercise = newExerciseArr
-	                block.save((err) => {
+	            if (!workout) {
+	                sendJsonResponse(res, 404, {
+	                    "message": "no workouts found"
+	                });
+	                return;
+	            } else if (err) {
+	                console.log(err)
+	                sendJsonResponse(res, 404, err);
+	                return;
+	            }
+
+	            blocks = workout.blocks
+	            blockToAddExercise = {};
+	            blockIndex = 0;
+	            console.log(blocks)
+	            // find the block that matches the passed blockid
+	            for(var i = 0; i < blocks.length; i++) {
+	            	if(blocks[i]._id == req.params.blockid) {
+	            		blockToAddExercise = blocks[i]
+	            		blockIndex = i;
+	            	}
+	            }
+
+                if (blockToAddExercise) {
+					newExerciseArr = blockToAddExercise.exercises.push(req.body.exercise)
+			        workout.blocks[blockIndex].exercise = newExerciseArr
+	                workout.save((err) => {
 				      	if (err) {
 				        	return err;
 				      	}
-				      	sendJsonResponse(res, 200, block);
+				      	sendJsonResponse(res, 200, workout);
 				      	console.log('Exercise was added');
 				    });
-            });
-		});	
+                } else if (!blockToAddExercise.length) {
+
+                }
+                
+                
+            });	
 	} else {
 		console.log('No workoutid or blockid specified');
         sendJsonResponse(res, 404, {
@@ -60,8 +65,8 @@ module.exports.addExercise = function(req, res) {
 	}
 }
 
-// Create workout - POST
-// phaseid should be a param, the workout is passed through the body
+// // Create workout - POST
+// // phaseid should be a param, the workout is passed through the body
 module.exports.createWorkout = function(req, res) {
 	const workout = new Workout({
 		name: req.body.name,
@@ -93,9 +98,9 @@ module.exports.createWorkout = function(req, res) {
                     sendJsonResponse(res, 404, err);
                     return;
                 }
-                newPhaseWorkout = team.groups.concat(phase);
+                newPhaseWorkout = phase.workouts.concat(req.body.workout);
                 phase.workouts = newPhaseWorkout;
-                team.save((err) => {
+                phase.save((err) => {
 			      	if (err) {
 			      		sendJsonResponse(res, 404, err);
 			        	return;
@@ -112,8 +117,8 @@ module.exports.createWorkout = function(req, res) {
     }
 }
 
-// Get workout - GET
-// workout id passed as a param
+// // Get workout - GET
+// // workout id passed as a param
 module.exports.getWorkout = function(req, res) {
 	if(req.params && req.params.workoutid) {
 		Workout
@@ -139,8 +144,49 @@ module.exports.getWorkout = function(req, res) {
 	}
 }
 
-// Get all workouts - GET
-// nothing passed into this function, just the workouts are returned
+// Update a workout - PUT
+// the workoutid is passed as a param and the updated workout object is passed in the body
+module.exports.updateWorkout = function(req, res) {
+	if(req.params && req.params.workoutid) {
+		Workout
+			.findById(req.params.workoutid)
+			.exec(function(err, workout) {
+                if (!workout) {
+                    sendJsonResponse(res, 404, {
+                        "message": "workoutid not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+
+                workout.name = req.body.name;
+                workout.blocks = req.body.blocks;
+                workout.time = req.body.time;
+                workout.trainingnotes = req.body.trainingnotes;
+                workout.athletenotes = req.body.athletenotes;
+
+                workout.save((err) => {
+			      	if (err) {
+			      		sendJsonResponse(res, 404, err);
+			        	return;
+			      	}
+			      	sendJsonResponse(res, 200, workout);
+			      	console.log('The workout has been updated');
+			    });
+            });
+	} else {
+		console.log('No workoutid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No workoutid in request"
+        });
+	}
+}
+
+// // Get all workouts - GET
+// // nothing passed into this function, just the workouts are returned
 module.exports.getAllWorkouts = function(req, res) {
 	Workout
 		.find()
@@ -159,8 +205,8 @@ module.exports.getAllWorkouts = function(req, res) {
         });
 }
 
-// Get all blocks from a specific workoutid - GET
-// the workoutid will be passed as a param, the an array of blocks is returned
+// // Get all blocks from a specific workoutid - GET
+// // the workoutid will be passed as a param, the an array of blocks is returned
 module.exports.getAllBlocks = function(req, res) {
 	if(req.params && req.params.workoutid) {
 		Workout
@@ -195,8 +241,8 @@ module.exports.getAllBlocks = function(req, res) {
 	}
 }
 
-// Get a specific block based on workoutid and blockid
-// the workoutid and blockid will be passed as params, one block is returned
+// // Get a specific block based on workoutid and blockid
+// // the workoutid and blockid will be passed as params, one block is returned
 module.exports.getBlock = function(req, res) {
 	if(req.params && req.params.workoutid && req.params.blockid) {
 		Workout
@@ -214,7 +260,7 @@ module.exports.getBlock = function(req, res) {
 	            }
 
 	            blocks = workout.blocks
-	            blockToReturn;
+	            blockToReturn = {};
 	            // find the block that matches the passed blockid
 	            for(var i = 0; i < blocks.length; i++) {
 	            	if(blocks[i]._id == req.params.blockid) {
@@ -223,7 +269,7 @@ module.exports.getBlock = function(req, res) {
 	            }
 	            if(blockToReturn) {
 					sendJsonResponse(res, 200, blockToReturn);
-	            } else {
+	            } else if (!blockToReturn.length) {
 	            	sendJsonResponse(res, 404, {
 	            		"message": "No blocks found in the workout with the specified blockid"
 	            	})
@@ -238,8 +284,8 @@ module.exports.getBlock = function(req, res) {
 	}
 }
 
-// Get all exercises for a specific block in a workout - GET
-// The workoutid and blockid will be passed as params, an array of exercises will be returned
+// // Get all exercises for a specific block in a workout - GET
+// // The workoutid and blockid will be passed as params, an array of exercises will be returned
 module.exports.getAllExercises = function(req, res) {
 	if(req.params && req.params.workoutid && req.params.blockid) {
 		Workout
@@ -257,7 +303,8 @@ module.exports.getAllExercises = function(req, res) {
 	            }
 
 	            blocks = workout.blocks
-	            blockToReturn;
+	            blockToReturn = {};
+	          
 	            // find the block that matches the passed blockid
 	            for(var i = 0; i < blocks.length; i++) {
 	            	if(blocks[i]._id == req.params.blockid) {
@@ -267,7 +314,7 @@ module.exports.getAllExercises = function(req, res) {
 	            if(blockToReturn) {
 	            	exercisesToReturn = blockToReturn.exercises;
 					sendJsonResponse(res, 200, exercisesToReturn);
-	            } else {
+	            } else if (!blockToReturn.length) {  // the .length will return undefined if the object is empty
 	            	sendJsonResponse(res, 404, {
 	            		"message": "No blocks found in the workout with the specified blockid"
 	            	})
@@ -282,8 +329,8 @@ module.exports.getAllExercises = function(req, res) {
 	}
 }
 
-// Get exercise based on workoutid, blockid, exerciseid - GET
-// The workoutid, blockid, and exerciseid should be passed as params, an exercise object should be returned
+// // Get exercise based on workoutid, blockid, exerciseid - GET
+// // The workoutid, blockid, and exerciseid should be passed as params, an exercise object should be returned
 module.exports.getExercise = function(req, res) {
 	if(req.params && req.params.workoutid && req.params.blockid) {
 		Workout
@@ -301,7 +348,7 @@ module.exports.getExercise = function(req, res) {
 	            }
 
 	            blocks = workout.blocks
-	            blockToReturn;
+	            blockToReturn = {};
 	            // find the block that matches the passed blockid
 	            for(var i = 0; i < blocks.length; i++) {
 	            	if(blocks[i]._id == req.params.blockid) {
@@ -309,21 +356,21 @@ module.exports.getExercise = function(req, res) {
 	            	}
 	            }
 	            if(blockToReturn) {
-	            	exerciseToReturn;
+	            	exerciseToReturn = {};
 	            	for(var i = 0; i < blockToReturn.exercises.length; i++) {
-	            		if(blockToReturn.exercises[i]._id == exerciseid) {
+	            		if(blockToReturn.exercises[i]._id == req.params.exerciseid) {
 	            			exerciseToReturn = blockToReturn.exercises[i];
 	            		}
 	            	}
 	            	if(exerciseToReturn) {
 	            		sendJsonResponse(res, 200, exerciseToReturn);
-	            	} else {
+	            	} else if (!exerciseToReturn.length) {
 	            		sendJsonResponse(res, 404, {
 		            		"message": "No exercises found in the workout with the specified exerciseid"
 		            	})
 	            	}
 					
-	            } else {
+	            } else if (!blockToReturn.length) {
 	            	sendJsonResponse(res, 404, {
 	            		"message": "No blocks found in the workout with the specified blockid"
 	            	})
@@ -338,8 +385,8 @@ module.exports.getExercise = function(req, res) {
 	}
 }
 
-// Get all the sets for an exercise based on the workoutid, and blockid - GET
-// An array of set objects for a specific exercise within a workout will be returned.
+// // Get all the sets for an exercise based on the workoutid, and blockid - GET
+// // An array of set objects for a specific exercise within a workout will be returned.
 module.exports.getAllSets = function(req, res) {
 	if(req.params && req.params.workoutid && req.params.blockid) {
 		Workout
@@ -357,7 +404,7 @@ module.exports.getAllSets = function(req, res) {
 	            }
 
 	            blocks = workout.blocks
-	            block;
+	            block = {};
 	            // find the block that matches the passed blockid
 	            for(var i = 0; i < blocks.length; i++) {
 	            	if(blocks[i]._id == req.params.blockid) {
@@ -365,9 +412,9 @@ module.exports.getAllSets = function(req, res) {
 	            	}
 	            }
 	            if(block) {
-	            	exercise;
+	            	exercise = {};
 	            	for(var i = 0; i < block.exercises.length; i++) {
-	            		if(block.exercises[i]._id == exerciseid) {
+	            		if(block.exercises[i]._id == req.params.exerciseid) {
 	            			exercise = block.exercises[i];
 	            		}
 	            	}
@@ -381,13 +428,13 @@ module.exports.getAllSets = function(req, res) {
 	            			})
 	            		}
 	            		
-	            	} else {
+	            	} else if (!exercise.length) {
 	            		sendJsonResponse(res, 404, {
 		            		"message": "No exercises were found in the block"
 		            	})
 	            	}
 					
-	            } else {
+	            } else if (!block.length) {
 	            	sendJsonResponse(res, 404, {
 	            		"message": "No blocks found in the workout with the specified blockid"
 	            	})
@@ -403,8 +450,8 @@ module.exports.getAllSets = function(req, res) {
 }
 
 
-// Get a specific sets for an exercise based on the workoutid, blockid, exerciseid, and setid - GET
-// A set object will be returned.
+// // Get a specific sets for an exercise based on the workoutid, blockid, exerciseid, and setid - GET
+// // A set object will be returned.
 module.exports.getSet = function(req, res) {
 	if(req.params && req.params.workoutid && req.params.blockid && req.params.exerciseid) {
 		Workout
@@ -422,7 +469,7 @@ module.exports.getSet = function(req, res) {
 	            }
 
 	            blocks = workout.blocks
-	            block;
+	            block = {};
 	            // find the block that matches the passed blockid
 	            for(var i = 0; i < blocks.length; i++) {
 	            	if(blocks[i]._id == req.params.blockid) {
@@ -430,35 +477,35 @@ module.exports.getSet = function(req, res) {
 	            	}
 	            }
 	            if(block) {
-	            	exercise;
+	            	exercise = {};
 	            	for(var i = 0; i < block.exercises.length; i++) {
-	            		if(block.exercises[i]._id == exerciseid) {
+	            		if(block.exercises[i]._id == req.params.exerciseid) {
 	            			exercise = block.exercises[i];
 	            		}
 	            	}
 	            	if(exercise) {
 	            		sets = exercise.sets;
-	            		setToReturn;
+	            		setToReturn = {};
 	            		for(var i = 0; i < sets.length; i++) {
-	            			if(sets[i]._id == setid) {
+	            			if(sets[i]._id == req.params.setid) {
 	            				setToReturn = sets[i]
 	            			}
 	            		}
 	            		if(setToReturn) {
 							sendJsonResponse(res, 200, setToReturn);
-	            		} else {
+	            		} else if (!setToReturn.length) {
 	            			sendJsonResponse(res, 404, {
 	            				"message": "No sets were found in the block with the specified setid"
 	            			})
 	            		}
 	            		
-	            	} else {
+	            	} else if (!exercise.length) {
 	            		sendJsonResponse(res, 404, {
 		            		"message": "No exercises were found in the block"
 		            	})
 	            	}
 					
-	            } else {
+	            } else if (!block.length) {
 	            	sendJsonResponse(res, 404, {
 	            		"message": "No blocks found in the workout with the specified blockid"
 	            	})
@@ -472,14 +519,4 @@ module.exports.getSet = function(req, res) {
         });
 	}
 }
-
-// Update the set for an exercise based on the workoutid, blockid, and exerciseid, and setid - PUT
-// This function will get a set based on a workoutid, blockid, exerciseid, and setid, then update the set.
-
-
-
-
-
-
-
 
