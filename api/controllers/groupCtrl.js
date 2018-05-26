@@ -206,6 +206,8 @@ module.exports.getAllAthletes = function(req, res) {
 module.exports.addUser = function(req, res) {
     console.log('adding a user to a group');
     if (req.params && req.params.teamid && req.params.groupid && req.params.userid) {
+        
+
         console.log(req.params.groupid)
         Group
             .findById(req.params.groupid)

@@ -34,14 +34,11 @@ router.delete('/deleteGroup/:groupid', groupCtrl.deleteGroup);
 router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);
 
 //phaseCtrl routes
-router.get('/getPhaseTeam/:teamid/:userid', phaseCtrl.getAthletePhaseByIdTeam);//needs to be tested
-router.get('/allPhaseTeam', phaseCtrl.getPhaseByTeam);//needs to be tested
-//router.get('/allPhaseUser', phaseCtrl.getAllPhasesByUser);//need to write controller
-router.get('/allPhases', phaseCtrl.allPhases);//rendering route, tbd
-router.put('/updatePhaseTeam/:phaseid', phaseCtrl.updatePhaseByTeam);//NEEDS TO BE TESTED
-router.put('/updatePhaseUser/:phaseid',phaseCtrl.updatePhaseByUser);//NEEDS TO BE TESTED
+//router.get('/getPhaseTeam/:teamid/:userid', phaseCtrl.getAthletePhaseByIdTeam);//needs to be tested
+router.get('/allPhasesTeam/:teamid', phaseCtrl.getPhasesByTeam);//needs to be written
+router.get('/allPhasesGroup/:teamid/:groupid', phaseCtrl.getPhasesByGroup);
 router.post('/:teamid/phase', phaseCtrl.createPhaseTeam);//works as intended
-router.post('/:groupid/phase')
+router.post('/:teamid/:groupid/phase', phaseCtrl.createPhaseGroup);
 
 // workoutCtrl routes
 
