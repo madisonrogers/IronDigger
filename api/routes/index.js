@@ -31,7 +31,7 @@ router.get('/allGroups/:teamid', groupCtrl.getAllGroups);//passed
 router.post('/createGroup/:teamid', groupCtrl.createGroup);//passed
 router.put('/updateGroup/:teamid/:groupid', groupCtrl.updateGroup);//passed
 router.delete('/deleteGroup/:teamid/:groupid', groupCtrl.deleteGroup);//passed
-router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);
+router.put('/addUserToGroup/:teamid/:groupid/:userid', groupCtrl.addUser);//passed
 
 //phaseCtrl routes
 //router.get('/getPhaseTeam/:teamid/:userid', phaseCtrl.getAthletePhaseByIdTeam);//needs to be tested

@@ -134,7 +134,7 @@ var doAddPhaseGroup = function(req, res, team, group) {
 
             }
 
-            team.phases.push(phase); //adds phase to the team document
+            group.phases.push(phase); //adds phase to the team document
 
             team.save(function(err, team) {
                 // var thisPhase;

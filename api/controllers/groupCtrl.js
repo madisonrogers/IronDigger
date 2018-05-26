@@ -221,7 +221,7 @@ module.exports.deleteGroup = function(req, res) {
                             console.log(thisGroup)
                             console.log(index)
 
-                            
+
 
                             if (!thisGroup) {
                                 sendJsonResponse(res, 404, {
@@ -229,7 +229,7 @@ module.exports.deleteGroup = function(req, res) {
                                 });
                             } else {
                                 console.log('group found');
-                                team.groups.splice(index,1);
+                                team.groups.splice(index, 1);
                                 //saves team 
                                 team.save(function(err, team) {
                                     // var thisPhase;
@@ -268,59 +268,105 @@ module.exports.getAllAthletes = function(req, res) {
 }
 
 
+var doAddUser = (req, res, team, group) => {
+    if (!team) {
+        sendJsonResponse(res, 404, "teamid not found");
+    } else {
+        console.log('inside of doAddPhaseGroup');
+
+        if (!group) {
+            sendJsonResponse(res, 404, "groupid not found")
+        } else {
+
+            console.log(team);
+            console.log(group);
+            console.log(req.body);
+            //var d = new Date();
+
+            User
+                .findById(req.params.userid)
+                .exec(function(err, user) {
+                    if (!user) {
+                        sendJsonResponse(res, 404, {
+                            "message": "userid not found"
+                        });
+                        return;
+                    } else if (err) {
+                        console.log(err)
+                        sendJsonResponse(res, 404, err);
+                        return;
+                    }
+
+                    console.log('inside of addUser about to log user');
+                    //console.log(user);
+                    // console.log(user._id);
+                    // var athlete_id = user._id;
+
+                    //team.athletes.push(athlete_id);
+                    //user.athlete.phases.push(phase); //pushes phase to the user in the users collection
+
+                    group.athletes.push(user._id);
+
+                    team.save(function(err, team) {
+                        // var thisPhase;
+                        if (err) {
+                            console.log(err);
+                            sendJsonResponse(res, 400, err);
+                        } else {
+                            //console.log(thisAssignment);
+                            sendJsonResponse(res, 201, group);
+                        }
+                    });
+                })
+
+        }
+
+
+
+    }
+}
+
+
 // Add a user to a group - PUT
 module.exports.addUser = function(req, res) {
-    console.log('adding a user to a group');
-    if (req.params && req.params.teamid && req.params.groupid && req.params.userid) {
+    if (req.params.teamid) {
 
+        if (req.params.teamid && req.params.groupid) {
 
-        console.log(req.params.groupid)
-        Group
-            .findById(req.params.groupid)
-            .exec(function(err, group) {
-                if (!group) {
-                    sendJsonResponse(res, 404, err);
-                    return;
-                } else if (err) {
-                    console.log(err)
-                    sendJsonResponse(res, 404, err);
-                    return;
-                }
-                User
-                    .findById(req.params.userid)
-                    .exec(function(err, user) {
-                        if (!user) {
-                            sendJsonResponse(res, 404, {
-                                "message": "groupid not found"
-                            });
-                            return;
-                        } else if (err) {
-                            console.log(err)
-                            sendJsonResponse(res, 404, err);
-                            return;
-                        }
-
-
-                        //       newAthletesArr = group.athletes.concat([user])
-                        // group.athletes = newAthletesArr
-                        var athlete_id = user._id;
-
-                        group.athletes.push(athlete_id);
-
-                        group.save((err) => {
-                            if (err) {
-                                return err;
+            Team
+                .findById(req.params.teamid)
+                .select('groups')
+                .exec(
+                    function(err, team) {
+                        if (err) {
+                            sendJsonResponse(res, 400, err);
+                        } else {
+                            //console.log(req.body);
+                            //console.log(res);
+                            //console.log(user);
+                            thisGroup = team.groups.id(req.params.groupid);
+                            if (!thisGroup) {
+                                sendJsonResponse(res, 404, {
+                                    "message": "groupid not found"
+                                });
+                            } else {
+                                console.log('group found');
+                                doAddUser(req, res, team, thisGroup);
                             }
-                            req.flash('success', { msg: 'The user has been added to the group' });
-                            console.log('The user has been added to the group');
-                        });
-                        sendJsonResponse(res, 200, group);
-                    })
+
+                        }
+                    }
+                );
+        } else {
+            sendJsonResponse(res, 404, {
+                "message": "Not found, teamid and groupid required"
             });
+        }
+
+
     } else {
-        console.log('No userid specified');
         sendJsonResponse(res, 404, {
-            "message": "No userid in request"
+            "message": "Not found, teamid required"
         });
     }
 }
