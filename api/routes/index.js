@@ -27,6 +27,7 @@ router.put('/addUserToTeam/:teamid/:userid', teamCtrl.addUser);
 
 // groupCtrl routes
 router.get('/getGroup/:teamid/:groupid', groupCtrl.getGroupById);//passed
+router.get('/getathletes/:teamid/:groupid', groupCtrl.getAllAthletes)
 router.get('/allGroups/:teamid', groupCtrl.getAllGroups);//passed
 router.post('/createGroup/:teamid', groupCtrl.createGroup);//passed
 router.put('/updateGroup/:teamid/:groupid', groupCtrl.updateGroup);//passed

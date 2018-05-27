@@ -262,9 +262,107 @@ module.exports.deleteGroup = function(req, res) {
     }
 }
 
+// var getAthletes = function(req, res, group, athletes_arr, athletes) {
+//     //return new Promise(function(resolve, reject) {
+
+//         if (!group) {
+//             //reject(group);
+//             sendJsonResponse(res, 404, { "message": "Group not found" })
+//         } else {
+
+
+
+//         }
+
+//         //resolve(athletes_arr);
+
+
+//     //})
+// }
+
+
+
+
+
 //Get all athletes - GET
 module.exports.getAllAthletes = function(req, res) {
+    console.log('reading all athletes from group');
 
+    console.log('WTF IS GOING ON')
+    if (req.params.teamid) {
+
+        if (req.params.teamid && req.params.groupid) {
+
+            Team
+                .findById(req.params.teamid)
+                .select('groups')
+                .exec(
+                    function(err, team) {
+                        if (err) {
+                            sendJsonResponse(res, 400, err);
+                        } else {
+                            //console.log(req.body);
+                            //console.log(res);
+                            //console.log(user);
+                            thisGroup = team.groups.id(req.params.groupid);
+                            var athletes_arr = [];
+                            if (!thisGroup) {
+                                sendJsonResponse(res, 404, {
+                                    "message": "groupid not found"
+                                });
+                            } else {
+                                console.log('group found');
+
+                                if (!thisGroup.athletes) {
+
+                                    sendJsonResponse(res, 400, { "message": "No athletes found" })
+                                } else {
+
+                                    var athletes = thisGroup.athletes;
+                                    console.log(athletes);
+
+                                    // getAthletes(req, res, thisGroup, athletes_arr, athletes).then(function(athletes_arr) {
+
+                                    //     console.log('it worked')
+                                    //     console.log(athletes_arr)
+                                    //     sendJsonResponse(res, 200, athletes_arr);
+                                    // }).catch(function(error) {
+                                    //     console.log(error);
+                                    // })
+                                    // getAthletes(req, res, thisGroup, athletes_arr, athletes, function(athletes_arr){
+                                    //     console.log('inside the callback');
+                                    // });
+
+                                    User
+                                        .find({ _id: { $in: athletes } })
+                                        .exec(function(err, users){
+                                            console.log(users)
+                                            users.forEach(function(user){
+                                              console.log(user);// do something here
+                                              });
+                                            sendJsonResponse(res, 200, users)
+                                        });
+
+
+                                }
+                            }
+                        }
+
+
+                    }
+                );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid and groupid required"
+        });
+    }
+
+
+} else {
+    sendJsonResponse(res, 404, {
+        "message": "Not found, teamid required"
+    });
+}
 }
 
 
