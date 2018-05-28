@@ -80,7 +80,6 @@ module.exports.getAllTeams = function(req, res) {
 module.exports.getAllAthletes = function(req, res) {
     console.log('reading all athletes from group');
 
-    console.log('WTF IS GOING ON')
     if (req.params.teamid) {
         Team
             .findById(req.params.teamid)
@@ -89,11 +88,6 @@ module.exports.getAllAthletes = function(req, res) {
                     if (err) {
                         sendJsonResponse(res, 400, err);
                     } else {
-                        //console.log(req.body);
-                        //console.log(res);
-                        //console.log(user);
-                        //thisGroup = team.groups.id(req.params.groupid);
-                        var athletes_arr = [];
                         if (!team) {
                             sendJsonResponse(res, 404, {
                                 "message": "teamid not found"
@@ -109,18 +103,7 @@ module.exports.getAllAthletes = function(req, res) {
                                 var athletes = team.athletes;
                                 console.log(athletes);
 
-                                // getAthletes(req, res, thisGroup, athletes_arr, athletes).then(function(athletes_arr) {
-
-                                //     console.log('it worked')
-                                //     console.log(athletes_arr)
-                                //     sendJsonResponse(res, 200, athletes_arr);
-                                // }).catch(function(error) {
-                                //     console.log(error);
-                                // })
-                                // getAthletes(req, res, thisGroup, athletes_arr, athletes, function(athletes_arr){
-                                //     console.log('inside the callback');
-                                // });
-
+                                
                                 User
                                     .find({ _id: { $in: athletes } })
                                     .exec(function(err, users) {
@@ -230,7 +213,7 @@ module.exports.addUser = function(req, res) {
                             req.flash('success', { msg: 'The user has been added to the group' });
                             console.log('The user has been added to the group');
                         });
-                        sendJsonResponse(res, 200, team);
+                        sendJsonResponse(res, 201, team);
                     })
             });
     } else {

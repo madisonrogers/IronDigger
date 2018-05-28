@@ -288,7 +288,6 @@ module.exports.deleteGroup = function(req, res) {
 module.exports.getAllAthletes = function(req, res) {
     console.log('reading all athletes from group');
 
-    console.log('WTF IS GOING ON')
     if (req.params.teamid) {
 
         if (req.params.teamid && req.params.groupid) {
@@ -321,17 +320,6 @@ module.exports.getAllAthletes = function(req, res) {
                                     var athletes = thisGroup.athletes;
                                     console.log(athletes);
 
-                                    // getAthletes(req, res, thisGroup, athletes_arr, athletes).then(function(athletes_arr) {
-
-                                    //     console.log('it worked')
-                                    //     console.log(athletes_arr)
-                                    //     sendJsonResponse(res, 200, athletes_arr);
-                                    // }).catch(function(error) {
-                                    //     console.log(error);
-                                    // })
-                                    // getAthletes(req, res, thisGroup, athletes_arr, athletes, function(athletes_arr){
-                                    //     console.log('inside the callback');
-                                    // });
 
                                     User
                                         .find({ _id: { $in: athletes } })
