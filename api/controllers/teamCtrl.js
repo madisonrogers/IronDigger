@@ -76,9 +76,60 @@ module.exports.getAllTeams = function(req, res) {
 }
 
 //Get all athletes
+//Get all athletes - GET
 module.exports.getAllAthletes = function(req, res) {
+    console.log('reading all athletes from group');
 
+    if (req.params.teamid) {
+        Team
+            .findById(req.params.teamid)
+            .exec(
+                function(err, team) {
+                    if (err) {
+                        sendJsonResponse(res, 400, err);
+                    } else {
+                        if (!team) {
+                            sendJsonResponse(res, 404, {
+                                "message": "teamid not found"
+                            });
+                        } else {
+                            console.log('team found');
+
+                            if (!team.athletes) {
+
+                                sendJsonResponse(res, 400, { "message": "No athletes found" })
+                            } else {
+
+                                var athletes = team.athletes;
+                                console.log(athletes);
+
+                                
+                                User
+                                    .find({ _id: { $in: athletes } })
+                                    .exec(function(err, users) {
+                                        console.log(users)
+                                        users.forEach(function(user) {
+                                            console.log(user); // do something here
+                                        });
+                                        sendJsonResponse(res, 200, users)
+                                    });
+
+
+                            }
+                        }
+                    }
+
+
+                }
+            );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid required"
+        });
+
+    }
 }
+
 
 
 
@@ -162,7 +213,7 @@ module.exports.addUser = function(req, res) {
                             req.flash('success', { msg: 'The user has been added to the group' });
                             console.log('The user has been added to the group');
                         });
-                        sendJsonResponse(res, 200, team);
+                        sendJsonResponse(res, 201, team);
                     })
             });
     } else {
@@ -172,4 +223,3 @@ module.exports.addUser = function(req, res) {
         });
     }
 }
-
