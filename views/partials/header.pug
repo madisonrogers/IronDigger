@@ -1,21 +1,49 @@
 .navbar.navbar-light.fixed-top.navbar-expand-md
+  link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
   .container
     a.navbar-brand(href='/')
-      i.fas.fa-cube
-      | Project name
+      i.fas.fa-dumbbell
+      | IronDigger
     button.navbar-toggler(type='button', data-toggle='collapse', data-target='.navbar-collapse')
       span.sr-only Toggle navigation
       span.navbar-toggler-icon
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li.active.nav-item(class=(title === 'Home') ? 'active' : undefined)
-          a.nav-link(href='/') Home
-        li.nav-item(class=(title === 'API Examples') ? 'active' : undefined)
-          a.nav-link(href='/api') API Examples
-        li.nav-item(class=(title === 'Contact') ? 'active' : undefined)
-          a.nav-link(href='/contact') Contact
-        li.nav-item(class=(title === 'Status') ? 'active' : undefined)
-          a.nav-link(href='/status') Status
+        if user
+          li.active.nav-item(class=(title === 'Home') ? 'active' : undefined)
+            a.nav-link(href='/') 
+              i.fas.fa-home.fa-lg
+              | Home
+        if user && !user.isCoach
+          li.nav-item(class=(title === 'Calendar') ? 'active' : undefined)
+            a.nav-link(href='#')
+              i.far.fa-calendar-alt.fa-lg
+              | Calendar
+        if user && !user.isAdmin && !user.isCoach
+          li.nav-item(class=(title === 'History') ? 'active' : undefined)
+            a.nav-link(href='#')
+              i.fas.fa-chart-line 
+              | History
+        if user && user.isAdmin
+          li.nav-item(class=(title === 'Create Phase') ? 'active' : undefined)
+            a.nav-link(href='#')
+              i.fas.fa-plus
+              | Create Phase
+        if user && (user.isAdmin || user.isCoach)
+          li.nav-item(class=(title === 'View User') ? 'active' : undefined)
+            a.nav-link(href='#')
+              i.fas.fa-user.fa-lg
+              | View User
+        if user
+          li.nav-item(class=(title === 'Leaderboard') ? 'active' : undefined)
+            a.nav-link(href='/status') 
+              i.fas.fa-trophy
+              | Leaderboard
+        if user && (user.isAdmin || user.isCoach)
+          li.nav-item(class=(title === 'Send Message') ? 'active' : undefined)
+            a.nav-link(href='#')
+              i.fas.fa-mobile-alt.fa-lg
+              | Send Message
       ul.nav.navbar-nav.ml-auto
         if !user
           li.nav-item(class=(title === 'Login') ? 'active' : undefined)
@@ -33,7 +61,7 @@
               i.caret
             ul.dropdown-menu
               li.dropdown-item
-                a(href='/account') My Account
+                a(href='/account') Profile
               li.divider.dropdown-item
               li.dropdown-item
                 a(href='/logout') Logout
