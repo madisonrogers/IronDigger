@@ -22,13 +22,18 @@
         if user && !user.isAdmin && !user.isCoach
           li.nav-item(class=(title === 'History') ? 'active' : undefined)
             a.nav-link(href='#')
-              i.fas.fa-chart-line 
+              i.fas.fa-chart-line.fa-lg
               | History
         if user && user.isAdmin
           li.nav-item(class=(title === 'Create Phase') ? 'active' : undefined)
             a.nav-link(href='#')
-              i.fas.fa-plus
+              i.fas.fa-plus.fa-lg
               | Create Phase
+        if user && user.isAdmin
+          li.nav-item(class=(title === 'Create Group') ? 'active' : undefined)
+            a.nav-link(href='#')
+              i.fas.fa-users.fa-lg
+              | Create Group
         if user && (user.isAdmin || user.isCoach)
           li.nav-item(class=(title === 'View User') ? 'active' : undefined)
             a.nav-link(href='#')
@@ -37,7 +42,7 @@
         if user
           li.nav-item(class=(title === 'Leaderboard') ? 'active' : undefined)
             a.nav-link(href='/status') 
-              i.fas.fa-trophy
+              i.fas.fa-trophy.fa-lg
               | Leaderboard
         if user && (user.isAdmin || user.isCoach)
           li.nav-item(class=(title === 'Send Message') ? 'active' : undefined)
