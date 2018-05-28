@@ -335,11 +335,11 @@ module.exports.getAllAthletes = function(req, res) {
 
                                     User
                                         .find({ _id: { $in: athletes } })
-                                        .exec(function(err, users){
+                                        .exec(function(err, users) {
                                             console.log(users)
-                                            users.forEach(function(user){
-                                              console.log(user);// do something here
-                                              });
+                                            users.forEach(function(user) {
+                                                console.log(user); // do something here
+                                            });
                                             sendJsonResponse(res, 200, users)
                                         });
 
@@ -351,18 +351,18 @@ module.exports.getAllAthletes = function(req, res) {
 
                     }
                 );
+        } else {
+            sendJsonResponse(res, 404, {
+                "message": "Not found, teamid and groupid required"
+            });
+        }
+
+
     } else {
         sendJsonResponse(res, 404, {
-            "message": "Not found, teamid and groupid required"
+            "message": "Not found, teamid required"
         });
     }
-
-
-} else {
-    sendJsonResponse(res, 404, {
-        "message": "Not found, teamid required"
-    });
-}
 }
 
 

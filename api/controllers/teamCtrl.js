@@ -76,9 +76,77 @@ module.exports.getAllTeams = function(req, res) {
 }
 
 //Get all athletes
+//Get all athletes - GET
 module.exports.getAllAthletes = function(req, res) {
+    console.log('reading all athletes from group');
 
+    console.log('WTF IS GOING ON')
+    if (req.params.teamid) {
+        Team
+            .findById(req.params.teamid)
+            .exec(
+                function(err, team) {
+                    if (err) {
+                        sendJsonResponse(res, 400, err);
+                    } else {
+                        //console.log(req.body);
+                        //console.log(res);
+                        //console.log(user);
+                        //thisGroup = team.groups.id(req.params.groupid);
+                        var athletes_arr = [];
+                        if (!team) {
+                            sendJsonResponse(res, 404, {
+                                "message": "teamid not found"
+                            });
+                        } else {
+                            console.log('team found');
+
+                            if (!team.athletes) {
+
+                                sendJsonResponse(res, 400, { "message": "No athletes found" })
+                            } else {
+
+                                var athletes = team.athletes;
+                                console.log(athletes);
+
+                                // getAthletes(req, res, thisGroup, athletes_arr, athletes).then(function(athletes_arr) {
+
+                                //     console.log('it worked')
+                                //     console.log(athletes_arr)
+                                //     sendJsonResponse(res, 200, athletes_arr);
+                                // }).catch(function(error) {
+                                //     console.log(error);
+                                // })
+                                // getAthletes(req, res, thisGroup, athletes_arr, athletes, function(athletes_arr){
+                                //     console.log('inside the callback');
+                                // });
+
+                                User
+                                    .find({ _id: { $in: athletes } })
+                                    .exec(function(err, users) {
+                                        console.log(users)
+                                        users.forEach(function(user) {
+                                            console.log(user); // do something here
+                                        });
+                                        sendJsonResponse(res, 200, users)
+                                    });
+
+
+                            }
+                        }
+                    }
+
+
+                }
+            );
+    } else {
+        sendJsonResponse(res, 404, {
+            "message": "Not found, teamid required"
+        });
+
+    }
 }
+
 
 
 
@@ -172,4 +240,3 @@ module.exports.addUser = function(req, res) {
         });
     }
 }
-
