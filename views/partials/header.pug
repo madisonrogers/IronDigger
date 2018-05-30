@@ -31,7 +31,7 @@
               | Create Phase
         if user && user.isAdmin
           li.nav-item(class=(title === 'Create Group') ? 'active' : undefined)
-            a.nav-link(href='#')
+            a.nav-link(href='/views/viewgroupteam')
               i.fas.fa-users.fa-lg
               | Create Group
         if user && (user.isAdmin || user.isCoach)
