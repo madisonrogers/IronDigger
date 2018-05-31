@@ -1,0 +1,9 @@
+extends layout
+
+append scripts
+    link(rel='stylesheet', href='fullcalendar/fullcalendar.css')
+    script(src='js/lib/moment.min.js')
+    script(src='fullcalendar/fullcalendar.js')
+    script(src='js/createPhaseCtrl.js')
+block content
+    #calendar
