@@ -1,5 +1,21 @@
-extends layout 
+extends layout
 
 block content
-	h1 View Group/Team Page 
-
+  h1 Teams
+  link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
+  .container
+    ul.dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined)
+      a.dropdown-toggle(href='#', data-toggle='dropdown')
+        span= user.profile.first
+        i.caret
+      ul.dropdown-menu
+        li.dropdown-item
+          Profile
+        li.divider.dropdown-item
+        li.dropdown-item
+          Logout
+  .container
+    p hey
+    .script
+      p teamCtrl.getAllTeams()
+		
