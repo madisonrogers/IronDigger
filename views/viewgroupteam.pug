@@ -1,21 +1,28 @@
 extends layout
 
 block content
-  h1 Teams
-  link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
-  .container
-    ul.dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined)
-      a.dropdown-toggle(href='#', data-toggle='dropdown')
-        span= user.profile.first
-        i.caret
-      ul.dropdown-menu
-        li.dropdown-item
-          Profile
-        li.divider.dropdown-item
-        li.dropdown-item
-          Logout
-  .container
-    p hey
-    .script
-      p teamCtrl.getAllTeams()
+	h1 Teams
+	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
+	mixin dropdown(caption)
+		.dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined)
+			a.dropdown-toggle(href='#',data-toggle="dropdown") 
+				= caption
+				i.caret
+			ul.dropdown-menu
+				li.dropdown-item
+					a(href='#') Profile
+				li.divider.dropdown-item
+				li.dropdown-item
+					a(href='#') Logout
+	mixin button(caption)
+		.button.btn(class="btn-outline-primary btn-sm")
+			= caption
+	.div
+		.span(class="border border-primary rounded")
+			style(type='text/css').
+				.span {
+					padding: 10px !important;
+				}
+			+dropdown("Select Team")
+			+button("Create Group")
 		
