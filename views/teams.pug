@@ -3,20 +3,19 @@ extends layout
 block content
 	h1 Teams
 	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
-	mixin modal(title,id)
-		.modal.fade(id=id,tabindex="-1",role="dialog",aria-labelledby=id+"Label" aria-hidden="true")
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(type="button",data-dismiss="modal")
-							span(aria-hidden="true") &times;
-							span.sr-only Close
-						h4.modal-title(id=id+"Label")= title
-					.modal-body
-						block
-					.modal-footer
-						button.btn.btn-default(type="button",data-dismiss="modal") Close
-
+	#exampleModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+		.modal-dialog.modal-lg(role='document')
+			.modal-content
+				.modal-header
+					i.fas.fa-dumbbell.modal-dumbell
+					h5#exampleModalLabel.modal-title Create Workout
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true')
+				.modal-body
+					| ...
+				.modal-footer
+					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+					button.btn.btn-light(type='button') Archive Workout 
 
 	mixin teamdiv(team, name, id)
 		.div
@@ -30,8 +29,7 @@ block content
 				| &nbsp;
 				.h3= name
 				| &nbsp;
-				.button.btn(class="btn-outline-primary btn-sm float-right", onclick="alert('eh')")
-					= 'View Athletes'
+				button.btn(class="btn-outline-primary btn-sm float-right", type='button', data-toggle='modal', data-target='#exampleModal') View Athletes
 				| &nbsp;
 				.navbar
 					ul.nav.navbar-nav.ml-auto
@@ -50,5 +48,3 @@ block content
 	each t in teams 
 		+teamdiv(t, t.name, t._id )
 		p <br>
-	
-
