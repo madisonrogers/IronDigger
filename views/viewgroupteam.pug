@@ -3,17 +3,20 @@ extends layout
 block content
 	h1 Teams
 	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
+	script(src='/js/lib/popper.min.js')
 	mixin dropdown(caption)
-		.dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined)
-			a.dropdown-toggle(href='#',data-toggle="dropdown") 
-				= caption
-				i.caret
-			ul.dropdown-menu
-				li.dropdown-item
-					a(href='#') Profile
-				li.divider.dropdown-item
-				li.dropdown-item
-					a(href='#') Logout
+		.navbar
+			ul.nav.navbar-nav.ml-auto
+				dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined).nav-item
+					a.dropdown-toggle.nav-link(href='#',data-toggle="dropdown") 
+						= caption
+						i.caret
+					ul.dropdown-menu
+						li.dropdown-item
+							a(href='#') Profile
+						li.divider.dropdown-item
+						li.dropdown-item
+							a(href='#') Logout
 	mixin button(caption)
 		.button.btn(class="btn-outline-primary btn-sm float-right")
 			= caption
@@ -24,10 +27,11 @@ block content
 					padding: 2em !important;
 				}
 			+button("Create Group")
+			| &nbsp;
 			+dropdown("Select Team")
 			| &nbsp;
-			+dropdown("Groups")
 			+button("View Athletes")
 			| &nbsp;
+			+dropdown("Groups")
 			
 

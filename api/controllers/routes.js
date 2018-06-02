@@ -59,4 +59,5 @@ var renderViewgroupteam = (req, res, responseData) => {
  */
 exports.postViewgroupteam = (req, res, next) => {
     res.redirect('/viewgroupteam.pug');
+
 };
