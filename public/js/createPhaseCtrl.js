@@ -1,3 +1,5 @@
+var last_selected_time;
+
 $(function() {
 
 	//page is now ready, initialize the calendar...
@@ -8,22 +10,29 @@ $(function() {
 	  	height: 'auto',
 	  	contentHeight: 'auto',
 	  	dayClick: function(date, jsEvent, view) {
-		    alert('Clicked on: ' + date.format());
+			console.log('Clicked on: ' + date.format());
+			console.log(last_selected_time);
+			console.log(date);
+			last_selected_time = date;
+		
+			$('#workoutDate').val(date.format('l'));
+			$('#workoutModal').modal('toggle');
+			
 		},
 		select: function(startDate, endDate) {
 			// This is where the modal will be created to create the phase
-	      	alert('selected ' + startDate.format() + ' to ' + endDate.format());
+	      	console.log('selected ' + startDate.format() + ' to ' + endDate.format());
 	    },
 	    // we will be able to load in workouts from the DB
 	    events: [
 		    {
 		      	title  : 'Softball Workout',
-		      	start  : '2018-05-22T16:00:00',
+		      	start  : '2018-06-22T16:00:00',
 		      	allDay: false
 		    },
 		    {
 		    	title: 'Football Workout',
-		    	start: '2018-05-22T02:30:00',
+		    	start: '2018-06-22T02:30:00',
 		    	allDay: false
 		    }
 		]
