@@ -47,8 +47,8 @@ var getTeams = (req, res, callback) => {
 var renderViewgroupteam = (req, res, responseData) => {
     console.log('inside renderViewgroupteam');
 
-
-    res.render('viewgroupteam.pug', {
+		console.log(responseData);
+    res.render('teams.pug', {
         title: 'View Group/Team',
         teams: responseData
     });
@@ -58,6 +58,6 @@ var renderViewgroupteam = (req, res, responseData) => {
  * POST /viewgroupteam.
  */
 exports.postViewgroupteam = (req, res, next) => {
-    res.redirect('/viewgroupteam.pug');
+    res.redirect('/teams.pug');
 
 };
