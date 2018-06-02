@@ -6,3 +6,14 @@
         "name": "bigs"
     }]
 }
+{
+    "name": "Men's Soccer"
+}
+{
+    "name": "Softball",
+    "groups": [
+    {
+        "_id": new ObjectId(),
+        "name": "pitchers"
+    }]
+}
