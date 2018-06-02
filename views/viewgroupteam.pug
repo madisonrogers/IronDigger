@@ -15,14 +15,19 @@ block content
 				li.dropdown-item
 					a(href='#') Logout
 	mixin button(caption)
-		.button.btn(class="btn-outline-primary btn-sm")
+		.button.btn(class="btn-outline-primary btn-sm float-right")
 			= caption
 	.div
 		.span(class="border border-primary rounded")
 			style(type='text/css').
 				.span {
-					padding: 10px !important;
+					padding: 2em !important;
 				}
-			+dropdown("Select Team")
 			+button("Create Group")
-		
+			+dropdown("Select Team")
+			| &nbsp;
+			+dropdown("Groups")
+			+button("View Athletes")
+			| &nbsp;
+			
+
