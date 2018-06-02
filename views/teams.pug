@@ -4,6 +4,20 @@ block content
 	h1 Teams
 	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
 	script(src='/js/lib/popper.min.js')
+	mixin teamdiv(name, id)
+		.div
+			.span(class="border border-primary rounded")
+				style(type='text/css').
+					.span {
+						padding: 2em !important;
+					}
+				+button("Create Group")
+				| &nbsp;
+				.h3= name
+				| &nbsp;
+				+button("View Athletes")
+				| &nbsp;
+				+dropdown("Groups")
 	mixin dropdown(caption)
 		.navbar
 			ul.nav.navbar-nav.ml-auto
@@ -15,22 +29,15 @@ block content
 						each t in teams
 							li.dropdown-item
 								a(href='/team/'+t._id) #{t.name}
+								each g in t.groups
+									#{g.name}
 							li.divider.dropdown-item
 	mixin button(caption)
 		.button.btn(class="btn-outline-primary btn-sm float-right")
 			= caption
-	.div
-		.span(class="border border-primary rounded")
-			style(type='text/css').
-				.span {
-					padding: 2em !important;
-				}
-			+button("Create Group")
-			| &nbsp;
-			+dropdown("Select Team")
-			| &nbsp;
-			+button("View Athletes")
-			| &nbsp;
-			+dropdown("Groups")
-			
+	each t in teams 
+		+teamdiv( t.name, t._id )
+		p <br>
+			//each g in t.groups
+			//	p #{g.name}
 

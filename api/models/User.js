@@ -78,7 +78,7 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const groupSchema = new mongoose.Schema({
-  name: {type: String, unique: true, require: true},
+  name: {type: String,  require: true},
   athletes: Array, //will contain id's of athletes in the user collection
   phases: [phaseSchema]
 })
