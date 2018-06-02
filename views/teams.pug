@@ -3,8 +3,7 @@ extends layout
 block content
 	h1 Teams
 	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
-	script(src='/js/lib/popper.min.js')
-	mixin teamdiv(name, id)
+	mixin teamdiv(team, name, id)
 		.div
 			.span(class="border border-primary rounded")
 				style(type='text/css').
@@ -17,27 +16,24 @@ block content
 				| &nbsp;
 				+button("View Athletes")
 				| &nbsp;
-				+dropdown("Groups")
-	mixin dropdown(caption)
-		.navbar
-			ul.nav.navbar-nav.ml-auto
-				dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined).nav-item
-					a.dropdown-toggle.nav-link(href='#',data-toggle="dropdown") 
-						= caption
-						i.caret
-					ul.dropdown-menu
-						each t in teams
-							li.dropdown-item
-								a(href='/team/'+t._id) #{t.name}
-								each g in t.groups
-									#{g.name}
-							li.divider.dropdown-item
+				.navbar
+					ul.nav.navbar-nav.ml-auto
+						dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined).nav-item
+							a.dropdown-toggle.nav-link(href='#',data-toggle="dropdown") 
+								= 'Groups'	
+								i.caret
+							ul.dropdown-menu
+								if team.groups != 0
+									each g in team.groups
+										li.dropdown-item
+											a(href='#') #{g.name}
+								else
+									li.dropdown-item
+											a(href='#') No groups for this team
 	mixin button(caption)
 		.button.btn(class="btn-outline-primary btn-sm float-right")
 			= caption
 	each t in teams 
-		+teamdiv( t.name, t._id )
+		+teamdiv(t, t.name, t._id )
 		p <br>
-			//each g in t.groups
-			//	p #{g.name}
 
