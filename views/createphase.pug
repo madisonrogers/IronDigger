@@ -19,33 +19,55 @@ block content
                 .modal-body
                     form
                         .form-group
-                            label(for="wo-dateSelected") Date
+                            label(for="workoutDate") Date
                             input#workoutDate.form-control(type='text' readonly)
                         .form-group
-                            label(for="wo-timeSelect") Time
-                            input#workoutTime.form-control(type='time' name='workoutTime' required)
+                            label(for="workoutTime") Time
+                            input#workoutTime.form-control(type='time' name='workoutTime')
                         .form-group
-                            label(for='exampleFormControlInput1') Email address
-                            input#exampleFormControlInput1.form-control(type='email', placeholder='name@example.com')
-                        .form-group
-                            label(for='exampleFormControlSelect1') Example select
-                            select#exampleFormControlSelect1.form-control
-                                option 1
-                                option 2
-                                option 3
-                                option 4
-                                option 5
-                        .form-group
-                            label(for='exampleFormControlSelect2') Example multiple select
-                            select#exampleFormControlSelect2.form-control(multiple='')
-                                option 1
-                                option 2
-                                option 3
-                                option 4
-                                option 5
-                        .form-group
-                            label(for='exampleFormControlTextarea1') Example textarea
-                            textarea#exampleFormControlTextarea1.form-control(rows='3')
+                            label(for='workoutName') Workout Name
+                            input#workoutName.form-control(type='text', placeholder='Skills Monday Workout')
+                        .form-group#block-1.container.block-container
+                            h5.block-name#block-name-1(contenteditable="true") Block Name   
+                            i.fas.fa-edit.edit
+                            i.fas.fa-plus.block-add
+                            hr
+                            .block-1-ex-1
+                                .row
+                                    .col-5
+                                        h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
+                                        i.fas.fa-edit.edit
+                                        textarea.form-control#ex1(rows="5" placeholder='Exercise Notes')
+                                    .col-7
+                                        #table.table-editable
+                                            i.fas.fa-plus.table-add
+                                            table.table
+                                                tr
+                                                    th Set
+                                                    th Reps
+                                                    th Percent
+                                                    th
+                                                tr
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove
+                                                // This is our clonable table line
+                                                tr.clone
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove
+                                        button#export-btn.btn.btn-primary Export Data
+                                        p#export
+                            .row
+                                .col
+                                    button.btn.btn-success.btn-sm#add-block-1 Add Exercise
+                                        i.fas.fa-plus
+                                .col
+                            hr
                 .modal-footer
                     button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                     button.btn.btn-light(type='button') Archive Workout 
