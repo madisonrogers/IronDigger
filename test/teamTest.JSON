@@ -1,10 +1,14 @@
-{
-    "name": "Football",
-    "groups": [
-    {
-        "_id": new ObjectId(),
-        "name": "bigs"
-    }]
+{     
+		"name": "Football",     
+		"groups": [     
+		{	         
+			"_id": new ObjectId(),         
+			"name": "Bigs"     
+		}, 
+		{         
+			"_id": new ObjectId(),
+  	    "name": "Receivers"     
+		}] 
 }
 {
     "name": "Men's Soccer"

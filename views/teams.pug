@@ -42,8 +42,9 @@ block content
 										li.dropdown-item
 											a(href='#') #{g.name}
 								else
-									li.dropdown-item
-											a(href='#') No groups for this team
+									li.dropdown-item(class="disabled")
+											a(href='#', style={color:'grey'}) No groups for this team
 	each t in teams 
 		+teamdiv(t, t.name, t._id )
 		p <br>
+
