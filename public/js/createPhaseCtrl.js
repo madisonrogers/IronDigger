@@ -42,7 +42,7 @@ $(function() {
 	$("[id^=add-block-").click(function() {
 		var block_button = $(this).attr("id"); 
 		console.log(block_button)
-		var block = block_button.substring(block_button.indexOf('-') + 1);
+		var block = block_button.substring(block_button.indexOf('-') +1);
 		console.log(block)
 
 	});
