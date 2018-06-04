@@ -39,7 +39,7 @@ block content
 							ul.dropdown-menu
 								if team.groups != 0
 									each g in team.groups
-										li.dropdown-item
+										li.dropdown-item(data-toggle='modal', data-target='#exampleModal')
 											a(href='#') #{g.name}
 								else
 									li.dropdown-item(class="disabled")
