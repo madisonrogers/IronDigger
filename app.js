@@ -35,6 +35,7 @@ const userController = require('./api/controllers/user');
 const apiController = require('./api/controllers/api');
 const contactController = require('./api/controllers/contact');
 const routesController = require('./api/controllers/routes');
+const newUserController = require('./api/controllers/userCtrl')
 
 /**
  * API keys and Passport configuration.
@@ -131,8 +132,8 @@ app.get('/forgot', userController.getForgot);
 app.post('/forgot', userController.postForgot);
 app.get('/reset/:token', userController.getReset);
 app.post('/reset/:token', userController.postReset);
-app.get('/signup', userController.getSignup);
-app.post('/signup', userController.postSignup);
+app.get('/signup', newUserController.getSignup);
+app.post('/signup', newUserController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
@@ -143,6 +144,8 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/views/teams', routesController.getViewgroupteam);
 app.post('/views/teams', routesController.postViewgroupteam);
 app.get('/views/teams/:teamid', routesController.getViewgroupteam);
+app.get('/createphase', routesController.getCreatephase);
+app.post('/createphase', routesController.postCreatephase);
 
 /**
  * API examples routes.

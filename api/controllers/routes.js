@@ -59,5 +59,17 @@ var renderViewgroupteam = (req, res, responseData) => {
  */
 exports.postViewgroupteam = (req, res, next) => {
     res.redirect('/teams.pug');
-
 };
+
+// GET /createphase
+exports.getCreatephase = (req, res) => {
+	res.render('createphase.pug', {
+		title: 'Create Phase'
+	});
+};
+
+// POST /createphase
+exports.postCreatephase = (req, res, next) => {
+	res.redirect('/createphase.pug');
+};
+
