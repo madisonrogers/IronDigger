@@ -141,8 +141,9 @@ app.post('/account/profile', passportConfig.isAuthenticated, userController.post
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
-app.get('/views/viewgroupteam', routesController.getViewgroupteam);
-app.post('/views/viewgroupteam', routesController.postViewgroupteam);
+app.get('/views/teams', routesController.getViewgroupteam);
+app.post('/views/teams', routesController.postViewgroupteam);
+app.get('/views/teams/:teamid', routesController.getViewgroupteam);
 app.get('/createphase', routesController.getCreatephase);
 app.post('/createphase', routesController.postCreatephase);
 

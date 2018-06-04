@@ -1,0 +1,49 @@
+extends layout
+
+block content
+	h1 Teams
+	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
+	#exampleModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true')
+		.modal-dialog.modal-lg(role='document')
+			.modal-content
+				.modal-header
+					i.fas.fa-dumbbell.modal-dumbell
+					h5#exampleModalLabel.modal-title Athletes
+					button.close(type='button', data-dismiss='modal', aria-label='Close')
+					span(aria-hidden='true')
+				.modal-body
+					| ...
+				.modal-footer
+					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+
+	mixin teamdiv(team, name, id)
+		.div
+			.span(class="border border-primary rounded")
+				style(type='text/css').
+					.span {
+						padding: 2em !important;
+					}
+				.button.btn(class="btn-outline-primary btn-sm float-right")
+					= 'Create Group'
+				| &nbsp;
+				.h3= name
+				| &nbsp;
+				button.btn(class="btn-outline-primary btn-sm float-right", type='button', data-toggle='modal', data-target='#exampleModal') View Athletes
+				| &nbsp;
+				.navbar
+					ul.nav.navbar-nav.ml-auto
+						dropdown(class=(title === 'Team Dropdown') ? 'active' : undefined).nav-item
+							a.dropdown-toggle.nav-link(href='#',data-toggle="dropdown") 
+								= 'Groups'	
+								i.caret
+							ul.dropdown-menu
+								if team.groups != 0
+									each g in team.groups
+										li.dropdown-item
+											a(href='#') #{g.name}
+								else
+									li.dropdown-item
+											a(href='#') No groups for this team
+	each t in teams 
+		+teamdiv(t, t.name, t._id )
+		p <br>
