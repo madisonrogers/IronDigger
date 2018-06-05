@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /** 
- * GET /viewteamgroup 
+ * GET /teams 
  */
 exports.getViewgroupteam = (req, res) => {
     console.log('inside getViewgroupteam in routes.js');
