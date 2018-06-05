@@ -44,6 +44,7 @@ var getTeams = (req, res, callback) => {
     );
 };
 
+
 var renderViewgroupteam = (req, res, responseData) => {
     console.log('inside renderViewgroupteam');
 

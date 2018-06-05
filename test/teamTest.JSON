@@ -1,23 +1,76 @@
-{     
-		"name": "Football",     
-		"groups": [     
-		{	         
+db.teams.update({"name": "Baseball"}, {"name": "Baseball", "groups": [{"_id": new ObjectId(), "name": "Pitchers", "athletes": [ {"_id" : ObjectId("5b170553ab21be30e9e8157e")} ]}]})
+
+[{
+	"name": "Baseball",
+	"groups": [     
+	{	         
+			"_id": new ObjectId(),         
+			"name": "Pitchers"     
+	}, 
+	{	         
+			"_id": new ObjectId(),         
+			"name": "Hitters"     
+	}, 
+	{         
+			"_id": new ObjectId(),
+  	  "name": "Catchers"     
+	}] 
+},
+{
+	"name": "Men's Basketball"
+},
+{
+	"name": "Women's Basketball"
+},
+{
+	"name": "Men's Cross Country"	
+},
+{
+	"name": "Women's Cross Country"	
+},
+{
+	"name": "Football",	
+	"groups": [     
+	{	         
 			"_id": new ObjectId(),         
 			"name": "Bigs"     
-		}, 
-		{         
+	}, 
+	{	         
+			"_id": new ObjectId(),         
+			"name": "Receivers"     
+	}, 
+	{         
 			"_id": new ObjectId(),
-  	    "name": "Receivers"     
-		}] 
-}
+  	  "name": "Lil guys"     
+	}] 
+},
 {
-    "name": "Men's Soccer"
-}
+	"name": "Golf"	
+},
 {
-    "name": "Softball",
-    "groups": [
-    {
-        "_id": new ObjectId(),
-        "name": "pitchers"
-    }]
-}
+	"name": "Men's Soccer"	
+},
+{
+	"name": "Women's Soccer"	
+},
+{
+	"name": "Men's Swimming"	
+},
+{
+	"name": "Women's Swimming"	
+},
+{
+	"name": "Men's Track and Field"	
+},
+{
+	"name": "Women's Track and Field"	
+},
+{
+	"name": "Wrestling"
+},
+{
+	"name": "Softball"	
+},
+{
+	"name": "Volleyball"	
+}]
