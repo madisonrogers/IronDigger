@@ -44,7 +44,7 @@ block content
 							ul.dropdown-menu
 								if team.groups != 0
 									each g in team.groups
-										li.dropdown-item(data-toggle='modal', data-target='#exampleModal' onclick="populateAthletes('#{team._id}' , '#{g._id}')")
+										li.dropdown-item(data-toggle='modal', data-target='#exampleModal' onclick="populateAthletes(#{team._id} , #{g._id})")
 											a(href='#') #{g.name}	#{team._id} #{g._id}
 								else
 									li.dropdown-item(class="disabled")
