@@ -174,7 +174,7 @@ module.exports.addPhase = function(req, res) {
                     return;
                 }
                 console.log(user.athlete)
-                allPhases = user.athlete.phases.concat(req.body.athlete.phases);
+                allPhases = user.athlete.phases.concat(req.body);
                 user.athlete.phases = allPhases
                 user.save((err) => {
 			      	if (err) {
@@ -483,54 +483,55 @@ module.exports.updateSet = function(req, res) {
 
 // GET - get all exercises
 // This function will take a userid and return a list of exercises the user has done
-// module.exports.getAllExercises = function(req, res) {
-// 	if (req.params && req.params.userid) {
-//         User
-//             .findById(req.params.userid)
-//             .exec(function(err, user) {
-//                 if (!user) {
-//                     sendJsonResponse(res, 404, {
-//                         "message": "userid not found"
-//                     });
-//                     return;
-//                 } else if (err) {
-//                     console.log(err)
-//                     sendJsonResponse(res, 404, err);
-//                     return;
-//                 }
-//                 var phases = user.athlete.phases;
-//                 var workouts = [];
-//                 for (var i = 0; i < phases.length; i++) {
-//                 	console.log(phases[i].workouts)
-//                 	workouts += phases[i].workouts;
-//                 }
-//            //      if(workouts) {
-//            //      	allBlocks = [];
-//            //      	// loop through the workouts and create a list of the exercises
-//            //      	for(var i = 0; i < workouts.length; i++) {
-//            //      		allBlocks += workouts[i].blocks
-//            //      	}
-//            //      	console.log(allBlocks)
-                	
-//            //      	allExercises = [];
-//            //      	for(var i = 0; i < allBlocks.length; i++) {
-//            //      		allExercises += allBlocks[i].exercises;
-//            //      	}
-//            //      	sendJsonResponse(res, 200, allExercises);
-//            //      } else if (!workouts.length) {
-//            //      	console.log('No workout with that workoutid exists');
-// 			        // sendJsonResponse(res, 404, {
-// 			        //     "message": "No workout with the specified workoutid exists"
-// 			        // });
-//            //      }
-//             });
-//     } else {
-//         console.log('No userid specified');
-//         sendJsonResponse(res, 404, {
-//             "message": "No userid in request"
-//         });
-//     }	
-// }
+module.exports.getAllExercises = function(req, res) {
+	if (req.params && req.params.userid) {
+        User
+            .findById(req.params.userid)
+            .exec(function(err, user) {
+                if (!user) {
+                    sendJsonResponse(res, 404, {
+                        "message": "userid not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                var phases = user.athlete.phases;
+                var workouts = [];
+                for (var i = 0; i < phases.length; i++) {
+                	// console.log(phases[i].workouts)
+                	workouts.push.apply(workouts, phases[i].workouts);
+                }
+                // console.log(workouts)
+
+                var blocks = [];
+                for(var i = 0; i < workouts.length; i++) {
+                    blocks.push.apply(blocks, workouts[i].blocks)
+                }
+                // console.log(blocks)
+
+                var exercises = [];
+                for(var i = 0; i < blocks.length; i++) {
+                    exercises.push.apply(exercises, blocks[i].exercises)
+                }
+                // console.log(exercises)
+                if(exercises.length > 0) {
+                    sendJsonResponse(res, 200, exercises);
+                } else {
+                    sendJsonResponse(res, 404, {
+                        "message": "No exercises found"
+                    })
+                }
+            });
+    } else {
+        console.log('No userid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No userid in request"
+        });
+    }	
+}
 
 
 
