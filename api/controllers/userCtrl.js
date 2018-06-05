@@ -1,10 +1,111 @@
 // // controller file for users
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Team = mongoose.model('Team');
 
 var sendJsonResponse = function(res, status, content) {
     res.status(status);
     res.json(content);
+};
+
+/**
+ * GET /signup
+ * Signup page.
+ */
+exports.getSignup = (req, res) => {
+    if (req.user) {
+    return res.redirect('/');
+    }
+    console.log('in getSignup in userCtrl')
+    res.render('account/signup', {
+      title: 'Create Account'
+    });
+};
+
+/**
+ * POST /signup
+ * Create a new local account.
+ */
+exports.postSignup = (req, res, next) => {
+    console.log('in postSignup in userCtrl')
+    req.assert('email', 'Email is not valid').isEmail();
+    req.assert('password', 'Password must be at least 4 characters long').len(4);
+    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
+    req.sanitize('email').normalizeEmail({ gmail_remove_dots: false });
+
+    const errors = req.validationErrors();
+
+    if (errors) {
+        req.flash('errors', errors);
+        return res.redirect('/signup');
+    }
+
+    var isAdmin = false
+    var isCoach = false
+
+    if (req.body.userType == 'Admin') {
+        isAdmin = true
+    } else if (req.body.userType == 'Coach') {
+        isCoach = true
+    } 
+
+    const user = new User({
+        email: req.body.email,
+        password: req.body.password,
+        isAdmin: isAdmin,
+        isCoach: isCoach,
+        profile: {
+          first: req.body.first,
+          last: req.body.last,
+          phone: req.body.phone,
+          gender: req.body.gender
+        },
+        athlete: {
+          sport: req.body.sport,    // this is the teamid
+          maxBench: req.body.bench,
+          maxClean: req.body.clean,
+          maxSquat: req.body.squat,
+          maxDeadlift: req.body.deadlift
+        }
+    });
+    console.log(req.body);
+    console.log(user);
+
+    User.findOne({ email: req.body.email }, (err, existingUser) => {
+        if (err) { return err; }
+        if (existingUser) {
+          req.flash('errors', { msg: 'Account with that email address already exists.' });
+          return res.redirect('/signup');
+        }
+        user.save((err) => {
+          if (err) { return next(err); }
+          // req.logIn(user, (err) => {
+          //   if (err) {
+          //     return next(err);
+          //   }
+          //   res.redirect('/');
+          // });
+          console.log('user saved')
+        });
+    });
+
+    Team.findOne({_id: req.body.sport}, (err, team) => {
+        if (err) {return err;}
+        console.log(team.athletes)
+        console.log(user)
+        team.athletes.push(user._id);
+        console.log(team.athletes)
+        // team.athletes = newAthletesArr;
+        team.save((err) => {
+            if (err) { return next(err); }
+            req.logIn(user, (err) => {
+                if (err) {
+                  return next(err);
+                }
+                res.redirect('/');
+            });
+        })
+    })
 };
 
 // Get a user by id - GET
@@ -73,7 +174,7 @@ module.exports.addPhase = function(req, res) {
                     return;
                 }
                 console.log(user.athlete)
-                allPhases = user.athlete.phases.concat(req.body.athlete.phases);
+                allPhases = user.athlete.phases.concat(req.body);
                 user.athlete.phases = allPhases
                 user.save((err) => {
 			      	if (err) {
@@ -382,54 +483,55 @@ module.exports.updateSet = function(req, res) {
 
 // GET - get all exercises
 // This function will take a userid and return a list of exercises the user has done
-// module.exports.getAllExercises = function(req, res) {
-// 	if (req.params && req.params.userid) {
-//         User
-//             .findById(req.params.userid)
-//             .exec(function(err, user) {
-//                 if (!user) {
-//                     sendJsonResponse(res, 404, {
-//                         "message": "userid not found"
-//                     });
-//                     return;
-//                 } else if (err) {
-//                     console.log(err)
-//                     sendJsonResponse(res, 404, err);
-//                     return;
-//                 }
-//                 var phases = user.athlete.phases;
-//                 var workouts = [];
-//                 for (var i = 0; i < phases.length; i++) {
-//                 	console.log(phases[i].workouts)
-//                 	workouts += phases[i].workouts;
-//                 }
-//            //      if(workouts) {
-//            //      	allBlocks = [];
-//            //      	// loop through the workouts and create a list of the exercises
-//            //      	for(var i = 0; i < workouts.length; i++) {
-//            //      		allBlocks += workouts[i].blocks
-//            //      	}
-//            //      	console.log(allBlocks)
-                	
-//            //      	allExercises = [];
-//            //      	for(var i = 0; i < allBlocks.length; i++) {
-//            //      		allExercises += allBlocks[i].exercises;
-//            //      	}
-//            //      	sendJsonResponse(res, 200, allExercises);
-//            //      } else if (!workouts.length) {
-//            //      	console.log('No workout with that workoutid exists');
-// 			        // sendJsonResponse(res, 404, {
-// 			        //     "message": "No workout with the specified workoutid exists"
-// 			        // });
-//            //      }
-//             });
-//     } else {
-//         console.log('No userid specified');
-//         sendJsonResponse(res, 404, {
-//             "message": "No userid in request"
-//         });
-//     }	
-// }
+module.exports.getAllExercises = function(req, res) {
+	if (req.params && req.params.userid) {
+        User
+            .findById(req.params.userid)
+            .exec(function(err, user) {
+                if (!user) {
+                    sendJsonResponse(res, 404, {
+                        "message": "userid not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                var phases = user.athlete.phases;
+                var workouts = [];
+                for (var i = 0; i < phases.length; i++) {
+                	// console.log(phases[i].workouts)
+                	workouts.push.apply(workouts, phases[i].workouts);
+                }
+                // console.log(workouts)
+
+                var blocks = [];
+                for(var i = 0; i < workouts.length; i++) {
+                    blocks.push.apply(blocks, workouts[i].blocks)
+                }
+                // console.log(blocks)
+
+                var exercises = [];
+                for(var i = 0; i < blocks.length; i++) {
+                    exercises.push.apply(exercises, blocks[i].exercises)
+                }
+                // console.log(exercises)
+                if(exercises.length > 0) {
+                    sendJsonResponse(res, 200, exercises);
+                } else {
+                    sendJsonResponse(res, 404, {
+                        "message": "No exercises found"
+                    })
+                }
+            });
+    } else {
+        console.log('No userid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No userid in request"
+        });
+    }	
+}
 
 
 

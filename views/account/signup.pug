@@ -1,5 +1,7 @@
 extends ../layout
 
+append scripts
+  script(src='js/signupCtrl.js')
 block content
   .pb-2.mt-2.mb-4.border-bottom
     h3 Sign up
@@ -51,23 +53,7 @@ block content
     .for-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='sport') Sport
       .col-md-7
-        select.form-control(name='sport')
-          option(value='Baseball') Baseball
-          option(value="Men's Basketball") Men's Basketball
-          option(value="Women's Basketball") Women's Basketball
-          option(value="Men's Cross Country") Men's Cross Country
-          option(value="Women's Cross Country") Women's Cross Country
-          option(value='Football') Football
-          option(value='Golf') Golf
-          option(value="Men's Soccer") Men's Soccer
-          option(value="Women's Soccer") Women's Soccer
-          option(value="Men's Swimming") Men's Swimming
-          option(value="Women's Swimming") Women's Swimming
-          option(value="Men's Track and Field") Men's Track and Field
-          option(value="Women's Track and Field") Women's Track and Field
-          option(value='Wrestling') Wrestling
-          option(value='Softball') Softball
-          option(value='Volleyball') Volleyball
+        select.form-control(name='sport', id='sportSelector')
     br
     .form-group.row
       label.col-md-3.col-form-label.font-weight-bold.text-right(for='bench') Max Bench Press
