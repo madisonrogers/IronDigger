@@ -19,7 +19,14 @@ var populateAthletes = ($teamid, $groupid) => {
 	            athletes = data;
 	            console.log(athletes)
 	            for(var i = 0; i < athletes.length; i++) {
-					$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">" + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
+								var image;
+								if(athletes[i].profile.picture){
+									$image = ".profile.picture";
+								}
+								else {
+									$image = ".gravatar(60)";
+								}
+								$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">"  + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
 				}
 	        }
 		});
