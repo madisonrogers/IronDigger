@@ -7,7 +7,7 @@ athletes = [];
 
 var populateAthletes = ($teamid, $groupid) => {
 	$(function(){
-		var path = "/api/getathletesgroup/:teamid/:groupid";
+		var path = "/api/getathletesgroup/"+$teamid+"/"+$groupid;
 		console.log('inside athleteCtrl, getAthletes');
 		console.log($teamid + ' ' + $groupid);
 		$.ajax({
@@ -19,7 +19,7 @@ var populateAthletes = ($teamid, $groupid) => {
 	            athletes = data;
 	            console.log(athletes)
 	            for(var i = 0; i < athletes.length; i++) {
-					$( "#exampleModal" ).append( "<option value=" + athlete[i]._id + ">" + athlete[i].name + "</option>" );
+					$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">" + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
 				}
 	        }
 		});

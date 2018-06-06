@@ -15,9 +15,6 @@ block content
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
 					span(aria-hidden='true')
 				.modal-body
-					| ...
-					//each a in athletes
-					//	a(href='#') #{a.name}
 				.modal-footer
 					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
 
@@ -44,8 +41,10 @@ block content
 							ul.dropdown-menu
 								if team.groups != 0
 									each g in team.groups
-										li.dropdown-item(data-toggle='modal', data-target='#exampleModal' onclick="populateAthletes(#{team._id} , #{g._id})")
-											a(href='#') #{g.name}	#{team._id} #{g._id}
+										- var team_id = team._id
+										- var group_id = g._id
+										li.dropdown-item(data-toggle='modal', data-target='#exampleModal', onclick="populateAthletes('" + team_id + "','"+ group_id + "');")
+											a(href='#') #{g.name}
 								else
 									li.dropdown-item(class="disabled")
 											a(href='#', style={color:'grey'}) No groups for this team
