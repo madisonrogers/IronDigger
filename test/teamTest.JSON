@@ -5,7 +5,8 @@ db.teams.update({"name": "Baseball"}, {"name": "Baseball", "groups": [{"_id": ne
 	"groups": [     
 	{	         
 			"_id": new ObjectId(),         
-			"name": "Pitchers"     
+			"name": "Pitchers",
+			"athletes": [ {"_id" : ObjectId("5b170553ab21be30e9e8157e")} ] 
 	}, 
 	{	         
 			"_id": new ObjectId(),         

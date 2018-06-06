@@ -16,7 +16,7 @@ block content
 					span(aria-hidden='true')
 				.modal-body
 				.modal-footer
-					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+					button.btn.btn-secondary(type='button', data-dismiss='modal', onclick="$(\".modal-body\").html(\"\");") Close
 
 	mixin teamdiv(team, name, id)
 		.div
