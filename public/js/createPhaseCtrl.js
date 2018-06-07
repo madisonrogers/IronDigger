@@ -39,21 +39,74 @@ $(function() {
 		]
 	})
 
+	$('form').on('submit', function(e){
+		e.preventDefault();
+	});
 
-	$("[id^=add-block-").click(function() {
-		var num = $(this).attr("id"); 
-		var block_button = num.substr(num.lastIndexOf("-")+1)
-		console.log(block_button)
-		$( ".block-1-ex-1" ).clone(true).attr('class', 'block-'+(blockCount)+'-ex-'+(++cloneCount)).insertAfter('.block-1-ex-'+(cloneCount-1));
+	// Add a new block
+	$('.block-add').click(function() {
+		var idStr = $(this).attr("id")
+		var block = idStr.substr(idStr.indexOf("-")+1)
+		var id = 'block-'+block
+		var newId = 'block-'+(parseInt(block)+1)
+		$('#'+id).clone(true).attr('id', newId).insertAfter('#'+id)
+		// change all id's to have new 'block' variable
+		//block-name-#
+		$('#'+newId).find('#block-name-'+block).attr('id', 'block-name-'+(parseInt(block)+1))
+		// add button #block-n
+		$('#'+newId).find('#block-'+block).attr('id', newId)
+		// block-n-ex-n
+		$('#'+newId).find('#'+id+'-ex-1').attr('id', newId+'-ex-1')
+		// block-n-ex-n-table
+		$('#'+newId).find('#'+id+'-ex-1-table').attr('id', newId+'-ex-1-table')
+		// block-n-ex-n-tr-n
+		$('#'+newId).find('#'+id+'-ex-1-tr-1').attr('id', newId+'-ex-1-tr-1')
+		// trblock-n-ex-n-tr-n
+		$('#'+newId).find('#tr'+id+'-ex-1-tr-1').attr('id', 'tr'+newId+'-ex-1-tr-1')
+		// addblock-1-ex-1
+		$('#'+newId).find('#addblock-'+block+'-ex-1').attr('id', 'addblock-'+(parseInt(block)+1)+'-ex-1')
+	});
+
+	// Add a new exercise block
+	$("[id^=addblock-").click(function() {
+		var idStr = $(this).attr("id"); 
+		// console.log(idStr)
+		var ex = idStr.substr(idStr.lastIndexOf("-")+1)
+		var block = idStr.substr(idStr.indexOf("-")+1,1)
+		var $id = 'block-'+block+'-ex-'+ex;
+		var $newId = 'block-'+block+'-ex-'+(parseInt(ex)+1)
+		console.log('id: ' + $id)
+		console.log('newId: ' + $newId)
+		$( '#'+$id ).clone(true).attr('id', $newId).insertAfter('#'+$id);
+		// change all id's to have new 'block' variable
+		$('#'+idStr).attr('id', 'add'+$newId);
+		$('#'+$newId).find('#block-'+block+'-ex-'+ex+'-table').attr('id', $newId+'-table')
+		$('#'+$newId).find('#'+$id + '-tr-1').attr('id', $newId+'-tr-1')
+		$('#'+$newId).find('#tr' + $id +'-tr-1').attr('id', 'tr'+$newId+'-tr-1')
 	});
 
 	var $TABLE = $('#table');
 	var $BTN = $('#export-btn');
 	var $EXPORT = $('#export');
 
+	// Add a new table row
 	$('.table-add').click(function () {
-		var $clone = $TABLE.find('tr.clone').clone(true).removeClass('clone table-line');
-		$TABLE.find('table').append($clone);
+		var idStr = $(this).attr("id")
+		// console.log(idStr)
+		var tr = idStr.substr(idStr.lastIndexOf("-")+1)
+		idStr = idStr.substr(0,idStr.lastIndexOf("-")-3)
+		// console.log(idStr)
+		var ex = idStr.substr(idStr.lastIndexOf("-")+1)
+		var block = idStr.substr(idStr.indexOf("-")+1,1)
+		// console.log('block: '+block)
+		// console.log('ex:' +ex)
+		var $id = '#block-'+block+'-ex-'+ex+'-tr-'+tr;
+		var $newId = 'trblock-'+block+'-ex-'+ex+'-tr-'+(parseInt(tr)+1)
+		var $clone = $('#block-'+block+'-ex-'+ex+'-table').find('#trblock-'+block+'-ex-'+ex+'-tr-'+tr).clone(true).removeClass('clone table-line').attr('id', $newId);
+		$('#block-'+block+'-ex-'+ex+'-table').find('table').append($clone);
+		// console.log($clone)
+		// need the button to pass in the correct ex and block
+		$('#block-'+block+'-ex-'+ex+'-tr-'+tr).attr('id', 'block-'+block+'-ex-'+ex+'-tr-'+(parseInt(tr)+1));
 	});
 
 	$('.table-remove').click(function () {
