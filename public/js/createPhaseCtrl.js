@@ -70,7 +70,7 @@ $(function() {
 		// trblock-n-ex-n-tr-n
 		$('#'+newId).find('#tr'+id+'-ex-1-tr-1').attr('id', 'tr'+newId+'-ex-1-tr-1')
 		// addblock-1-ex-1
-		$('#'+newId).find('#addblock-'+block+'-ex-1').attr('id', 'addblock-'+(parseInt(block)+1)+'-ex-1')
+		$('#'+newId).find('#addblock-'+block+'-ex-1').attr('id', 'addblock-'+blockCount+'-ex-1')
 	});
 
 	// Add a new exercise block
