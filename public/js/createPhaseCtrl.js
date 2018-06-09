@@ -13,20 +13,20 @@ const clearModal = () => {
 const populateBlock = (id, newId, block) => {
 	$('#'+newId).find('#block-name-'+block).attr('id', 'block-name-'+blockCount)
 	// add button #block-n
-	console.log($('#'+newId).find('#block-'+block))
-	$('#'+newId).find('#block-'+block).attr('id', newId)
+	console.log($('#'+newId).find('#block-1'))
+	$('#'+newId).find('#block-1').attr('id', newId)
 	// block-n-ex-n
-	$('#'+newId).find('#'+id+'-ex-1').attr('id', newId+'-ex-1')
+	$('#'+newId).find('#block-1-ex-1').attr('id', newId+'-ex-1')
 	// block-n-ex-n-tr-n
-	$('#'+newId).find('.table-add#'+id+'ex-1-tr-1').attr('id', newId+'ex-1-tr-1')
+	$('#'+newId).find('.table-add#block-1-ex-1-tr-1').attr('id', newId+'-ex-1-tr-1')
 	// block-n-ex-n-table
-	$('#'+newId).find('#'+id+'-ex-1-table').attr('id', newId+'-ex-1-table')
+	$('#'+newId).find('#block-1-ex-1-table').attr('id', newId+'-ex-1-table')
 	// block-n-ex-n-tr-n
-	$('#'+newId).find('#'+id+'-ex-1-tr-1').attr('id', newId+'-ex-1-tr-1')
+	$('#'+newId).find('#block-1-ex-1-tr-1').attr('id', newId+'-ex-1-tr-1')
 	// trblock-n-ex-n-tr-n
-	$('#'+newId).find('#tr'+id+'-ex-1-tr-1').attr('id', 'tr'+newId+'-ex-1-tr-1')
+	$('#'+newId).find('#trblock-1-ex-1-tr-1').attr('id', 'tr'+newId+'-ex-1-tr-1')
 	// addblock-1-ex-1
-	$('#'+newId).find('#addblock-'+block+'-ex-1').attr('id', 'addblock-'+blockCount+'-ex-1')
+	$('#'+newId).find('#addblock-1-ex-1').attr('id', 'addblock-'+blockCount+'-ex-1')
 }
 
 const newEvent = (start) => {
@@ -181,27 +181,12 @@ $(function() {
 		var block = idStr.substr(idStr.indexOf("-")+1)
 		var id = 'block-'+block
 		var newId = 'block-'+(blockCount+1)
+		console.log('id: '+id)
+		console.log('newId: '+newId)
 		$('#cloneblock-1').clone(true).attr('id', newId).css('display','block').insertAfter('#block-'+blockCount)
 		blockCount++;
 		populateBlock(id, newId, block)
 		// change all id's to have new 'block' variable
-		//block-name-#
-		// $('#'+newId).find('#block-name-'+block).attr('id', 'block-name-'+blockCount)
-		// // add button #block-n
-		// console.log($('#'+newId).find('#block-'+block))
-		// $('#'+newId).find('#block-'+block).attr('id', newId)
-		// // block-n-ex-n
-		// $('#'+newId).find('#'+id+'-ex-1').attr('id', newId+'-ex-1')
-		// // block-n-ex-n-tr-n
-		// $('#'+newId).find('.table-add#'+id+'ex-1-tr-1').attr('id', newId+'ex-1-tr-1')
-		// // block-n-ex-n-table
-		// $('#'+newId).find('#'+id+'-ex-1-table').attr('id', newId+'-ex-1-table')
-		// // block-n-ex-n-tr-n
-		// $('#'+newId).find('#'+id+'-ex-1-tr-1').attr('id', newId+'-ex-1-tr-1')
-		// // trblock-n-ex-n-tr-n
-		// $('#'+newId).find('#tr'+id+'-ex-1-tr-1').attr('id', 'tr'+newId+'-ex-1-tr-1')
-		// // addblock-1-ex-1
-		// $('#'+newId).find('#addblock-'+block+'-ex-1').attr('id', 'addblock-'+blockCount+'-ex-1')
 	});
 
 	// Add a new exercise block
@@ -219,10 +204,10 @@ $(function() {
 		// change all id's to have new 'block' variable
 		console.log($('#'+$newId).find('#block-2-ex-1-tr-1').attr('id', $newId+'-tr-1'))
 		$('#'+idStr).attr('id', 'add'+$newId);
-		$('#'+$newId).find('#block-'+block+'-ex-1-tr-1').attr('id', $newId+'-tr-1')
-		$('#'+$newId).find('#block-'+block+'-ex-1-table').attr('id', $newId+'-table')
-		$('#'+$newId).find('#block-'+block+'-ex-1-tr-1').attr('id', $newId+'-tr-1')
-		$('#'+$newId).find('#trblock-'+block+'-ex-1-tr-1').attr('id', 'tr'+$newId+'-tr-1')
+
+		$('#'+$newId).find('.table-add#block-1-ex-1-tr-1').attr('id', $newId+'-tr-1')
+		$('#'+$newId).find('#block-1-ex-1-table').attr('id', $newId+'-table')
+		$('#'+$newId).find('#trblock-1-ex-1-tr-1').attr('id', 'tr'+$newId+'-tr-1')
 	});
 
 	var $TABLE = $('#table');
