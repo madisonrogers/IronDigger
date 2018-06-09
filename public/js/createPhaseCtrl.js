@@ -226,33 +226,64 @@ $(function() {
 		});
 		
 		// Output the result
-		console.log(JSON.stringify(data));
+		// console.log(JSON.stringify(data));
+		return data;
 	}
 
 	const parseCreateWorkout = () => {
-		var date = $('#workoutDate').val();
-		var time = $('#workoutTime').val();
-		var name = $('#workoutName').val();
+		var $date = $('#workoutDate').val();
+		var $time = $('#workoutTime').val();
+		var $name = $('#workoutName').val();
+
+		var workout = {
+			name: $name,
+			blocks: [],
+			time: $time,
+			date: $date
+		};
 
 		var block = {
 			name: String,
 			exercises: []
 		};
 
+		var exercise = {
+			name: String,
+			notes: String,
+			sets: []
+		}
+
+		blocks = [];
 		// get blocks
 		for(var i = 1; i <= blockCount; i++) {
-			var block = $('#block-'+i)
-			var name = $('#block-name-'+i).text()
-			var exercises = block.children('[id^=block-'+i+'-ex-]').each(function() {
-				
+			var ex = [];
+			var blockObj = $('#block-'+i)
+			var blockName = $('#block-name-'+i).text()
+			
+			var exercises = blockObj.children('[id^=block-'+i+'-ex-]').each(function() {
+				exercise = {};
 				var exerciseName = $(this).find('[id^=ex-name-]').text()
 				var exerciseNotes = $(this).find('.form-control.ex1').val()
 				var idStr = $(this).attr("id")
 				var exerciseNum = idStr.substr(idStr.lastIndexOf("-")+1)
-				console.log(exerciseNum)
-				getSets(i, exerciseNum);
+				var sets = getSets(i, exerciseNum);
+				
+				exercise.name = exerciseName;
+				exercise.notes = exerciseNotes;
+				exercise.sets = sets;
+				ex.push(exercise);
 			})
+			
+			block.name = blockName;
+			block.exercises = ex;
+			blocks.push(block)
+			console.log(block)
+
+			block = {};
+			ex = [];
 		}
+		workout.blocks = blocks
+		console.log(workout)
 	}
 
 	$('#createWorkout').click(function() {
