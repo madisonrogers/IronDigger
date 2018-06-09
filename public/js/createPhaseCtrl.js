@@ -49,7 +49,9 @@ const newEvent = (start) => {
 			start.add(parseInt(min),'minute')
 			console.log(start.format('LLL'));
 			workout.title = workout.name
-			workout.start = start
+			workout.start = start;
+			workout.end = start;
+			workout.allDay = false;
 			console.log(workout.start)
 			$('#calendar').fullCalendar('renderEvent',workout,true);
 			$('#workoutModal').modal('hide');
@@ -201,9 +203,12 @@ $(function() {
 		var block = idStr.substr(idStr.indexOf("-")+1)
 		var id = 'block-'+block
 		var newId = 'block-'+(blockCount+1)
+		console.log('id: '+id)
+		console.log('newId: '+newId)
 		$('#cloneblock-1').clone(true).attr('id', newId).css('display','block').insertAfter('#block-'+blockCount)
 		blockCount++;
 		populateBlock(id, newId, block)
+		// change all id's to have new 'block' variable
 	});
 
 	// Add a new exercise block
@@ -221,11 +226,12 @@ $(function() {
 		console.log('newId: ' + $newId)
 		$('#cloneblock-1-ex-1').clone(true).attr('id', $newId).css('display','block').insertAfter('#'+$id);
 		// change all id's to have new 'block' variable
-		console.log($('#'+$newId))
+		console.log($('#'+$newId).find('#block-2-ex-1-tr-1').attr('id', $newId+'-tr-1'))
 		$('#'+idStr).attr('id', 'add'+$newId);
-		$('#'+$newId).find('#block-' + block + '-ex-1-table').attr('id', $newId+'-table');
-		$('#'+$newId).find('.table-add#block-' + block + '-ex-1-tr-1').attr('id', $newId+'-tr-1')
-		$('#'+$newId).find('#trblock-' + block + '-ex-1-tr-1').attr('id', 'tr'+$newId+'-tr-1')
+
+		$('#'+$newId).find('.table-add#block-1-ex-1-tr-1').attr('id', $newId+'-tr-1')
+		$('#'+$newId).find('#block-1-ex-1-table').attr('id', $newId+'-table')
+		$('#'+$newId).find('#trblock-1-ex-1-tr-1').attr('id', 'tr'+$newId+'-tr-1')
 	});
 
 	var $TABLE = $('#table');
