@@ -125,7 +125,7 @@ $(function() {
 		// console.log('row: ' + row)
 		// console.log('idStr: '+idStr)
 		// only delete row if there are more than one, so there will never be no rows
-		console.log($(this).parents('tr').siblings())
+		// console.log($(this).parents('tr').siblings())
 		if ($(this).parents('tr').siblings().length > 2) {
 			var highestRow = 1;
 			// subtract 1 from all the row indexes higher than the deleted row
@@ -176,11 +176,37 @@ $(function() {
 	jQuery.fn.pop = [].pop;
 	jQuery.fn.shift = [].shift;
 
-	$BTN.click(function () {
-		var $rows = $TABLE.find('tr:not(:hidden)');
+	// $BTN.click(function () {
+	// 	var $rows = $('#block-1-ex-2-table').find('tr:not(:hidden)');
+	// 	var headers = [];
+	// 	var data = [];
+	// 	// Get the headers (add special header logic here)
+	// 	$($rows.shift()).find('th:not(:empty)').each(function () {
+	// 		headers.push($(this).text().toLowerCase());
+	// 	});
+		
+	// 	// Turn all existing rows into a loopable array
+	// 	$rows.each(function () {
+	// 		var $td = $(this).find('td');
+	// 		var h = {};
+			
+	// 		// Use the headers from earlier to name our hash keys
+	// 		headers.forEach(function (header, i) {
+	// 			h[header] = $td.eq(i).text();   
+	// 		});
+			
+	// 		data.push(h);
+	// 	});
+		
+	// 	// Output the result
+	// 	$EXPORT.text(JSON.stringify(data));
+	// });
+
+	const getSets = (block, ex) => {
+
+		var $rows = $('#block-'+block+'-ex-'+ex+'-table').find('tr:not(:hidden)');
 		var headers = [];
 		var data = [];
-		
 		// Get the headers (add special header logic here)
 		$($rows.shift()).find('th:not(:empty)').each(function () {
 			headers.push($(this).text().toLowerCase());
@@ -200,7 +226,37 @@ $(function() {
 		});
 		
 		// Output the result
-		$EXPORT.text(JSON.stringify(data));
-	});
+		console.log(JSON.stringify(data));
+	}
+
+	const parseCreateWorkout = () => {
+		var date = $('#workoutDate').val();
+		var time = $('#workoutTime').val();
+		var name = $('#workoutName').val();
+
+		var block = {
+			name: String,
+			exercises: []
+		};
+
+		// get blocks
+		for(var i = 1; i <= blockCount; i++) {
+			var block = $('#block-'+i)
+			var name = $('#block-name-'+i).text()
+			var exercises = block.children('[id^=block-'+i+'-ex-]').each(function() {
+				
+				var exerciseName = $(this).find('[id^=ex-name-]').text()
+				var exerciseNotes = $(this).find('.form-control.ex1').val()
+				var idStr = $(this).attr("id")
+				var exerciseNum = idStr.substr(idStr.lastIndexOf("-")+1)
+				console.log(exerciseNum)
+				getSets(i, exerciseNum);
+			})
+		}
+	}
+
+	$('#createWorkout').click(function() {
+		parseCreateWorkout()
+	})
 
 });
