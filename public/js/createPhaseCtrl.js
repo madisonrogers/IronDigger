@@ -217,12 +217,12 @@ $(function() {
 		console.log('newId: ' + $newId)
 		$( '#cloneblock-1-ex-1' ).clone(true).attr('id', $newId).css('display','block').insertAfter('#'+$id);
 		// change all id's to have new 'block' variable
-		console.log($('#'+$newId))
+		console.log($('#'+$newId).find('#block-2-ex-1-tr-1').attr('id', $newId+'-tr-1'))
 		$('#'+idStr).attr('id', 'add'+$newId);
-		$('#'+$newId).find('#block-'+block+'-ex-'+ex+'-tr-1').attr('id', $newId+'-tr-1')
-		$('#'+$newId).find('#block-'+block+'-ex-'+ex+'-table').attr('id', $newId+'-table')
-		$('#'+$newId).find('#block-'+block+'-ex-'+ex+'-tr-1').attr('id', $newId+'-tr-1')
-		$('#'+$newId).find('#trblock-'+block+'-ex-'+ex+'-tr-1').attr('id', 'tr'+$newId+'-tr-1')
+		$('#'+$newId).find('#block-'+block+'-ex-1-tr-1').attr('id', $newId+'-tr-1')
+		$('#'+$newId).find('#block-'+block+'-ex-1-table').attr('id', $newId+'-table')
+		$('#'+$newId).find('#block-'+block+'-ex-1-tr-1').attr('id', $newId+'-tr-1')
+		$('#'+$newId).find('#trblock-'+block+'-ex-1-tr-1').attr('id', 'tr'+$newId+'-tr-1')
 	});
 
 	var $TABLE = $('#table');
