@@ -1,5 +1,6 @@
 var last_selected_time;
 var blockCount = 1;
+var current_event;
 
 $(function() {
 	// hide the clone-able block.
@@ -29,17 +30,31 @@ $(function() {
 	    // we will be able to load in workouts from the DB
 	    events: [
 		    {
-		      	title  : 'Softball Workout',
-		      	start  : '2018-06-22T16:00:00',
-		      	allDay: false
+		    	title  : 'Softball Workout',
+		    	start  : '2018-06-22T16:00:00',
+				allDay: false,
+				blocks: []
 		    },
 		    {
 		    	title: 'Football Workout',
 		    	start: '2018-06-22T02:30:00',
-		    	allDay: false
-		    }
-		]
-	})
+				allDay: false,
+				blocks: []
+			}
+			
+		],
+
+		eventClick: function(calEvent, jsEvent, view) {
+			console.log(calEvent);
+			console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+			console.log(view)
+			// change the border color just for fun
+			$(this).css('border-color', 'red');
+			var current_event = calEvent;
+		}
+
+
+		})
 
 	$('form').on('submit', function(e){
 		e.preventDefault();
@@ -253,6 +268,8 @@ $(function() {
 				getSets(i, exerciseNum);
 			})
 		}
+
+		
 	}
 
 	$('#createWorkout').click(function() {
