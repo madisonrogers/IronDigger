@@ -13,6 +13,8 @@ const clearModal = () => {
 	populateBlock('block-1', 'block-1', '1')
 }
 
+
+
 const populateBlock = (id, newId, block) => {
 	console.log('inside populate block')
 	console.log(id);
@@ -37,32 +39,10 @@ const populateBlock = (id, newId, block) => {
 	$('#'+newId).find('#addblock-1-ex-1').attr('id', 'addblock-'+blockCount+'-ex-1')
 }
 
-const newEvent = (start) => {
-	$('#workoutDate').val(start.format('l'));
+const newEvent = (date) => {
+	$('#workoutDate').val(date.format('l'));
 	$('#workoutModal').modal('toggle');
-	$('#createWorkout').click(function() {
-		const workout = parseCreateWorkout()
-		if(workout.name && workout.time) {
-			var time = workout.time
-			var hour = time.substr(0, time.indexOf(':'))
-			var min = time.substr(time.indexOf(':')+1)
-			console.log('hour: ' + hour + ' min: ' + min)
-			start.add(parseInt(hour),'hour')
-			start.add(parseInt(min),'minute')
-			console.log(start.format('LLL'));
-			workout.title = workout.name
-			workout.start = start;
-			workout.end = start;
-			workout.allDay = false;
-			console.log(workout.start)
-			$('#calendar').fullCalendar('renderEvent',workout,true);
-			$('#workoutModal').modal('hide');
-			clearModal()
-		} else {
-			// put some error handling
-			$('.alert').css('display','block')
-		}
-	})
+	CURR_DATE = date;
 }
 
 const parseCreateWorkout = () => {
@@ -160,8 +140,11 @@ $(function() {
 	  	selectable: true,
 	  	height: 'auto',
 	  	contentHeight: 'auto',
-	 	select: function(start, end) {
-          	newEvent(start);
+		dayClick: function(date, jsEvent, view) {
+			console.log(date.format('LLL'))
+
+			console.log(view)
+          	newEvent(date);
         },
 		eventClick: function(calEvent, jsEvent, view) {
             editEvent(calEvent);                
@@ -212,6 +195,37 @@ $(function() {
 		populateBlock(id, newId, block)
 		// change all id's to have new 'block' variable
 	});
+
+	$('#createWorkout').click(function() {
+		console.log('#createWorkout clicked')
+		date = CURR_DATE;
+		console.log(date.format('l'));
+		const workout = parseCreateWorkout()
+		if(workout.name && workout.time) {
+			var time = workout.time
+			var hour = time.substr(0, time.indexOf(':'))
+			var min = time.substr(time.indexOf(':')+1)
+			console.log('hour: ' + hour + ' min: ' + min)
+			
+			date.add(parseInt(hour),'hour')
+			date.add(parseInt(min),'minute')
+			
+			console.log(date.format('LLL'));
+			
+			workout.title = workout.name
+			workout.start = date;
+			workout.end = date;
+			workout.allDay = false;
+			console.log(workout.start.format('l'))
+			$('#calendar').fullCalendar('renderEvent',workout,true);
+			$('#workoutModal').modal('hide');
+			clearModal()
+			//date = '';
+		} else {
+			// put some error handling
+			$('.alert').css('display','block')
+		}
+	})
 
 	// Add a new exercise block
 	$("[id^=addblock-").click(function() {
