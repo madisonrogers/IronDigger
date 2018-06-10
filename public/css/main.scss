@@ -9,6 +9,99 @@
 
 @import "themes/default/default";
 
+
+/*Editable Table Styles*/
+//@import "compass/css3";
+
+.table-editable {
+  position: relative;
+  
+  i {
+    font-size: 16px;
+
+  }
+
+
+}
+
+.block-container {
+  .ex-name, .block-name {
+    display: inline-block;
+    margin-bottom: .1em;
+  }
+
+  i {
+    font-size: 16px;
+  }
+
+  .edit {
+    font-size: 14px;
+    margin-left: 5px;
+  }
+
+  hr{
+    margin-top: 1px;
+    margin-bottom: 10px;
+  }
+
+  .block-add 
+    {
+      color: #fff;
+      cursor: pointer;
+      float:right;
+      //font-size: 1.4em;
+      margin-top:-6px;
+      &:hover {
+        color: #fff;
+        background-color: #218838;
+        border-color: #1e7e34;
+      }
+    }
+}
+
+.table-remove {
+  color: #700;
+  cursor: pointer;
+  
+  &:hover {
+    color: #f00;
+  }
+
+  position: absolute;
+  right: 0;
+}
+
+.table-up, .table-down {
+  color: #007;
+  cursor: pointer;
+  
+  &:hover {
+    color: #00f;
+  }
+}
+
+.table-add {
+  color: #070;
+  cursor: pointer;
+  position: absolute;
+  top: 8px;
+  right: 0;
+  //font-size: 1.4em;
+  margin-top:3px;
+  &:hover {
+    color: #0b0;
+  }
+}
+
+.clone {
+  display: none!important;
+}
+//-------------------------------
+
+
+
+
+
 // Scaffolding
 // -------------------------
 
@@ -96,6 +189,11 @@ textarea {
   box-shadow: 0 0 5px #ccc, inset 0 0 0 #000;
 }
 
+.modal-dumbell {
+  vertical-align: baseline;
+  font-size:24px;
+  margin-top: 3px;
+}
 // Font Icons
 // -------------------------
 

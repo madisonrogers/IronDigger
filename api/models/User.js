@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
  const setSchema = new mongoose.Schema({
-   setnumber: {type: Number, require: true},
+   set: {type: Number, require: true},
    reps: {type: String, require: true},//string to account for reps/each and running "reps"
    percent: Number,
    calcweight: Number,

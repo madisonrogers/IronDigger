@@ -7,3 +7,140 @@ append scripts
     script(src='js/createPhaseCtrl.js')
 block content
     #calendar
+    #workoutModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='workoutModalLabel', aria-hidden='true')
+        .modal-dialog.modal-lg(role='document')
+            .modal-content
+                .modal-header
+                    i.fas.fa-dumbbell.modal-dumbell
+                    h5#workoutModalLabel.modal-title Create Workout
+                    button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') ×
+                .modal-body
+                    .alert.alert-danger(role='alert')
+                        | Workout name and time required
+                    form
+                        .form-group
+                            label(for="workoutDate") Date
+                            input#workoutDate.form-control(type='text' readonly)
+                        .form-group
+                            label(for="workoutTime") Time
+                            input#workoutTime.form-control(type='time' name='workoutTime')
+                        .form-group
+                            label(for='workoutName') Workout Name
+                            input#workoutName.form-control(type='text', placeholder='Skills Monday Workout')
+                        #workoutContainer
+                            .form-group#block-1.container.block-container
+                                h5.block-name#block-name-1(contenteditable="true") Block Name   
+                                i.fas.fa-edit.edit.fa-lg
+                                button.btn.btn-success.btn-sm.block-add#block-1 Add Block &nbsp;
+                                    i.fas.fa-plus 
+                                hr
+                                #block-1-ex-1
+                                    .row
+                                        .col-5
+                                            h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
+                                            i.fas.fa-edit.edit.fa-lg
+                                            textarea.form-control.ex1(rows="5" placeholder='Exercise Notes')
+                                        .col-7
+                                            #block-1-ex-1-table.table-editable
+                                                i.fas.fa-plus.table-add#block-1-ex-1-tr-1
+                                                table.table
+                                                    tr#header
+                                                        th Set
+                                                        th Reps
+                                                        th Percent
+                                                        th
+                                                    tr#trblock-1-ex-1-tr-1
+                                                        td(contenteditable='true') 1
+                                                        td(contenteditable='true') 5
+                                                        td(contenteditable='true') 50
+                                                        td
+                                                            i.fas.fa-times.table-remove
+                                                    // This is our clonable table line
+                                                    tr#clonetrblock-1-ex-1-tr-1.clone
+                                                        td(contenteditable='true') 1
+                                                        td(contenteditable='true') 5
+                                                        td(contenteditable='true') 50
+                                                        td
+                                                            i.fas.fa-times.table-remove
+                                .row
+                                    .col
+                                        button.btn.btn-success.btn-sm#addblock-1-ex-1 Add Exercise &nbsp;
+                                            i.fas.fa-plus
+                                    .col
+                                hr
+                            #cloneblock-1-ex-1
+                                .row
+                                    .col-5
+                                        h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
+                                        i.fas.fa-edit.edit.fa-lg
+                                        textarea.form-control.ex1(rows="5" placeholder='Exercise Notes')
+                                    .col-7
+                                        #block-1-ex-1-table.table-editable
+                                            i.fas.fa-plus.table-add#block-1-ex-1-tr-1
+                                            table.table
+                                                tr#header
+                                                    th Set
+                                                    th Reps
+                                                    th Percent
+                                                    th
+                                                tr#trblock-1-ex-1-tr-1
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove
+                                                // This is our clonable table line
+                                                tr#clonetrblock-1-ex-1-tr-1.clone
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove
+                        
+                        .form-group#cloneblock-1.container.block-container
+                            h5.block-name#block-name-1(contenteditable="true") Block Name   
+                            i.fas.fa-edit.edit.fa-lg
+                            button.btn.btn-success.btn-sm.block-add#block-1 Add Block &nbsp;
+                                i.fas.fa-plus
+                            hr
+                            #block-1-ex-1
+                                .row
+                                    .col-5
+                                        h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
+                                        i.fas.fa-edit.edit.fa-lg
+                                        textarea.form-control.ex1(rows="5" placeholder='Exercise Notes')
+                                    .col-7
+                                        #block-1-ex-1-table.table-editable
+                                            i.fas.fa-plus.table-add#block-1-ex-1-tr-1
+                                            table.table
+                                                tr#header
+                                                    th Set
+                                                    th Reps
+                                                    th Percent
+                                                    th
+                                                tr#trblock-1-ex-1-tr-1
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove
+                                                // This is our clonable table line
+                                                tr#trblock-1-ex-1-tr-1.clone
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove
+                            .row
+                                .col
+                                    button.btn.btn-success.btn-sm#addblock-1-ex-1 Add Exercise &nbsp;
+                                        i.fas.fa-plus
+                                .col
+                            hr
+                            
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    button#archiveWorkout.btn.btn-light(type='button') Archive Workout 
+                    button#createWorkout.btn.btn-light(type='button') Create Workout
+
