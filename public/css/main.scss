@@ -46,13 +46,15 @@
 
   .block-add 
     {
-      color: #070;
+      color: #fff;
       cursor: pointer;
       float:right;
       //font-size: 1.4em;
-      margin-top:3px;
+      margin-top:-6px;
       &:hover {
-        color: #0b0;
+        color: #fff;
+        background-color: #218838;
+        border-color: #1e7e34;
       }
     }
 }
