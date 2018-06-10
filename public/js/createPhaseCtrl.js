@@ -5,7 +5,9 @@ var current_event;
 const clearModal = () => {
 	$('#workoutModal').find('#workoutContainer').empty()
 	var $clone = $('#cloneblock-1').clone(true).attr('id', 'block-1').css('display','block')
-	$('#workoutContainer').append($clone)
+	$('#workoutContainer').append($clone);
+	$('#workoutTime').val('');
+	$('#workoutName').val('');
 	blockCount = 1;
 	// change all id's to have new 'block' variable
 	populateBlock('block-1', 'block-1', '1')
