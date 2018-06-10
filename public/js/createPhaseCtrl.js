@@ -10,7 +10,8 @@ const clearModal = () => {
 	$('#workoutName').val('');
 	blockCount = 1;
 	// change all id's to have new 'block' variable
-	populateBlock('block-1', 'block-1', '1')
+	populateBlock('block-1', 'block-1', '1');
+	$('.alert').hide();
 }
 
 
