@@ -37,22 +37,22 @@ const populateEditModal = calEvent => {
 
 	// populate the first block
 	// block name
-	$("#editWorkoutModal")
+	$("#editWorkoutModal #workoutContainer")
 		.find("#block-name-1")
 		.text(blocks[0].name);
 	// exercise name for first block first exercise
-	$("#editWorkoutModal")
+	$("#editWorkoutModal #workoutContainer")
 		.find("#ex-name-1")
 		.text(blocks[0].exercises[0].name);
 	// exercise notes for first block first exercise
-	$("#editWorkoutModal")
+	$("#editWorkoutModal #workoutContainer")
 		.find("#notes-1")
 		.val(blocks[0].exercises[0].notes);
 
 	// if there is one exercise
 	if (blocks[0].exercises.length <= 1) {
 		var ex = blocks[0].exercises[0];
-		$("#editWorkoutModal #block-1")
+		$("#editWorkoutModal #workoutContainer #block-1")
 			.find("#trblock-1-ex-1-tr-1")
 			.children()
 			.each(function(i) {
@@ -79,7 +79,7 @@ const populateEditModal = calEvent => {
 					.clone(true)
 					.attr("id", $newId)
 					.css("display", "block")
-					.insertAfter("#editWorkoutModal #" + $id);
+					.insertAfter("#editWorkoutModal #workoutContainer #" + $id);
 
 				// Changing the Id of the add exercise button
 				$("#editWorkoutModal #addblock-1-ex-" + k).attr(
@@ -96,6 +96,22 @@ const populateEditModal = calEvent => {
 				$("#editWorkoutModal #clone-notes-1")
 					.attr("id", "notes-" + (k + 1))
 					.val(blocks[0].exercises[k].notes);
+
+				//sets the id of the add exercise button
+				
+
+				// console.log(buttonId);
+
+				var addButtonId = 'addblock-e-1-ex-' + (k);
+
+				var newAdd = addButtonId.substr(0, addButtonId.length - 1);
+				newAdd += (k + 1);
+				$("#editWorkoutModal #workoutContainer #" + addButtonId).attr(
+					"id",
+					newAdd
+				);
+
+
 
 				$("#editWorkoutModal #" + $newId)
 					.find(".table-add#clone-block-1-ex-1-tr-1")
@@ -266,6 +282,23 @@ const populateEditModal = calEvent => {
 				}
 			}
 		}
+	}
+
+	// populate additional blocks
+	for(var m = 1; m < blocks.length; m++) {
+		var idStr = $(this).attr("id");
+		var block = m;
+		var id = "block-" + block;
+		var newId = "block-" + (m + 1);
+		console.log("id: " + id);
+		console.log("newId: " + newId);
+		$("#editWorkoutModal .form-group#e-cloneblock-1")
+			.clone(true)
+			.attr("id", newId)
+			.css("display", "block")
+			.insertAfter("#editWorkoutModal #workoutContainer #block-" + m);
+		
+		populateBlock(id, newId, block);
 	}
 
 	$("#editWorkoutModal").modal("toggle");
@@ -517,38 +550,81 @@ $(function() {
 	// Add a new exercise block
 	$("[id^=addblock-").click(function() {
 		var idStr = $(this).attr("id");
-		console.log(idStr);
-		var ex = idStr.substr(idStr.lastIndexOf("-") + 1);
-		var block = idStr.substr(idStr.indexOf("-") + 1, 1);
-		console.log("ex: " + ex);
-		console.log("block: " + block);
+		if (idStr.substr(idStr.indexOf("-") + 1, 1) != "e") {
+			console.log(idStr);
+			var ex = idStr.substr(idStr.lastIndexOf("-") + 1);
+			var block = idStr.substr(idStr.indexOf("-") + 1, 1);
+			console.log("ex: " + ex);
+			console.log("block: " + block);
 
-		var $id = "block-" + block + "-ex-" + ex;
-		var $newId = "block-" + block + "-ex-" + (parseInt(ex) + 1);
-		console.log("id: " + $id);
-		console.log("newId: " + $newId);
-		$("#cloneblock-1-ex-1")
-			.clone(true)
-			.attr("id", $newId)
-			.css("display", "block")
-			.insertAfter("#" + $id);
-		// change all id's to have new 'block' variable
-		console.log(
+			var $id = "block-" + block + "-ex-" + ex;
+			var $newId = "block-" + block + "-ex-" + (parseInt(ex) + 1);
+			console.log("id: " + $id);
+			console.log("newId: " + $newId);
+			$("#cloneblock-1-ex-1")
+				.clone(true)
+				.attr("id", $newId)
+				.css("display", "block")
+				.insertAfter("#" + $id);
+			// change all id's to have new 'block' variable
+			console.log(
+				$("#" + $newId)
+					.find("#block-2-ex-1-tr-1")
+					.attr("id", $newId + "-tr-1")
+			);
+			$("#" + idStr).attr("id", "add" + $newId);
+
 			$("#" + $newId)
-				.find("#block-2-ex-1-tr-1")
-				.attr("id", $newId + "-tr-1")
-		);
-		$("#" + idStr).attr("id", "add" + $newId);
+				.find(".table-add#block-1-ex-1-tr-1")
+				.attr("id", $newId + "-tr-1");
+			$("#" + $newId)
+				.find("#block-1-ex-1-table")
+				.attr("id", $newId + "-table");
+			$("#" + $newId)
+				.find("#trblock-1-ex-1-tr-1")
+				.attr("id", "tr" + $newId + "-tr-1");
+		} else {
+			console.log(idStr);
+			var ex = idStr.substr(idStr.lastIndexOf("-") + 1);
+			var block = idStr.substr(idStr.indexOf("-") + 3, 1);
+			console.log("ex: " + ex);
+			console.log("block: " + block);
 
-		$("#" + $newId)
-			.find(".table-add#block-1-ex-1-tr-1")
-			.attr("id", $newId + "-tr-1");
-		$("#" + $newId)
-			.find("#block-1-ex-1-table")
-			.attr("id", $newId + "-table");
-		$("#" + $newId)
-			.find("#trblock-1-ex-1-tr-1")
-			.attr("id", "tr" + $newId + "-tr-1");
+			var $id = "block-" + block + "-ex-" + ex;
+			var $newId = "block-" + block + "-ex-" + (parseInt(ex) + 1);
+			console.log("id: " + $id);
+			console.log("newId: " + $newId);
+			$("#e-cloneblock-1-ex-1")
+				.clone(true)
+				.attr("id", $newId)
+				.css("display", "block")
+				.insertAfter("#editWorkoutModal #workoutContainer #" + $id);
+			// change all id's to have new 'block' variable
+			// console.log(
+			// 	$("#" + $newId)
+			// 		.find("#block-2-ex-1-tr-1")
+			// 		.attr("id", $newId + "-tr-1")
+			// );
+			var buttonId = idStr.substr(0, idStr.length - 1);
+			buttonId += (parseInt(ex) + 1);
+
+			console.log(buttonId);
+
+			$("#editWorkoutModal #workoutContainer #" + idStr).attr(
+				"id",
+				buttonId
+			);
+
+			$("#editWorkoutModal #workoutContainer #" + $newId)
+				.find(".table-add#block-1-ex-1-tr-1")
+				.attr("id", $newId + "-tr-1");
+			$("#editWorkoutModal #workoutContainer #" + $newId)
+				.find("#block-1-ex-1-table")
+				.attr("id", $newId + "-table");
+			$("#editWorkoutModal #workoutContainer  #" + $newId)
+				.find("#trblock-1-ex-1-tr-1")
+				.attr("id", "tr" + $newId + "-tr-1");
+		}
 	});
 
 	var $TABLE = $("#table");
@@ -626,7 +702,7 @@ $(function() {
 
 	$(".table-remove").click(function() {
 		var id = $(this).attr("id");
-		if (id == 'e') {
+		if (id == "e") {
 			var idStr = $(this)
 				.parents("tr")
 				.attr("id");
@@ -676,7 +752,8 @@ $(function() {
 				// console.log('highestRow: ' + highestRow)
 				var newButtonId = "";
 				if (highestRow < row) {
-					newButtonId = "e-block-" + block + "-ex-" + ex + "-tr-" + (row - 1);
+					newButtonId =
+						"e-block-" + block + "-ex-" + ex + "-tr-" + (row - 1);
 					$(this)
 						.parents()
 						.find(
