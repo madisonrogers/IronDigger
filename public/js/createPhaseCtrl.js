@@ -153,12 +153,18 @@ const populateEditModal = calEvent => {
 								"id",
 								"trblock-1-ex-" + (k + 1) + "-tr-" + (i + 1)
 							);
-						$("#editWorkoutModal #workoutContainer #block-1-ex-" + (k + 1) + "-table")
+						$(
+							"#editWorkoutModal #workoutContainer #block-1-ex-" +
+								(k + 1) +
+								"-table"
+						)
 							.find("table")
 							.append($clone);
 						// need the button to pass in the correct ex and block
 						$(
-							"#editWorkoutModal #workoutContainer #block-1-ex-"+ (k+1) +" #e-clone-block-1-ex-1-tr-1"
+							"#editWorkoutModal #workoutContainer #block-1-ex-" +
+								(k + 1) +
+								" #e-clone-block-1-ex-1-tr-1"
 						).attr(
 							"id",
 							"e-block-1-ex-" + (k + 1) + "-tr-" + (i + 1)
@@ -561,16 +567,35 @@ $(function() {
 			var $id = "#block-" + block + "-ex-" + ex + "-tr-" + tr;
 			var $newId =
 				"trblock-" + block + "-ex-" + ex + "-tr-" + (parseInt(tr) + 1);
-			var $clone = $("#editWorkoutModal #workoutContainer #block-" + block + "-ex-" + ex + "-table")
+			var $clone = $(
+				"#editWorkoutModal #workoutContainer #block-" +
+					block +
+					"-ex-" +
+					ex +
+					"-table"
+			)
 				.find("#trblock-" + block + "-ex-" + ex + "-tr-" + tr)
 				.clone(true)
 				.removeClass("clone table-line")
 				.attr("id", $newId);
-			$("#editWorkoutModal #workoutContainer #block-" + block + "-ex-" + ex + "-table")
+			$(
+				"#editWorkoutModal #workoutContainer #block-" +
+					block +
+					"-ex-" +
+					ex +
+					"-table"
+			)
 				.find("table")
 				.append($clone);
 			// need the button to pass in the correct ex and block
-			$("#editWorkoutModal #workoutContainer #e-block-" + block + "-ex-" + ex + "-tr-" + tr).attr(
+			$(
+				"#editWorkoutModal #workoutContainer #e-block-" +
+					block +
+					"-ex-" +
+					ex +
+					"-tr-" +
+					tr
+			).attr(
 				"id",
 				"e-block-" + block + "-ex-" + ex + "-tr-" + (parseInt(tr) + 1)
 			);
@@ -600,89 +625,187 @@ $(function() {
 	});
 
 	$(".table-remove").click(function() {
-		var idStr = $(this)
-			.parents("tr")
-			.attr("id");
-		var row = idStr.substr(idStr.lastIndexOf("-") + 1);
-		var block = idStr.substr(idStr.indexOf("-") + 1, 1);
-		idStr = idStr.substr(idStr.indexOf("-") + 3);
-		var ex = idStr.substr(idStr.indexOf("-") + 1, 1);
-		if (
-			$(this)
+		var id = $(this).attr("id");
+		if (id == 'e') {
+			var idStr = $(this)
 				.parents("tr")
-				.siblings().length > 2
-		) {
-			var highestRow = 1;
-			// subtract 1 from all the row indexes higher than the deleted row
-			for (
-				var i = 0;
-				i <
+				.attr("id");
+			var row = idStr.substr(idStr.lastIndexOf("-") + 1);
+			var block = idStr.substr(idStr.indexOf("-") + 1, 1);
+			idStr = idStr.substr(idStr.indexOf("-") + 3);
+			var ex = idStr.substr(idStr.indexOf("-") + 1, 1);
+			if (
 				$(this)
 					.parents("tr")
-					.siblings().length;
-				i++
+					.siblings().length > 2
 			) {
-				var rowObj = $(this)
-					.parents("tr")
-					.siblings()[i];
-				// console.log(rowObj)
-				var currRowStr = rowObj.id;
-				if (currRowStr != "header") {
-					var currRow = currRowStr.substr(
-						currRowStr.lastIndexOf("-") + 1
-					);
-					var c = rowObj.className;
-					highestRow = currRow;
-					if (currRow > row && c != "clone") {
-						// console.log('currRow: ' + currRow)
-						// console.log('subtracting 1 from id')
-						rowObj.id =
-							currRowStr.substr(
-								0,
-								currRowStr.lastIndexOf("-") + 1
-							) +
-							(currRow - 1);
+				var highestRow = 1;
+				// subtract 1 from all the row indexes higher than the deleted row
+				for (
+					var i = 0;
+					i <
+					$(this)
+						.parents("tr")
+						.siblings().length;
+					i++
+				) {
+					var rowObj = $(this)
+						.parents("tr")
+						.siblings()[i];
+					// console.log(rowObj)
+					var currRowStr = rowObj.id;
+					if (currRowStr != "header") {
+						var currRow = currRowStr.substr(
+							currRowStr.lastIndexOf("-") + 1
+						);
+						var c = rowObj.className;
+						highestRow = currRow;
+						if (currRow > row && c != "clone") {
+							// console.log('currRow: ' + currRow)
+							// console.log('subtracting 1 from id')
+							rowObj.id =
+								currRowStr.substr(
+									0,
+									currRowStr.lastIndexOf("-") + 1
+								) +
+								(currRow - 1);
+						}
 					}
 				}
-			}
-			// subract 1 from the button id
-			// console.log('highestRow: ' + highestRow)
-			if (highestRow < row) {
-				var newButtonId =
-					"block-" + block + "-ex-" + ex + "-tr-" + (row - 1);
-				$(this)
-					.parents()
-					.find(
-						".table-add#" +
-							"block-" +
-							block +
-							"-ex-" +
-							ex +
-							"-tr-" +
-							row
-					)
-					.attr("id", newButtonId);
-			} else {
-				var newButtonId =
-					"block-" + block + "-ex-" + ex + "-tr-" + (highestRow - 1);
-				$(this)
-					.parents()
-					.find(
-						".table-add#" +
-							"block-" +
-							block +
-							"-ex-" +
-							ex +
-							"-tr-" +
-							highestRow
-					)
-					.attr("id", newButtonId);
-			}
+				// subract 1 from the button id
+				// console.log('highestRow: ' + highestRow)
+				var newButtonId = "";
+				if (highestRow < row) {
+					newButtonId = "e-block-" + block + "-ex-" + ex + "-tr-" + (row - 1);
+					$(this)
+						.parents()
+						.find(
+							"#editWorkoutModal #workoutContainer .table-add#" +
+								"e-block-" +
+								block +
+								"-ex-" +
+								ex +
+								"-tr-" +
+								row
+						)
+						.attr("id", newButtonId);
+				} else {
+					newButtonId =
+						"e-block-" +
+						block +
+						"-ex-" +
+						ex +
+						"-tr-" +
+						(highestRow - 1);
+					$(this)
+						.parents()
+						.find(
+							"#editWorkoutModal #workoutContainer .table-add#" +
+								"e-block-" +
+								block +
+								"-ex-" +
+								ex +
+								"-tr-" +
+								highestRow
+						)
+						.attr("id", newButtonId);
+				}
 
-			// delete row
-			$(this)
+				// delete row
+				$(this)
+					.parents("tr")
+					.detach();
+			}
+		} else {
+			var idStr = $(this)
 				.parents("tr")
-				.detach();
+				.attr("id");
+			var row = idStr.substr(idStr.lastIndexOf("-") + 1);
+			var block = idStr.substr(idStr.indexOf("-") + 1, 1);
+			idStr = idStr.substr(idStr.indexOf("-") + 3);
+			var ex = idStr.substr(idStr.indexOf("-") + 1, 1);
+			if (
+				$(this)
+					.parents("tr")
+					.siblings().length > 2
+			) {
+				var highestRow = 1;
+				// subtract 1 from all the row indexes higher than the deleted row
+				for (
+					var i = 0;
+					i <
+					$(this)
+						.parents("tr")
+						.siblings().length;
+					i++
+				) {
+					var rowObj = $(this)
+						.parents("tr")
+						.siblings()[i];
+					// console.log(rowObj)
+					var currRowStr = rowObj.id;
+					if (currRowStr != "header") {
+						var currRow = currRowStr.substr(
+							currRowStr.lastIndexOf("-") + 1
+						);
+						var c = rowObj.className;
+						highestRow = currRow;
+						if (currRow > row && c != "clone") {
+							// console.log('currRow: ' + currRow)
+							// console.log('subtracting 1 from id')
+							rowObj.id =
+								currRowStr.substr(
+									0,
+									currRowStr.lastIndexOf("-") + 1
+								) +
+								(currRow - 1);
+						}
+					}
+				}
+				// subract 1 from the button id
+				// console.log('highestRow: ' + highestRow)
+				if (highestRow < row) {
+					var newButtonId =
+						"block-" + block + "-ex-" + ex + "-tr-" + (row - 1);
+					$(this)
+						.parents()
+						.find(
+							".table-add#" +
+								"block-" +
+								block +
+								"-ex-" +
+								ex +
+								"-tr-" +
+								row
+						)
+						.attr("id", newButtonId);
+				} else {
+					var newButtonId =
+						"block-" +
+						block +
+						"-ex-" +
+						ex +
+						"-tr-" +
+						(highestRow - 1);
+					$(this)
+						.parents()
+						.find(
+							".table-add#" +
+								"block-" +
+								block +
+								"-ex-" +
+								ex +
+								"-tr-" +
+								highestRow
+						)
+						.attr("id", newButtonId);
+				}
+
+				// delete row
+				$(this)
+					.parents("tr")
+					.detach();
+			}
 		}
 	});
 
