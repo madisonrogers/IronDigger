@@ -45,7 +45,7 @@ router.post('/:teamid/:groupid/phase', phaseCtrl.createPhaseGroup);
 // workoutCtrl routes
 
 router.put('/addExercise/:workoutid/:blockid', workoutCtrl.addExercise); // works
-router.post('/createWorkout/:phaseid', workoutCtrl.createWorkout); // works
+router.post('/createWorkout', workoutCtrl.createWorkout); // works
 router.get('/getWorkout/:workoutid', workoutCtrl.getWorkout); // works
 router.put('/updateWorkout/:workoutid', workoutCtrl.updateWorkout); // works
 router.get('/allWorkouts', workoutCtrl.getAllWorkouts); // works
