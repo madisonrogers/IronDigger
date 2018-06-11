@@ -51,14 +51,77 @@ const populateEditModal = calEvent => {
 
 	// if there is one exercise
 	if (blocks[0].exercises.length <= 1) {
-		var ex = blocks[0].exercises[0];
-		$("#editWorkoutModal #workoutContainer #block-1")
-			.find("#trblock-1-ex-1-tr-1")
-			.children()
-			.each(function(i) {
-				console.log(this);
-				$(this).val(ex.sets[0][i]);
-			});
+		var ex = blocks[0].exercises[0]; 
+		for (var i = 0; i < ex.sets.length; i++) {
+			if (i < 1) {
+				$("#editWorkoutModal #workoutContainer #block-1")
+					.find("#trblock-1-ex-1-tr-" + (i + 1))
+					.children()
+					.each(function(j) {
+						console.log(this);
+						if (ex.sets[i] != undefined) {
+							switch (j) {
+								case 0:
+									console.log("here");
+									$(this).html(ex.sets[i].set);
+									break;
+								case 1:
+									$(this).html(ex.sets[i].reps);
+									break;
+								case 2:
+									$(this).html(ex.sets[i].percent);
+									break;
+							}
+						}
+					});
+			} else {
+				//k+2
+				console.log("i was >= 1");
+				var $clone = $(
+					"#editWorkoutModal #workoutContainer #block-1-ex-1-table"
+				)
+					.find("#e-clonetrblock-1-ex-1-tr-1")
+					.clone(true)
+					.removeClass("clone table-line")
+					.attr(
+						"id",
+						"trblock-1-ex-1-tr-" + (i + 1)
+					);
+				$(
+					"#editWorkoutModal #workoutContainer #block-1-ex-1-table"
+				)
+					.find("table")
+					.append($clone);
+				// need the button to pass in the correct ex and block
+				$(
+					"#editWorkoutModal #workoutContainer #block-1-ex-1 #e-block-1-ex-1-tr-1"
+				).attr(
+					"id",
+					"e-block-1-ex-1-tr-" + (i + 2)
+				);
+
+				$("#editWorkoutModal #workoutContainer #block-1")
+					.find("#trblock-1-ex-1-tr-" + (i + 1))
+					.children()
+					.each(function(j) {
+						console.log(this);
+						if (ex.sets[i] != undefined) {
+							switch (j) {
+								case 0:
+									console.log("here");
+									$(this).html(ex.sets[i].set);
+									break;
+								case 1:
+									$(this).html(ex.sets[i].reps);
+									break;
+								case 2:
+									$(this).html(ex.sets[i].percent);
+									break;
+							}
+						}
+					});
+				}
+			}
 	} else {
 		// more than one exercise
 		var ex = blocks[0].exercises;
@@ -82,24 +145,28 @@ const populateEditModal = calEvent => {
 					.insertAfter("#editWorkoutModal #workoutContainer #" + $id);
 
 				// Changing the Id of the add exercise button
-				$("#editWorkoutModal #addblock-1-ex-" + k).attr(
-					"id",
-					"add" + $newId
-				);
+				// $("#editWorkoutModal #workoutContainer #addblock-e-1-ex-" + k).attr(
+				// 	"id",
+				// 	"add" + $newId
+				// );
 
 				// Sets the id and name of the exercise name
-				$("#editWorkoutModal #block-1-ex-"+(k+1)+" #clone-ex-name-1")
+				$(
+					"#editWorkoutModal #block-1-ex-" +
+						(k + 1) +
+						" #clone-ex-name-1"
+				)
 					.attr("id", "ex-name-" + (k + 1))
 					.text(blocks[0].exercises[k].name);
 
 				// sets the id and text of the exercise notes
-				$("#editWorkoutModal #block-1-ex-"+(k+1)+" #clone-notes-1")
+				$(
+					"#editWorkoutModal #block-1-ex-" +
+						(k + 1) +
+						" #clone-notes-1"
+				)
 					.attr("id", "notes-" + (k + 1))
 					.val(blocks[0].exercises[k].notes);
-
-				//sets the id of the add exercise button
-
-				// console.log(buttonId);
 
 				var addButtonId = "addblock-e-1-ex-" + k;
 
@@ -111,8 +178,8 @@ const populateEditModal = calEvent => {
 				);
 
 				$("#editWorkoutModal #" + $newId)
-					.find(".table-add#clone-block-1-ex-1-tr-1")
-					.attr("id", $newId + "-tr-1");
+					.find(".table-add#e-clone-block-1-ex-1-tr-1")
+					.attr("id", "e-" + $newId + "-tr-1");
 				$("#editWorkoutModal #" + $newId)
 					.find("#clone-block-1-ex-1-table")
 					.attr("id", $newId + "-table");
@@ -131,7 +198,7 @@ const populateEditModal = calEvent => {
 			for (var i = 0; i < ex[k].sets.length; i++) {
 				if (k != 0) {
 					if (i < 1) {
-						$("#editWorkoutModal #block-1")
+						$("#editWorkoutModal #workoutContainer #block-1")
 							.find("#trblock-1-ex-" + (k + 1) + "-tr-" + (i + 1))
 							.children()
 							.each(function(j) {
@@ -230,23 +297,23 @@ const populateEditModal = calEvent => {
 						//k+2
 						console.log("i was >= 1");
 						var $clone = $(
-							"#editWorkoutModal #block-1-ex-" +
+							"#editWorkoutModal #workoutContainer #block-1-ex-" +
 								(k + 1) +
 								"-table"
-						)
-							.find("#clonetrblock-1-ex-1-tr-1")
+						) // CHANGED TO e-clonetrblock from clonetrblock
+							.find("#e-clonetrblock-1-ex-1-tr-1")
 							.clone(true)
 							.removeClass("clone table-line")
 							.attr(
 								"id",
 								"trblock-1-ex-" + (k + 1) + "-tr-" + (i + 1)
 							);
-						$("#editWorkoutModal #block-1-ex-" + (k + 1) + "-table")
+						$("#editWorkoutModal #workoutContainer #block-1-ex-" + (k + 1) + "-table")
 							.find("table")
 							.append($clone);
 						// need the button to pass in the correct ex and block
 						$(
-							"#editWorkoutModal #e-block-1-ex-" +
+							"#editWorkoutModal #workoutContainer #e-block-1-ex-" +
 								(k + 1) +
 								"-tr-" +
 								i
@@ -255,7 +322,7 @@ const populateEditModal = calEvent => {
 							"e-block-1-ex-" + (k + 1) + "-tr-" + (i + 1)
 						);
 
-						$("#editWorkoutModal #block-1")
+						$("#editWorkoutModal #workoutContainer #block-1")
 							.find("#trblock-1-ex-" + (k + 1) + "-tr-" + (i + 1))
 							.children()
 							.each(function(j) {
@@ -297,28 +364,159 @@ const populateEditModal = calEvent => {
 
 		populateBlock(id, newId, block);
 
-		$("#editWorkoutModal #workoutContainer #block-"+(m+1))
-		.find("#block-name-1")
-		.text(blocks[m].name);
-		
+		$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
+			.find("#block-name-1")
+			.text(blocks[m].name);
+
 		// loop through all the exercises and sets to populate the block
 		// if there is one exercise
 		if (blocks[m].exercises.length <= 1) {
 			var ex = blocks[m].exercises[0];
-			$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+			console.log(ex)
+			$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
 				.find("#ex-name-1")
 				.text(blocks[m].exercises[0].name);
 			// exercise notes for first block first exercise
-			$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+			$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
 				.find("#notes-1")
 				.val(blocks[m].exercises[0].notes);
-			$("#editWorkoutModal #workoutContainer #block-"+(m+1))
-				.find("#trblock-1-ex-1-tr-1")
-				.children()
-				.each(function(i) {
-					console.log(this);
-					$(this).val(ex.sets[0][i]);
-				});
+
+			// loop through the sets to add each row
+			for (var i = 0; i < ex.sets.length; i++) {
+				if (i < 1) { // This part works
+					$("#editWorkoutModal #block-" + (m + 1))
+						.find("#clonetrblock-1-ex-1-tr-1")
+						.attr('id',"trblock-"+(m+1)+"-ex-1-tr-"+(i+1))
+					// set the table button to have the right block number
+					$("#editWorkoutModal #workoutContainer #block-" +(m+1)+ "-ex-1")
+						.find("#e-block-1-ex-1-tr-1")
+						.attr('id',"e-block-"+(m+1)+'-ex-1-tr-1')
+
+					// set the add exercise button to have the correct block num
+					$("#editWorkoutModal #workoutContainer #block-" +(m+1))
+						.find("#addblock-e-1-ex-1")
+						.attr('id','addblock-e-'+(m+1)+'-ex-1')
+
+					$("#editWorkoutModal #block-" + (m + 1))
+						.find(
+							"#trblock-" +
+								(m + 1) +
+								"-ex-" +
+								1 +
+								"-tr-" +
+								(i + 1)
+						)
+						.children()
+						.each(function(j) {
+							console.log(this);
+							if (ex.sets[i] != undefined) {
+								switch (j) {
+									case 0:
+										console.log("here");
+										$(this).html(ex.sets[i].set);
+										break;
+									case 1:
+										$(this).html(
+											ex.sets[i].reps
+										);
+										break;
+									case 2:
+										$(this).html(
+											ex.sets[i].percent
+										);
+										break;
+								}
+							}
+						});
+				} else {
+					//k+2
+					console.log("i was >= 1");
+					var $clone = $(
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1) +
+							"-ex-" +
+							(1) +
+							"-table"
+					)
+						.find("#e-clonetrblock-1-ex-1-tr-1")
+						.clone(true)
+						.removeClass("clone table-line")
+						.attr(
+							"id",
+							"trblock-" +
+								(m + 1) +
+								"-ex-" +
+								(1) +
+								"-tr-" +
+								(i + 1)
+						);
+					$(
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1) +
+							"-ex-" +
+							(1) +
+							"-table"
+					)
+						.find("table")
+						.append($clone);
+					// need the button to pass in the correct ex and block
+					$(
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1) +
+							"-ex-" +
+							(1) +
+							" #e-block-" +
+							(m + 1) +
+							"-ex-" +
+							(1) +
+							"-tr-" +
+							i
+					).attr(
+						"id",
+						"e-block-" +
+							(m + 1) +
+							"-ex-" +
+							(1) +
+							"-tr-" +
+							(i + 1)
+					);
+
+					$(
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1)
+					)
+						.find(
+							"#trblock-" +
+								(m + 1) +
+								"-ex-" +
+								(1) +
+								"-tr-" +
+								(i + 1)
+						)
+						.children()
+						.each(function(j) {
+							console.log(this);
+							if (ex.sets[i] != undefined) {
+								switch (j) {
+									case 0:
+										console.log("here");
+										$(this).html(ex.sets[i].set);
+										break;
+									case 1:
+										$(this).html(
+											ex.sets[i].reps
+										);
+										break;
+									case 2:
+										$(this).html(
+											ex.sets[i].percent
+										);
+										break;
+								}
+							}
+						});
+				}
+			}
 		} else {
 			// more than one exercise
 			var ex = blocks[m].exercises;
@@ -328,12 +526,11 @@ const populateEditModal = calEvent => {
 			// loop through exercises of block
 			for (var k = 0; k < ex.length; k++) {
 				// exercise name for first block first exercise
-				
 
 				// cloning new exercise then populating it
 				if (k > 0) {
-					var $id = "block-" + (m+1) + "-ex-" + k;
-					var $newId = "block-" + (m+1) + "-ex-" + (k + 1);
+					var $id = "block-" + (m + 1) + "-ex-" + k;
+					var $newId = "block-" + (m + 1) + "-ex-" + (k + 1);
 					console.log("id: " + $id);
 					console.log("newId: " + $newId);
 
@@ -347,52 +544,76 @@ const populateEditModal = calEvent => {
 						);
 
 					// Changing the Id of the add exercise button
-					$("#editWorkoutModal #block-"+(m+1)+" #addblock-e-"+ 1 +"-ex-" + 1).attr(
-						"id",
-						"add" + $newId
-					);
+					$(
+						"#editWorkoutModal #block-" +
+							(m + 1) +
+							" #addblock-e-" +
+							1 +
+							"-ex-" +
+							1
+					).attr("id", "addblock-e-" + (m + 1) + "-ex-" + (k + 1));
 
 					// Sets the id and name of the exercise name
-					$("#editWorkoutModal #block-"+(m+1)+"-ex-"+(k+1)+" #clone-ex-name-1")
+					$(
+						"#editWorkoutModal #block-" +
+							(m + 1) +
+							"-ex-" +
+							(k + 1) +
+							" #clone-ex-name-1"
+					)
 						.attr("id", "ex-name-" + (k + 1))
 						.text(blocks[m].exercises[k].name);
 
 					// sets the id and text of the exercise notes
-					$("#editWorkoutModal #workoutContainer #block-"+(m+1)+" #clone-notes-1")
+					$(
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1) +
+							" #clone-notes-1"
+					)
 						.attr("id", "notes-" + (k + 1))
 						.val(blocks[m].exercises[k].notes);
-						
 
-						//breaks here
+					
 
-					console.log(blocks[m].exercises[k].name)
-					$("#editWorkoutModal #workoutContainer #block-"+(m+1))
-						.find("#ex-name-"+(k+1))
+					console.log(blocks[m].exercises[k].name);
+					$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
+						.find("#ex-name-" + (k + 1))
 						.text(blocks[m].exercises[k].name);
 					// exercise notes for first block first exercise
-					$("#editWorkoutModal #workoutContainer #block-"+(m+1))
-						.find("#notes-"+(k+1))
+					$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
+						.find("#notes-" + (k + 1))
 						.val(blocks[m].exercises[k].notes);
 
 					// console.log(buttonId);
 
-					var addButtonId = "addblock-e-"+(m+1)+"-ex-" + k;
+					var addButtonId = "addblock-e-" + (m + 1) + "-ex-" + k;
 
 					var newAdd = addButtonId.substr(0, addButtonId.length - 1);
 					newAdd += k + 1;
 					$(
-						"#editWorkoutModal #workoutContainer #block-"+(m+1)+"#" + addButtonId
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1) +
+							" #" +
+							addButtonId
 					).attr("id", newAdd);
 
 					$("#editWorkoutModal #" + $newId)
-						.find(".table-add#clone-block-1-ex-1-tr-1")
-						.attr("id", $newId + "-tr-1");
+						.find(".table-add#e-clone-block-1-ex-1-tr-1")
+						.attr("id", "e-" + $newId + "-tr-1");
 					$("#editWorkoutModal #" + $newId)
 						.find("#clone-block-1-ex-1-table")
 						.attr("id", $newId + "-table");
-					$("#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-"+(k+1))
-						.find('#e-clone-block-1-ex-1-tr-1')
-						.attr('id', "e-block-"+(m+1)+"-ex-"+(k+1)+"-tr-1")
+					$(
+						"#editWorkoutModal #workoutContainer #block-" +
+							(m + 1) +
+							"-ex-" +
+							(k + 1)
+					)
+						.find("#e-clone-block-1-ex-1-tr-1")
+						.attr(
+							"id",
+							"e-block-" + (m + 1) + "-ex-" + (k + 1) + "-tr-1"
+						);
 					$("#editWorkoutModal #" + $newId)
 						.find("#clone-trblock-1-ex-1-tr-1")
 						.attr("id", "tr" + $newId + "-tr-1");
@@ -406,11 +627,14 @@ const populateEditModal = calEvent => {
 				}
 
 				for (var i = 0; i < ex[k].sets.length; i++) {
-					if (k != 0) {
+					if (k != 0) { // not the first exercise in a block
 						if (i < 1) {
-							$("#editWorkoutModal #block-"+(m+1))
+							// added #workoutContainer
+							$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
 								.find(
-									"#trblock-"+(m+1)+"-ex-" +
+									"#trblock-" +
+										(m + 1) +
+										"-ex-" +
 										(k + 1) +
 										"-tr-" +
 										(i + 1)
@@ -441,7 +665,9 @@ const populateEditModal = calEvent => {
 							//k+2
 							console.log("i was >= 1");
 							var $clone = $(
-								"#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-" +
+								"#editWorkoutModal #workoutContainer #block-" +
+									(m + 1) +
+									"-ex-" +
 									(k + 1) +
 									"-table"
 							)
@@ -450,10 +676,17 @@ const populateEditModal = calEvent => {
 								.removeClass("clone table-line")
 								.attr(
 									"id",
-									"trblock-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+									"trblock-" +
+										(m + 1) +
+										"-ex-" +
+										(k + 1) +
+										"-tr-" +
+										(i + 1)
 								);
 							$(
-								"#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-" +
+								"#editWorkoutModal #workoutContainer #block-" +
+									(m + 1) +
+									"-ex-" +
 									(k + 1) +
 									"-table"
 							)
@@ -461,17 +694,34 @@ const populateEditModal = calEvent => {
 								.append($clone);
 							// need the button to pass in the correct ex and block
 							$(
-								"#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-" +
+								"#editWorkoutModal #workoutContainer #block-" +
+									(m + 1) +
+									"-ex-" +
 									(k + 1) +
-									" #e-clone-block-1-ex-1-tr-1"
+									" #e-block-" +
+									(m + 1) +
+									"-ex-" +
+									(k + 1) +
+									"-tr-" +
+									i
 							).attr(
 								"id",
-								"e-block-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+								"e-block-" +
+									(m + 1) +
+									"-ex-" +
+									(k + 1) +
+									"-tr-" +
+									(i + 1)
 							);
 
-							$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+							$(
+								"#editWorkoutModal #workoutContainer #block-" +
+									(m + 1)
+							)
 								.find(
-									"#trblock-"+(m+1)+"-ex-" +
+									"#trblock-" +
+										(m + 1) +
+										"-ex-" +
 										(k + 1) +
 										"-tr-" +
 										(i + 1)
@@ -499,19 +749,39 @@ const populateEditModal = calEvent => {
 									}
 								});
 						}
-					} else {
-						console.log(blocks[m].exercises[k].name)
-						$("#editWorkoutModal #workoutContainer #block-"+(m+1))
-							.find("#ex-name-"+(1))
+					} else { // first exercise in a block
+						console.log(blocks[m].exercises[k].name);
+						
+						$(
+							"#editWorkoutModal #workoutContainer #block-" +
+								(m + 1)
+						)
+							.find("#ex-name-" + 1)
 							.text(blocks[m].exercises[k].name);
 						// exercise notes for first block first exercise
-						$("#editWorkoutModal #workoutContainer #block-"+(m+1))
-							.find("#notes-"+(k+1))
+						$(
+							"#editWorkoutModal #workoutContainer #block-" +
+								(m + 1)
+						)
+							.find("#notes-" + (k + 1))
 							.val(blocks[m].exercises[k].notes);
 						if (i < 1) {
-							$("#editWorkoutModal #block-"+(m+1))
+							// set the correct block-id of the button
+							$("#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-"+(k+1))
+								.find("#e-block-1-ex-1-tr-1")
+								.attr("id","e-block-"+(m+1)+"-ex-1-tr-1")
+
+							$newId = 'block-'+(m+1)+'-ex-'+(k+1)
+							// rename the first table row id
+							$("#editWorkoutModal #" + $newId)
+								.find("#clone-trblock-1-ex-1-tr-1")
+								.attr("id", "trblock-"+(m+1)+"-ex-"+(k+1)+"-tr-1");
+
+							$("#editWorkoutModal #block-" + (m + 1))
 								.find(
-									"#trblock-"+(m+1)+"-ex-" +
+									"#trblock-" +
+										(m + 1) +
+										"-ex-" +
 										(k + 1) +
 										"-tr-" +
 										(i + 1)
@@ -542,19 +812,28 @@ const populateEditModal = calEvent => {
 							//k+2
 							console.log("i was >= 1");
 							var $clone = $(
-								"#editWorkoutModal #block-"+(m+1)+"-ex-" +
+								"#editWorkoutModal #block-" +
+									(m + 1) +
+									"-ex-" +
 									(k + 1) +
 									"-table"
 							)
-								.find("#clonetrblock-1-ex-1-tr-1")
+								.find("#e-clonetrblock-1-ex-1-tr-1")
 								.clone(true)
 								.removeClass("clone table-line")
 								.attr(
 									"id",
-									"trblock-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+									"trblock-" +
+										(m + 1) +
+										"-ex-" +
+										(k + 1) +
+										"-tr-" +
+										(i + 1)
 								);
 							$(
-								"#editWorkoutModal #block-"+(m+1)+"-ex-" +
+								"#editWorkoutModal #block-" +
+									(m + 1) +
+									"-ex-" +
 									(k + 1) +
 									"-table"
 							)
@@ -562,18 +841,27 @@ const populateEditModal = calEvent => {
 								.append($clone);
 							// need the button to pass in the correct ex and block
 							$(
-								"#editWorkoutModal #e-block-"+(m+1)+"-ex-" +
+								"#editWorkoutModal #e-block-" +
+									(m + 1) +
+									"-ex-" +
 									(k + 1) +
 									"-tr-" +
 									i
 							).attr(
 								"id",
-								"e-block-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+								"e-block-" +
+									(m + 1) +
+									"-ex-" +
+									(k + 1) +
+									"-tr-" +
+									(i + 1)
 							);
 
-							$("#editWorkoutModal #block-"+(m+1))
+							$("#editWorkoutModal #block-" + (m + 1))
 								.find(
-									"#trblock-"+(m+1)+"-ex-" +
+									"#trblock-" +
+										(m + 1) +
+										"-ex-" +
 										(k + 1) +
 										"-tr-" +
 										(i + 1)
@@ -617,7 +905,7 @@ const populateBlock = (id, newId, block) => {
 	console.log(block);
 
 	$("#" + newId)
-		.find("#block-name-" + block)
+		.find("#block-name-1")
 		.attr("id", "block-name-" + blockCount);
 	// add button #block-n
 	console.log($("#" + newId).find("#block-1"));
