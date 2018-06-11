@@ -93,7 +93,7 @@ const populateEditModal = calEvent => {
 					.text(blocks[0].exercises[k].name);
 
 				// sets the id and text of the exercise notes
-				$("#editWorkoutModal #clone-notes-1")
+				$("#editWorkoutModal #block-1-ex-"+(k+1)+" #clone-notes-1")
 					.attr("id", "notes-" + (k + 1))
 					.val(blocks[0].exercises[k].notes);
 
