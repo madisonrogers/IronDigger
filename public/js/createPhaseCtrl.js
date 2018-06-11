@@ -88,7 +88,7 @@ const populateEditModal = calEvent => {
 				);
 
 				// Sets the id and name of the exercise name
-				$("#editWorkoutModal #clone-ex-name-1")
+				$("#editWorkoutModal #block-1-ex-"+(k+1)+" #clone-ex-name-1")
 					.attr("id", "ex-name-" + (k + 1))
 					.text(blocks[0].exercises[k].name);
 
@@ -353,7 +353,7 @@ const populateEditModal = calEvent => {
 					);
 
 					// Sets the id and name of the exercise name
-					$("#editWorkoutModal #block-"+(m+1)+" #ex-name-1")
+					$("#editWorkoutModal #block-"+(m+1)+"-ex-"+(k+1)+" #clone-ex-name-1")
 						.attr("id", "ex-name-" + (k + 1))
 						.text(blocks[m].exercises[k].name);
 
