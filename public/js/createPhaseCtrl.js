@@ -98,20 +98,17 @@ const populateEditModal = calEvent => {
 					.val(blocks[0].exercises[k].notes);
 
 				//sets the id of the add exercise button
-				
 
 				// console.log(buttonId);
 
-				var addButtonId = 'addblock-e-1-ex-' + (k);
+				var addButtonId = "addblock-e-1-ex-" + k;
 
 				var newAdd = addButtonId.substr(0, addButtonId.length - 1);
-				newAdd += (k + 1);
+				newAdd += k + 1;
 				$("#editWorkoutModal #workoutContainer #" + addButtonId).attr(
 					"id",
 					newAdd
 				);
-
-
 
 				$("#editWorkoutModal #" + $newId)
 					.find(".table-add#clone-block-1-ex-1-tr-1")
@@ -285,7 +282,7 @@ const populateEditModal = calEvent => {
 	}
 
 	// populate additional blocks
-	for(var m = 1; m < blocks.length; m++) {
+	for (var m = 1; m < blocks.length; m++) {
 		var idStr = $(this).attr("id");
 		var block = m;
 		var id = "block-" + block;
@@ -297,8 +294,317 @@ const populateEditModal = calEvent => {
 			.attr("id", newId)
 			.css("display", "block")
 			.insertAfter("#editWorkoutModal #workoutContainer #block-" + m);
-		
+
 		populateBlock(id, newId, block);
+
+		$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+		.find("#block-name-1")
+		.text(blocks[m].name);
+		
+		// loop through all the exercises and sets to populate the block
+		// if there is one exercise
+		if (blocks[m].exercises.length <= 1) {
+			var ex = blocks[m].exercises[0];
+			$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+				.find("#ex-name-1")
+				.text(blocks[m].exercises[0].name);
+			// exercise notes for first block first exercise
+			$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+				.find("#notes-1")
+				.val(blocks[m].exercises[0].notes);
+			$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+				.find("#trblock-1-ex-1-tr-1")
+				.children()
+				.each(function(i) {
+					console.log(this);
+					$(this).val(ex.sets[0][i]);
+				});
+		} else {
+			// more than one exercise
+			var ex = blocks[m].exercises;
+
+			console.log(ex);
+
+			// loop through exercises of block
+			for (var k = 0; k < ex.length; k++) {
+				// exercise name for first block first exercise
+				
+
+				// cloning new exercise then populating it
+				if (k > 0) {
+					var $id = "block-" + (m+1) + "-ex-" + k;
+					var $newId = "block-" + (m+1) + "-ex-" + (k + 1);
+					console.log("id: " + $id);
+					console.log("newId: " + $newId);
+
+					// cloning an exercise block in editWorkoutModal
+					$("#e-cloneblock-1-ex-1")
+						.clone(true)
+						.attr("id", $newId)
+						.css("display", "block")
+						.insertAfter(
+							"#editWorkoutModal #workoutContainer #" + $id
+						);
+
+					// Changing the Id of the add exercise button
+					$("#editWorkoutModal #block-"+(m+1)+" #addblock-e-"+ 1 +"-ex-" + 1).attr(
+						"id",
+						"add" + $newId
+					);
+
+					// Sets the id and name of the exercise name
+					$("#editWorkoutModal #block-"+(m+1)+" #ex-name-1")
+						.attr("id", "ex-name-" + (k + 1))
+						.text(blocks[m].exercises[k].name);
+
+					// sets the id and text of the exercise notes
+					$("#editWorkoutModal #workoutContainer #block-"+(m+1)+" #clone-notes-1")
+						.attr("id", "notes-" + (k + 1))
+						.val(blocks[m].exercises[k].notes);
+						
+
+						//breaks here
+
+					console.log(blocks[m].exercises[k].name)
+					$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+						.find("#ex-name-"+(k+1))
+						.text(blocks[m].exercises[k].name);
+					// exercise notes for first block first exercise
+					$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+						.find("#notes-"+(k+1))
+						.val(blocks[m].exercises[k].notes);
+
+					// console.log(buttonId);
+
+					var addButtonId = "addblock-e-"+(m+1)+"-ex-" + k;
+
+					var newAdd = addButtonId.substr(0, addButtonId.length - 1);
+					newAdd += k + 1;
+					$(
+						"#editWorkoutModal #workoutContainer #block-"+(m+1)+"#" + addButtonId
+					).attr("id", newAdd);
+
+					$("#editWorkoutModal #" + $newId)
+						.find(".table-add#clone-block-1-ex-1-tr-1")
+						.attr("id", $newId + "-tr-1");
+					$("#editWorkoutModal #" + $newId)
+						.find("#clone-block-1-ex-1-table")
+						.attr("id", $newId + "-table");
+					$("#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-"+(k+1))
+						.find('#e-clone-block-1-ex-1-tr-1')
+						.attr('id', "e-block-"+(m+1)+"-ex-"+(k+1)+"-tr-1")
+					$("#editWorkoutModal #" + $newId)
+						.find("#clone-trblock-1-ex-1-tr-1")
+						.attr("id", "tr" + $newId + "-tr-1");
+
+					// $("#editWorkoutModal #workoutContainer #block-"+(m+1))
+					// 	.find("#clone-ex-name-1" )
+					// 	.text(blocks[m].exercises[k].name);
+					$("#editWorkoutModal")
+						.find("#notes" + (k + 1))
+						.val(blocks[m].exercises[k].notes);
+				}
+
+				for (var i = 0; i < ex[k].sets.length; i++) {
+					if (k != 0) {
+						if (i < 1) {
+							$("#editWorkoutModal #block-"+(m+1))
+								.find(
+									"#trblock-"+(m+1)+"-ex-" +
+										(k + 1) +
+										"-tr-" +
+										(i + 1)
+								)
+								.children()
+								.each(function(j) {
+									console.log(this);
+									if (ex[k].sets[i] != undefined) {
+										switch (j) {
+											case 0:
+												console.log("here");
+												$(this).html(ex[k].sets[i].set);
+												break;
+											case 1:
+												$(this).html(
+													ex[k].sets[i].reps
+												);
+												break;
+											case 2:
+												$(this).html(
+													ex[k].sets[i].percent
+												);
+												break;
+										}
+									}
+								});
+						} else {
+							//k+2
+							console.log("i was >= 1");
+							var $clone = $(
+								"#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-" +
+									(k + 1) +
+									"-table"
+							)
+								.find("#e-clonetrblock-1-ex-1-tr-1")
+								.clone(true)
+								.removeClass("clone table-line")
+								.attr(
+									"id",
+									"trblock-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+								);
+							$(
+								"#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-" +
+									(k + 1) +
+									"-table"
+							)
+								.find("table")
+								.append($clone);
+							// need the button to pass in the correct ex and block
+							$(
+								"#editWorkoutModal #workoutContainer #block-"+(m+1)+"-ex-" +
+									(k + 1) +
+									" #e-clone-block-1-ex-1-tr-1"
+							).attr(
+								"id",
+								"e-block-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+							);
+
+							$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+								.find(
+									"#trblock-"+(m+1)+"-ex-" +
+										(k + 1) +
+										"-tr-" +
+										(i + 1)
+								)
+								.children()
+								.each(function(j) {
+									console.log(this);
+									if (ex[k].sets[i] != undefined) {
+										switch (j) {
+											case 0:
+												console.log("here");
+												$(this).html(ex[k].sets[i].set);
+												break;
+											case 1:
+												$(this).html(
+													ex[k].sets[i].reps
+												);
+												break;
+											case 2:
+												$(this).html(
+													ex[k].sets[i].percent
+												);
+												break;
+										}
+									}
+								});
+						}
+					} else {
+						console.log(blocks[m].exercises[k].name)
+						$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+							.find("#ex-name-"+(1))
+							.text(blocks[m].exercises[k].name);
+						// exercise notes for first block first exercise
+						$("#editWorkoutModal #workoutContainer #block-"+(m+1))
+							.find("#notes-"+(k+1))
+							.val(blocks[m].exercises[k].notes);
+						if (i < 1) {
+							$("#editWorkoutModal #block-"+(m+1))
+								.find(
+									"#trblock-"+(m+1)+"-ex-" +
+										(k + 1) +
+										"-tr-" +
+										(i + 1)
+								)
+								.children()
+								.each(function(j) {
+									console.log(this);
+									if (ex[k].sets[i] != undefined) {
+										switch (j) {
+											case 0:
+												console.log("here");
+												$(this).html(ex[k].sets[i].set);
+												break;
+											case 1:
+												$(this).html(
+													ex[k].sets[i].reps
+												);
+												break;
+											case 2:
+												$(this).html(
+													ex[k].sets[i].percent
+												);
+												break;
+										}
+									}
+								});
+						} else {
+							//k+2
+							console.log("i was >= 1");
+							var $clone = $(
+								"#editWorkoutModal #block-"+(m+1)+"-ex-" +
+									(k + 1) +
+									"-table"
+							)
+								.find("#clonetrblock-1-ex-1-tr-1")
+								.clone(true)
+								.removeClass("clone table-line")
+								.attr(
+									"id",
+									"trblock-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+								);
+							$(
+								"#editWorkoutModal #block-"+(m+1)+"-ex-" +
+									(k + 1) +
+									"-table"
+							)
+								.find("table")
+								.append($clone);
+							// need the button to pass in the correct ex and block
+							$(
+								"#editWorkoutModal #e-block-"+(m+1)+"-ex-" +
+									(k + 1) +
+									"-tr-" +
+									i
+							).attr(
+								"id",
+								"e-block-"+(m+1)+"-ex-" + (k + 1) + "-tr-" + (i + 1)
+							);
+
+							$("#editWorkoutModal #block-"+(m+1))
+								.find(
+									"#trblock-"+(m+1)+"-ex-" +
+										(k + 1) +
+										"-tr-" +
+										(i + 1)
+								)
+								.children()
+								.each(function(j) {
+									console.log(this);
+									if (ex[k].sets[i] != undefined) {
+										switch (j) {
+											case 0:
+												console.log("here");
+												$(this).html(ex[k].sets[i].set);
+												break;
+											case 1:
+												$(this).html(
+													ex[k].sets[i].reps
+												);
+												break;
+											case 2:
+												$(this).html(
+													ex[k].sets[i].percent
+												);
+												break;
+										}
+									}
+								});
+						}
+					}
+				}
+			}
+		}
 	}
 
 	$("#editWorkoutModal").modal("toggle");
@@ -606,7 +912,7 @@ $(function() {
 			// 		.attr("id", $newId + "-tr-1")
 			// );
 			var buttonId = idStr.substr(0, idStr.length - 1);
-			buttonId += (parseInt(ex) + 1);
+			buttonId += parseInt(ex) + 1;
 
 			console.log(buttonId);
 
