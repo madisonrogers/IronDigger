@@ -68,19 +68,39 @@ module.exports.addExercise = function(req, res) {
 // // Create workout - POST
 // // phaseid should be a param, the workout is passed through the body
 module.exports.createWorkout = function(req, res) {
+
+	console.log('inside createWorkout/')
+	console.log(req.body)
 	const workout = new Workout({
 		name: req.body.name,
+		title: req.body.title,
+		start: req.body.start,
+		end: req.body.end,
+		date: req.body.date,
+		allDay: req.body.allDay,
 		blocks: req.body.blocks,
 		time: req.body.time,
-		trainingnotes: req.body.notes,
-		athletenotes: req.body.athletenotes
+		
+
+		// name: {type: String, require: true},
+		// title: String,
+		// start: Object,
+		// end: Object,
+		// date: String,
+		// allDay: Boolean,
+		// blocks: [blockSchema],
+		// time: {type: String, require: true},
+		// athleteNotes: String
     });
 
     workout.save((err) => {
     	if (err) {
     		sendJsonResponse(res, 404, err);
     		return err;
-    	} 
+		} else {
+			console.log('create workout saved correctly');
+		} 
+		
     })
 
     // Get the phase and add the new workout to it

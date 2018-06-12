@@ -2,6 +2,9 @@ var last_selected_time;
 var blockCount = 1;
 var current_event;
 
+
+var server = window.location.origin;
+
 const clearModal = () => {
 	$("#workoutModal")
 		.find("#workoutContainer")
@@ -1041,22 +1044,51 @@ const getSets = (block, ex) => {
 
 const archiveWorkout = (workout) => {
 	
+
+	// $('#error').attr('class', 'noerror');
+	// var path = "/usersanditems/" + userid + '/item';
+	// console.log(window.location.href);
+
+	// // create the new item
+	// $.ajax({
+	// 	type:'POST',
+	// 	contentType: 'application/json',
+	// 	url: server + path,
+	// 	data: JSON.stringify({name: name, category: category, description: description, price: price}),						
+	// 	success: function(data) {
+	// 		console.log('success creating new item');
+	// 		$('#new-item-modal').modal('hide');
+	// 		socket.emit('item created', data);
+	// 		clearModal();
+	// 		$('#blockCanvas').remove();
+	// 		getRecentItems();
+	// 		drawSVG();
+	// 	}, error: function(d) {
+	// 		console.log(d);
+	// 	}
+	// });
+
+	// name: req.body.name,
+	// 	title: req.body.title,
+	// 	start: req.body.start,
+	// 	end: req.body.end,
+	// 	date: req.body.date,
+	// 	allDay: req.body.allDay,
+	// 	blocks: req.body.blocks,
+	// 	time: req.body.time,
 	//ajax call for archiving workout
 	$(function(){
-		var path = "/api/createWorkout';
-		console.log('inside athleteCtrl, getAthletes');
-		console.log($teamid + ' ' + $groupid);
+		var path = "/api/createWorkout";
+		console.log('archiveWorkout');
+		console.log('workout');
 		$.ajax({
 			type:'POST',
 			contentType: 'application/json',
-	        url: server + path,						
+			url: server + path,
+			data: JSON.stringify({name: workout.name, title: workout.title, start: workout.start, end: workout.end, date: workout.date, allDay: workout.allDay, blocks: workout.blocks, time: workout.time}),				
 	        success: function(data) {
-	            console.log('got all athletes in group');
-	            athletes = data;
-	            console.log(athletes)
-	            for(var i = 0; i < athletes.length; i++) {
-					$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">" + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
-				}
+	            console.log(data);
+	            console.log('SUCCESS')
 	        }
 		});
 	});
@@ -1179,12 +1211,17 @@ $(function() {
 			date.add(parseInt(min),'minute')
 			
 			console.log(date.format('LLL'));
-			
-			workout.title = workout.name
+			console.log(date);
+
+			workout.title = workout.name;
+			workout.name = workout.name;
 			workout.start = date;
 			workout.end = date;
-			workout.allDay = false;
 			console.log(workout.start.format('l'))
+			console.log(workout)
+
+
+
 			archiveWorkout(workout);
 			$('#calendar').fullCalendar('renderEvent',workout,true);
 			$('#workoutModal').modal('hide');
