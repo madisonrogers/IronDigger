@@ -1210,13 +1210,13 @@ $(function() {
 			);
 
 			$("#editWorkoutModal #workoutContainer #" + $newId)
-				.find(".table-add#block-1-ex-1-tr-1")
-				.attr("id", $newId + "-tr-1");
+				.find(".table-add#e-clone-block-1-ex-1-tr-1")
+				.attr("id", 'e-'+$newId + "-tr-1");
 			$("#editWorkoutModal #workoutContainer #" + $newId)
-				.find("#block-1-ex-1-table")
+				.find("#clone-block-1-ex-1-table")
 				.attr("id", $newId + "-table");
 			$("#editWorkoutModal #workoutContainer  #" + $newId)
-				.find("#trblock-1-ex-1-tr-1")
+				.find("#clone-trblock-1-ex-1-tr-1")
 				.attr("id", "tr" + $newId + "-tr-1");
 		}
 	});
