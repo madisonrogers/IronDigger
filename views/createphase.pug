@@ -32,8 +32,8 @@ block content
                             .form-group#block-1.container.block-container
                                 h5.block-name#block-name-1(contenteditable="true") Block Name   
                                 i.fas.fa-edit.edit.fa-lg
-                                button.btn.btn-success.btn-sm.block-add#block-1 Add Block &nbsp;
-                                    i.fas.fa-plus 
+                                i.far.fa-trash-alt.fa-7x.block-delete#block-delete(data-toggle='tooltip', data-placement='bottom', title='Delete Block')
+                                i.fas.fa-plus.fa-7x.block-add#block-1(data-toggle='tooltip', data-placement='bottom', title='Add Block')
                                 hr
                                 #block-1-ex-1
                                     .row
@@ -41,9 +41,9 @@ block content
                                             h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
                                             i.fas.fa-edit.edit.fa-lg
                                             textarea.form-control.ex1(rows="5" placeholder='Exercise Notes')
-                                        .col-7
+                                        .col-6
                                             #block-1-ex-1-table.table-editable
-                                                i.fas.fa-plus.table-add#block-1-ex-1-tr-1
+                                                i.fas.fa-plus.table-add#block-1-ex-1-tr-1(data-toggle='tooltip', data-placement='bottom', title='Add Row')
                                                 table.table
                                                     tr#header
                                                         th Set
@@ -55,14 +55,16 @@ block content
                                                         td(contenteditable='true') 5
                                                         td(contenteditable='true') 50
                                                         td
-                                                            i.fas.fa-times.table-remove
+                                                            i.fas.fa-times.table-remove(data-toggle='tooltip', data-placement='auto', title='Delete Row')
                                                     // This is our clonable table line
                                                     tr#clonetrblock-1-ex-1-tr-1.clone
                                                         td(contenteditable='true') 1
                                                         td(contenteditable='true') 5
                                                         td(contenteditable='true') 50
                                                         td
-                                                            i.fas.fa-times.table-remove
+                                                            i.fas.fa-times.table-remove(data-toggle='tooltip', data-placement='auto', title='Delete Row')
+                                        .col-1
+                                            i.fas.fa-times.ex-remove#delete-ex(data-toggle='tooltip', data-placement='right', title='Delete Exercise')
                                 .row
                                     .col
                                         button.btn.btn-success.btn-sm#addblock-1-ex-1 Add Exercise &nbsp;
@@ -75,9 +77,9 @@ block content
                                         h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
                                         i.fas.fa-edit.edit.fa-lg
                                         textarea.form-control.ex1(rows="5" placeholder='Exercise Notes')
-                                    .col-7
+                                    .col-6
                                         #block-1-ex-1-table.table-editable
-                                            i.fas.fa-plus.table-add#block-1-ex-1-tr-1
+                                            i.fas.fa-plus.table-add#block-1-ex-1-tr-1(data-toggle='tooltip', data-placement='bottom', title='Add Row')
                                             table.table
                                                 tr#header
                                                     th Set
@@ -89,20 +91,22 @@ block content
                                                     td(contenteditable='true') 5
                                                     td(contenteditable='true') 50
                                                     td
-                                                        i.fas.fa-times.table-remove
+                                                        i.fas.fa-times.table-remove(data-toggle='tooltip', data-placement='bottom', title='Delete Row')
                                                 // This is our clonable table line
                                                 tr#clonetrblock-1-ex-1-tr-1.clone
                                                     td(contenteditable='true') 1
                                                     td(contenteditable='true') 5
                                                     td(contenteditable='true') 50
                                                     td
-                                                        i.fas.fa-times.table-remove
+                                                        i.fas.fa-times.table-remove(data-toggle='tooltip', data-placement='bottom', title='Delete Row')
+                                    .col-1
+                                            i.fas.fa-times.ex-remove#delete-ex(data-toggle='tooltip', data-placement='right', title='Delete Exercise')
                         
                         .form-group#cloneblock-1.container.block-container
                             h5.block-name#block-name-1(contenteditable="true") Block Name   
                             i.fas.fa-edit.edit.fa-lg
-                            button.btn.btn-success.btn-sm.block-add#block-1 Add Block &nbsp;
-                                i.fas.fa-plus
+                            i.far.fa-trash-alt.fa-7x.block-delete#block-delete(data-toggle='tooltip', data-placement='bottom', title='Delete Block')
+                            i.fas.fa-plus.fa-7x.block-add#block-1(data-toggle='tooltip', data-placement='bottom', title='Add Block')
                             hr
                             #block-1-ex-1
                                 .row
@@ -110,9 +114,9 @@ block content
                                         h6.ex-name#ex-name-1(contenteditable='true') Exercise Name            
                                         i.fas.fa-edit.edit.fa-lg
                                         textarea.form-control.ex1(rows="5" placeholder='Exercise Notes')
-                                    .col-7
+                                    .col-6
                                         #block-1-ex-1-table.table-editable
-                                            i.fas.fa-plus.table-add#block-1-ex-1-tr-1
+                                            i.fas.fa-plus.table-add#block-1-ex-1-tr-1(data-toggle='tooltip', data-placement='bottom', title='Add Row')
                                             table.table
                                                 tr#header
                                                     th Set
@@ -124,14 +128,16 @@ block content
                                                     td(contenteditable='true') 5
                                                     td(contenteditable='true') 50
                                                     td
-                                                        i.fas.fa-times.table-remove
+                                                        i.fas.fa-times.table-remove(data-toggle='tooltip', data-placement='bottom', title='Delete Row')
                                                 // This is our clonable table line
                                                 tr#trblock-1-ex-1-tr-1.clone
                                                     td(contenteditable='true') 1
                                                     td(contenteditable='true') 5
                                                     td(contenteditable='true') 50
                                                     td
-                                                        i.fas.fa-times.table-remove
+                                                        i.fas.fa-times.table-remove(data-toggle='tooltip', data-placement='bottom', title='Delete Row')
+                                    .col-1
+                                            i.fas.fa-times.ex-remove#delete-ex(data-toggle='tooltip', data-placement='right', title='Delete Exercise')
                             .row
                                 .col
                                     button.btn.btn-success.btn-sm#addblock-1-ex-1 Add Exercise &nbsp;
@@ -169,8 +175,8 @@ block content
                             .form-group#block-1.container.block-container
                                 h5.block-name#block-name-1(contenteditable="true") Block Name   
                                 i.fas.fa-edit.edit.fa-lg
-                                button.btn.btn-success.btn-sm.block-add#addblock-1 Add Block &nbsp;
-                                    i.fas.fa-plus 
+                                i.far.fa-trash-alt.fa-7x.block-delete#block-delete(data-toggle='tooltip', data-placement='bottom', title='Delete Block')
+                                i.fas.fa-plus.fa-7x.block-add#block-1(data-toggle='tooltip', data-placement='bottom', title='Add Block')
                                 hr
                                 #block-1-ex-1
                                     .row
@@ -238,6 +244,8 @@ block content
                         .form-group#e-cloneblock-1.container.block-container
                             h5.block-name#block-name-1(contenteditable="true") Block Name   
                             i.fas.fa-edit.edit.fa-lg
+                            button.btn.btn-danger.btn-sm.block-delete#deleteblock-1 Delete Block &nbsp;
+                                i.far.fa-trash-alt.fa-lg 
                             button.btn.btn-success.btn-sm.block-add#addblock-1 Add Block &nbsp;
                                 i.fas.fa-plus
                             hr

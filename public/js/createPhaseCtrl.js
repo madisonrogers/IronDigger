@@ -1542,6 +1542,35 @@ $(function() {
 		}
 	});
 
+	$('.block-delete').click(function() {
+		console.log('in block delete')
+		console.log($(this).parents('[id^=block-]'))
+		if(blockCount > 1) {
+			$(this).parents('[id^=block-]').detach()
+		}
+		
+	});
+
+	$('.ex-remove').click(function() {
+		// find a way to not delete the last exercise
+		console.log('in delete ex')
+		var exRemove = $(this).parents('[id^=block-]' && '[id*=-ex-]')
+		var exNum = $(exRemove).attr('id').substr($(exRemove).attr('id').lastIndexOf('-')+1)
+		var blockNum = $(exRemove).attr('id').substr($(exRemove).attr('id').indexOf('-')+1,1)
+		var addExButton = $(this).parents().find('#workoutModal #workoutContainer #block-'+blockNum+' [id^=addblock-]')
+		var buttonNum = $(addExButton).attr('id').substr($(addExButton).attr('id').lastIndexOf('-')+1)
+		
+		if(buttonNum == exNum) {
+			// need to subtract one from the add exercise button so more exercises can be added
+			var newId = $(addExButton).attr('id').substr(0, $(addExButton).attr('id').lastIndexOf('-')+1)
+			$(addExButton).attr('id', newId+(parseInt(buttonNum)-1))
+			$(exRemove).detach()
+		} else {
+			// just delete the exercise
+			$(exRemove).detach()
+		}
+	});
+
 	$(".table-up").click(function() {
 		var $row = $(this).parents("tr");
 		if ($row.index() === 1) return; // Don't go above the header
@@ -1556,4 +1585,6 @@ $(function() {
 	// A few jQuery helpers for exporting only
 	jQuery.fn.pop = [].pop;
 	jQuery.fn.shift = [].shift;
+
+	$('[data-toggle="tooltip"]').tooltip();
 });

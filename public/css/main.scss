@@ -46,20 +46,45 @@
 
   .block-add 
     {
-      color: #fff;
+      color: #070;
       cursor: pointer;
       float:right;
-      //font-size: 1.4em;
-      margin-top:-6px;
+      font-size: 1.4em;
+      margin-left: 6px;
+      margin-right: 6px;
       &:hover {
-        color: #fff;
-        background-color: #218838;
-        border-color: #1e7e34;
+        color: #0b0;
+      }
+    }
+  .block-delete
+    {
+      float:right;
+      color: #700;
+      cursor: pointer;
+      margin-left: 6px;
+      margin-right: 6px;
+      &:hover {
+        color: #f00;
       }
     }
 }
 
-.table-remove {
+.ex-remove{
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  color: #700;
+  cursor: pointer;
+  
+  &:hover {
+    color: #f00;
+  }
+}
+
+.table-remove{
   color: #700;
   cursor: pointer;
   
