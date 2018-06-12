@@ -970,9 +970,13 @@ const populateEditBlock = (id, newId, block) => {
 }
 
 const newEvent = date => {
-	$("#workoutDate").val(date.format("l"));
-	$("#workoutModal").modal("toggle");
-	CURR_DATE = date;
+
+	$('#chooseWorkout').modal("toggle");
+	//going to write the logic for the choose workout modal here
+
+	// $("#workoutDate").val(date.format("l"));
+	// $("#workoutModal").modal("toggle");
+	// CURR_DATE = date;
 };
 
 const parseCreateWorkout = () => {
@@ -1090,6 +1094,32 @@ const archiveWorkout = (workout) => {
 	});
 }
 
+<<<<<<< 9747fe714a2e5e11f9d9a5a773de4d242d4620f9
+=======
+const archiveWorkout = (workout) => {
+	
+	//ajax call for archiving workout
+	$(function(){
+		var path = "/api/createWorkout"
+		console.log('inside athleteCtrl, getAthletes');
+		console.log($teamid + ' ' + $groupid);
+		$.ajax({
+			type:'POST',
+			contentType: 'application/json',
+	        url: server + path,						
+	        success: function(data) {
+	            console.log('got all athletes in group');
+	            athletes = data;
+	            console.log(athletes)
+	            for(var i = 0; i < athletes.length; i++) {
+					$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">" + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
+				}
+	        }
+		});
+	});
+}
+
+>>>>>>> small modal added
 $(function() {
 	// hide the clone-able block.
 	$("#cloneblock-1").hide();

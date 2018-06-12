@@ -7,6 +7,11 @@ append scripts
     script(src='js/createPhaseCtrl.js')
 block content
     #calendar
+    #chooseWorkout.modal.fade.bd-example-modal-sm(tabindex='-1' role='dialog' aria-labelledby='mySmallModalLabel' aria-hidden='true')
+        .modal-dialog.modal-sm
+            .modal-content
+                | ...
+
     #workoutModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='workoutModalLabel', aria-hidden='true')
         .modal-dialog.modal-lg(role='document')
             .modal-content
