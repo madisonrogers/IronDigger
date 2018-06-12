@@ -1044,38 +1044,6 @@ const getSets = (block, ex) => {
 
 const archiveWorkout = (workout) => {
 	
-
-	// $('#error').attr('class', 'noerror');
-	// var path = "/usersanditems/" + userid + '/item';
-	// console.log(window.location.href);
-
-	// // create the new item
-	// $.ajax({
-	// 	type:'POST',
-	// 	contentType: 'application/json',
-	// 	url: server + path,
-	// 	data: JSON.stringify({name: name, category: category, description: description, price: price}),						
-	// 	success: function(data) {
-	// 		console.log('success creating new item');
-	// 		$('#new-item-modal').modal('hide');
-	// 		socket.emit('item created', data);
-	// 		clearModal();
-	// 		$('#blockCanvas').remove();
-	// 		getRecentItems();
-	// 		drawSVG();
-	// 	}, error: function(d) {
-	// 		console.log(d);
-	// 	}
-	// });
-
-	// name: req.body.name,
-	// 	title: req.body.title,
-	// 	start: req.body.start,
-	// 	end: req.body.end,
-	// 	date: req.body.date,
-	// 	allDay: req.body.allDay,
-	// 	blocks: req.body.blocks,
-	// 	time: req.body.time,
 	//ajax call for archiving workout
 	$(function(){
 		var path = "/api/createWorkout";
@@ -1089,6 +1057,29 @@ const archiveWorkout = (workout) => {
 	        success: function(data) {
 	            console.log(data);
 	            console.log('SUCCESS')
+	        }
+		});
+	});
+}
+
+const archiveWorkout = (workout) => {
+	
+	//ajax call for archiving workout
+	$(function(){
+		var path = "/api/createWorkout';
+		console.log('inside athleteCtrl, getAthletes');
+		console.log($teamid + ' ' + $groupid);
+		$.ajax({
+			type:'POST',
+			contentType: 'application/json',
+	        url: server + path,						
+	        success: function(data) {
+	            console.log('got all athletes in group');
+	            athletes = data;
+	            console.log(athletes)
+	            for(var i = 0; i < athletes.length; i++) {
+					$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">" + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
+				}
 	        }
 		});
 	});
@@ -1223,6 +1214,38 @@ $(function() {
 
 
 
+			archiveWorkout(workout);
+			$('#calendar').fullCalendar('renderEvent',workout,true);
+			$('#workoutModal').modal('hide');
+			clearModal()
+			//date = '';
+		} else {
+			// put some error handling
+			$('.alert').css('display','block')
+		}
+	})
+
+	$('#archiveWorkout').click(function() {
+		console.log('#archiveWorkout clicked')
+		date = CURR_DATE;
+		console.log(date.format('l'));
+		const workout = parseCreateWorkout()
+		if(workout.name && workout.time) {
+			var time = workout.time
+			var hour = time.substr(0, time.indexOf(':'))
+			var min = time.substr(time.indexOf(':')+1)
+			console.log('hour: ' + hour + ' min: ' + min)
+			
+			date.add(parseInt(hour),'hour')
+			date.add(parseInt(min),'minute')
+			
+			console.log(date.format('LLL'));
+			
+			workout.title = workout.name
+			workout.start = date;
+			workout.end = date;
+			workout.allDay = false;
+			console.log(workout.start.format('l'))
 			archiveWorkout(workout);
 			$('#calendar').fullCalendar('renderEvent',workout,true);
 			$('#workoutModal').modal('hide');

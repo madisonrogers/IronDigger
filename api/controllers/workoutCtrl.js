@@ -82,15 +82,7 @@ module.exports.createWorkout = function(req, res) {
 		time: req.body.time,
 		
 
-		// name: {type: String, require: true},
-		// title: String,
-		// start: Object,
-		// end: Object,
-		// date: String,
-		// allDay: Boolean,
-		// blocks: [blockSchema],
-		// time: {type: String, require: true},
-		// athleteNotes: String
+
     });
 
     workout.save((err) => {
@@ -103,38 +95,7 @@ module.exports.createWorkout = function(req, res) {
 		
     })
 
-    // Get the phase and add the new workout to it
-    // if (req.params && req.params.phaseid) {
-    //     Phase
-    //         .findById(req.params.phaseid)
-    //         .exec(function(err, phase) {
-    //             if (!phase) {
-    //                 sendJsonResponse(res, 404, {
-    //                     "message": "phaseid not found"
-    //                 });
-    //                 return;
-    //             } else if (err) {
-    //                 console.log(err)
-    //                 sendJsonResponse(res, 404, err);
-    //                 return;
-    //             }
-    //             newPhaseWorkout = phase.workouts.concat(req.body.workout);
-    //             phase.workouts = newPhaseWorkout;
-    //             phase.save((err) => {
-	// 		      	if (err) {
-	// 		      		sendJsonResponse(res, 404, err);
-	// 		        	return;
-	// 		      	}
-	// 		      	sendJsonResponse(res, 200, phase);
-	// 		      	console.log('The new workout has been added to the phase');
-	// 		    });
-    //         });
-    // } else {
-    //     console.log('No phaseid specified');
-    //     sendJsonResponse(res, 404, {
-    //         "message": "No phaseid in request"
-    //     });
-    // }
+
 }
 
 // // Get workout - GET
