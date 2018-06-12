@@ -1062,29 +1062,6 @@ const archiveWorkout = (workout) => {
 	});
 }
 
-const archiveWorkout = (workout) => {
-	
-	//ajax call for archiving workout
-	$(function(){
-		var path = "/api/createWorkout';
-		console.log('inside athleteCtrl, getAthletes');
-		console.log($teamid + ' ' + $groupid);
-		$.ajax({
-			type:'POST',
-			contentType: 'application/json',
-	        url: server + path,						
-	        success: function(data) {
-	            console.log('got all athletes in group');
-	            athletes = data;
-	            console.log(athletes)
-	            for(var i = 0; i < athletes.length; i++) {
-					$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">" + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
-				}
-	        }
-		});
-	});
-}
-
 $(function() {
 	// hide the clone-able block.
 	$("#cloneblock-1").hide();
