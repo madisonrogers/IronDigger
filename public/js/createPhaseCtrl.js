@@ -1215,6 +1215,7 @@ $(function() {
 
 			workout.title = workout.name;
 			workout.name = workout.name;
+			workout.allDay =false;
 			workout.start = date;
 			workout.end = date;
 			console.log(workout.start.format('l'))
