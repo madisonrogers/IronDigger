@@ -972,7 +972,11 @@ const populateEditBlock = (id, newId, block) => {
 const newEvent = date => {
 
 	$('#chooseWorkout').modal("toggle");
-	//going to write the logic for the choose workout modal here
+
+	
+	//going to write the logic for the choose workout modal in a choose workout click handler
+
+
 
 	// $("#workoutDate").val(date.format("l"));
 	// $("#workoutModal").modal("toggle");

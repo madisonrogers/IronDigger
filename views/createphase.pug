@@ -7,10 +7,31 @@ append scripts
     script(src='js/createPhaseCtrl.js')
 block content
     #calendar
-    #chooseWorkout.modal.fade.bd-example-modal-sm(tabindex='-1' role='dialog' aria-labelledby='mySmallModalLabel' aria-hidden='true')
+    #chooseWorkout.modal.fade.bd-example-modal-sm(tabindex='-1' role='dialog' aria-labelledby='chooseWorkoutLabel' aria-hidden='true')
         .modal-dialog.modal-sm
             .modal-content
-                | ...
+                .modal-header
+                    h4#chooseWorkoutLabel.modal-title Create Workout
+                    button.close(type='button' data-dismiss='modal' aria-label='Close')
+                        span(aria-hidden='true') &times;
+                .modal-body
+                    .row
+                        #chooseCreate.button.btn.btn-danger(type='button') Create Workout
+                    .row
+                        .col-4
+                        .col-4
+                            h5 
+                                |OR
+                        .col-4
+                    .row
+                        select#recentWorkouts.form-control
+                            option(value='' selected='' disabled='' hidden='') Choose Workout
+                            option 1
+                            option 2
+                            option 3
+                            option 4
+                            option 5
+
 
     #workoutModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='workoutModalLabel', aria-hidden='true')
         .modal-dialog.modal-lg(role='document')
