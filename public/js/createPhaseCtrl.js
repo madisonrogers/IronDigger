@@ -1202,37 +1202,6 @@ $(function() {
 		}
 	})
 
-	$('#archiveWorkout').click(function() {
-		console.log('#archiveWorkout clicked')
-		date = CURR_DATE;
-		console.log(date.format('l'));
-		const workout = parseCreateWorkout()
-		if(workout.name && workout.time) {
-			var time = workout.time
-			var hour = time.substr(0, time.indexOf(':'))
-			var min = time.substr(time.indexOf(':')+1)
-			console.log('hour: ' + hour + ' min: ' + min)
-			
-			date.add(parseInt(hour),'hour')
-			date.add(parseInt(min),'minute')
-			
-			console.log(date.format('LLL'));
-			
-			workout.title = workout.name
-			workout.start = date;
-			workout.end = date;
-			workout.allDay = false;
-			console.log(workout.start.format('l'))
-			archiveWorkout(workout);
-			$('#calendar').fullCalendar('renderEvent',workout,true);
-			$('#workoutModal').modal('hide');
-			clearModal()
-			//date = '';
-		} else {
-			// put some error handling
-			$('.alert').css('display','block')
-		}
-	})
 
 	// Add a new exercise block
 	$("[id^=addblock-").click(function() {
