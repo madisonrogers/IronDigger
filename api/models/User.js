@@ -27,10 +27,14 @@ const mongoose = require('mongoose');
 
  const workoutSchema = new mongoose.Schema({
   name: {type: String, require: true},
+  title: String,
+  start: Object,
+  end: Object,
+  date: String,
+  allDay: Boolean,
   blocks: [blockSchema],
-  time: {type: Date, require: true},
-  trainingnotes: String,
-  athletenotes: String
+  time: {type: String, require: true},
+  athleteNotes: String
  });
 
  const phaseSchema = new mongoose.Schema({

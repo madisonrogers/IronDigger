@@ -68,53 +68,34 @@ module.exports.addExercise = function(req, res) {
 // // Create workout - POST
 // // phaseid should be a param, the workout is passed through the body
 module.exports.createWorkout = function(req, res) {
+
+	console.log('inside createWorkout/')
+	console.log(req.body)
 	const workout = new Workout({
 		name: req.body.name,
+		title: req.body.title,
+		start: req.body.start,
+		end: req.body.end,
+		date: req.body.date,
+		allDay: req.body.allDay,
 		blocks: req.body.blocks,
 		time: req.body.time,
-		trainingnotes: req.body.trainingnotes,
-		athletenotes: req.body.athletenotes
+		
+
+
     });
 
     workout.save((err) => {
     	if (err) {
     		sendJsonResponse(res, 404, err);
     		return err;
-    	} 
+		} else {
+			console.log('create workout saved correctly');
+		} 
+		
     })
 
-    // Get the phase and add the new workout to it
-    if (req.params && req.params.phaseid) {
-        Phase
-            .findById(req.params.phaseid)
-            .exec(function(err, phase) {
-                if (!phase) {
-                    sendJsonResponse(res, 404, {
-                        "message": "phaseid not found"
-                    });
-                    return;
-                } else if (err) {
-                    console.log(err)
-                    sendJsonResponse(res, 404, err);
-                    return;
-                }
-                newPhaseWorkout = phase.workouts.concat(req.body.workout);
-                phase.workouts = newPhaseWorkout;
-                phase.save((err) => {
-			      	if (err) {
-			      		sendJsonResponse(res, 404, err);
-			        	return;
-			      	}
-			      	sendJsonResponse(res, 200, phase);
-			      	console.log('The new workout has been added to the phase');
-			    });
-            });
-    } else {
-        console.log('No phaseid specified');
-        sendJsonResponse(res, 404, {
-            "message": "No phaseid in request"
-        });
-    }
+
 }
 
 // // Get workout - GET

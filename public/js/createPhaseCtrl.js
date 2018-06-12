@@ -2,6 +2,9 @@ var last_selected_time;
 var blockCount = 1;
 var current_event;
 
+
+var server = window.location.origin;
+
 const clearModal = () => {
 	$("#workoutModal")
 		.find("#workoutContainer")
@@ -1039,6 +1042,26 @@ const getSets = (block, ex) => {
 	return data;
 };
 
+const archiveWorkout = (workout) => {
+	
+	//ajax call for archiving workout
+	$(function(){
+		var path = "/api/createWorkout";
+		console.log('archiveWorkout');
+		console.log('workout');
+		$.ajax({
+			type:'POST',
+			contentType: 'application/json',
+			url: server + path,
+			data: JSON.stringify({name: workout.name, title: workout.title, start: workout.start, end: workout.end, date: workout.date, allDay: workout.allDay, blocks: workout.blocks, time: workout.time}),				
+	        success: function(data) {
+	            console.log(data);
+	            console.log('SUCCESS')
+	        }
+		});
+	});
+}
+
 $(function() {
 	// hide the clone-able block.
 	$("#cloneblock-1").hide();
@@ -1140,6 +1163,45 @@ $(function() {
 			$(".alert").css("display", "block");
 		}
 	});
+
+	$('#archiveWorkout').click(function() {
+		console.log('#archiveWorkout clicked')
+		date = CURR_DATE;
+		console.log(date.format('l'));
+		const workout = parseCreateWorkout()
+		if(workout.name && workout.time) {
+			var time = workout.time
+			var hour = time.substr(0, time.indexOf(':'))
+			var min = time.substr(time.indexOf(':')+1)
+			console.log('hour: ' + hour + ' min: ' + min)
+			
+			date.add(parseInt(hour),'hour')
+			date.add(parseInt(min),'minute')
+			
+			console.log(date.format('LLL'));
+			console.log(date);
+
+			workout.title = workout.name;
+			workout.name = workout.name;
+			workout.allDay =false;
+			workout.start = date;
+			workout.end = date;
+			console.log(workout.start.format('l'))
+			console.log(workout)
+
+
+
+			archiveWorkout(workout);
+			$('#calendar').fullCalendar('renderEvent',workout,true);
+			$('#workoutModal').modal('hide');
+			clearModal()
+			//date = '';
+		} else {
+			// put some error handling
+			$('.alert').css('display','block')
+		}
+	})
+
 
 	// Add a new exercise block
 	$("[id^=addblock-").click(function() {
