@@ -1,5 +1,6 @@
 var last_selected_time;
 var blockCount = 1;
+var editBlockCount = 1;
 var current_event;
 
 
@@ -366,7 +367,7 @@ const populateEditModal = calEvent => {
 			.insertAfter("#editWorkoutModal #workoutContainer #block-" + m);
 
 		populateBlock(id, newId, block);
-
+		editBlockCount++; // increase the block count by 1
 		$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
 			.find("#block-name-1")
 			.text(blocks[m].name);
@@ -941,6 +942,33 @@ const populateBlock = (id, newId, block) => {
 		.attr("id", "addblock-" + blockCount + "-ex-1");
 };
 
+const populateEditBlock = (id, newId, block) => {
+	// #e-addblock-1
+	$("editWorkoutModal #workoutContainer #" + newId)
+		.find("#block-name-1")
+		.attr("id", "block-name-" + editBlockCount);
+	// #block-1-ex-1
+	$('#editWorkoutModal #workoutContainer #'+newId)
+		.find("#block-1-ex-1")
+		.attr("id", newId + "-ex-1");
+	// #block-1-ex-1-table
+	$("#editWorkoutModal #workoutContainer #" + newId)
+		.find("#block-1-ex-1-table")
+		.attr("id", newId + "-ex-1-table");
+	// #e-block-1-ex-1-tr-1
+	$("#editWorkoutModal #workoutContainer #" + newId)
+		.find("#e-block-1-ex-1-tr-1")
+		.attr("id", "e-"+newId + "-ex-1-tr-1");
+	// #trblock-1-ex-1-tr-1
+	$("#editWorkoutModal #workoutContainer #" + newId)
+		.find("#trblock-1-ex-1-tr-1")
+		.attr("id", "tr" + newId + "-ex-1-tr-1");
+	// #addblock-e-1-ex-1
+	$("#editWorkoutModal #workoutContainer #" + newId)
+		.find("#addblock-e-1-ex-1")
+		.attr("id", "addblock-e-" + editBlockCount + "-ex-1");
+}
+
 const newEvent = date => {
 	$("#workoutDate").val(date.format("l"));
 	$("#workoutModal").modal("toggle");
@@ -1117,19 +1145,33 @@ $(function() {
 	// Add a new block
 	$(".block-add").click(function() {
 		var idStr = $(this).attr("id");
-		var block = idStr.substr(idStr.indexOf("-") + 1);
-		var id = "block-" + block;
-		var newId = "block-" + (blockCount + 1);
-		console.log("id: " + id);
-		console.log("newId: " + newId);
-		$("#cloneblock-1")
-			.clone(true)
-			.attr("id", newId)
-			.css("display", "block")
-			.insertAfter("#block-" + blockCount);
-		blockCount++;
-		populateBlock(id, newId, block);
-		// change all id's to have new 'block' variable
+		if(idStr.substr(0,1) == 'e'){
+			var block = idStr.substr(idStr.lastIndexOf("-") + 1);
+			var id = "block-" + block;
+			var newId = "block-" + (editBlockCount + 1);
+			console.log("id: " + id);
+			console.log("newId: " + newId);
+			$("#e-cloneblock-1")
+				.clone(true)
+				.attr("id", newId)
+				.css("display", "block")
+				.insertAfter("#block-" + editBlockCount);
+			editBlockCount++;
+			populateEditBlock(id, newId, block);
+		} else {
+			var block = idStr.substr(idStr.indexOf("-") + 1);
+			var id = "block-" + block;
+			var newId = "block-" + (blockCount + 1);
+			console.log("id: " + id);
+			console.log("newId: " + newId);
+			$("#cloneblock-1")
+				.clone(true)
+				.attr("id", newId)
+				.css("display", "block")
+				.insertAfter("#block-" + blockCount);
+			blockCount++;
+			populateBlock(id, newId, block);
+		}
 	});
 
 	$("#createWorkout").click(function() {
@@ -1272,13 +1314,13 @@ $(function() {
 			);
 
 			$("#editWorkoutModal #workoutContainer #" + $newId)
-				.find(".table-add#block-1-ex-1-tr-1")
-				.attr("id", $newId + "-tr-1");
+				.find(".table-add#e-clone-block-1-ex-1-tr-1")
+				.attr("id", 'e-'+$newId + "-tr-1");
 			$("#editWorkoutModal #workoutContainer #" + $newId)
-				.find("#block-1-ex-1-table")
+				.find("#clone-block-1-ex-1-table")
 				.attr("id", $newId + "-table");
 			$("#editWorkoutModal #workoutContainer  #" + $newId)
-				.find("#trblock-1-ex-1-tr-1")
+				.find("#clone-trblock-1-ex-1-tr-1")
 				.attr("id", "tr" + $newId + "-tr-1");
 		}
 	});
