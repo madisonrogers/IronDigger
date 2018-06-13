@@ -1586,5 +1586,11 @@ $(function() {
 	jQuery.fn.pop = [].pop;
 	jQuery.fn.shift = [].shift;
 
-	$('[data-toggle="tooltip"]').tooltip();
+	$('body', $(this)).tooltip({
+		selector: '[data-toggle="tooltip"]',
+		trigger: 'hover'
+	});
+	$('[data-toggle="tooltip"]').click(function(){
+		$(this).tooltip('hide')
+	})
 });
