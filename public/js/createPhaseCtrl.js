@@ -1297,12 +1297,6 @@ $(function() {
 				.attr("id", $newId)
 				.css("display", "block")
 				.insertAfter("#editWorkoutModal #workoutContainer #" + $id);
-			// change all id's to have new 'block' variable
-			// console.log(
-			// 	$("#" + $newId)
-			// 		.find("#block-2-ex-1-tr-1")
-			// 		.attr("id", $newId + "-tr-1")
-			// );
 			var buttonId = idStr.substr(0, idStr.length - 1);
 			buttonId += parseInt(ex) + 1;
 
@@ -1586,32 +1580,100 @@ $(function() {
 
 	$('.block-delete').click(function() {
 		console.log('in block delete')
-		console.log($(this).parents('[id^=block-]'))
-		if(blockCount > 1) {
-			$(this).parents('[id^=block-]').detach()
+		console.log($(this).parents())
+		var id = $(this).attr('id')
+		if(id.substr(0,1) == 'e') {
+			if(editBlockCount > 1) {
+				var deletedBlock = $(this).parents('[id^=block-]').attr('id')
+				var blockNum = deletedBlock.substr(deletedBlock.lastIndexOf('-')+1)
+				if(blockNum == editBlockCount) {
+					// subtract one from the block count
+					editBlockCount--;
+				}
+				$(this).parents('[id^=block-]').detach()
+			}
+		} else {
+			if(blockCount > 1) {
+				var deletedBlock = $(this).parents('[id^=block-]').attr('id')
+				var blockNum = deletedBlock.substr(deletedBlock.indexOf('-')+1)
+				if(blockNum == blockCount) {
+					// subtract one from the block count
+					blockCount--;
+				}
+				$(this).parents('[id^=block-]').detach()
+			}
 		}
-		
 	});
 
 	$('.ex-remove').click(function() {
 		// find a way to not delete the last exercise
 		console.log('in delete ex')
-		var exRemove = $(this).parents('[id^=block-]' && '[id*=-ex-]')
-		var exNum = $(exRemove).attr('id').substr($(exRemove).attr('id').lastIndexOf('-')+1)
-		var blockNum = $(exRemove).attr('id').substr($(exRemove).attr('id').indexOf('-')+1,1)
-		var addExButton = $(this).parents().find('#workoutModal #workoutContainer #block-'+blockNum+' [id^=addblock-]')
-		var buttonNum = $(addExButton).attr('id').substr($(addExButton).attr('id').lastIndexOf('-')+1)
-		
-		if(buttonNum == exNum) {
-			// need to subtract one from the add exercise button so more exercises can be added
-			var newId = $(addExButton).attr('id').substr(0, $(addExButton).attr('id').lastIndexOf('-')+1)
-			$(addExButton).attr('id', newId+(parseInt(buttonNum)-1))
-			$(exRemove).detach()
+		id = $(this).attr('id');
+		if(id.substr(0,1) == 'e') {
+			var exRemove = $(this).parents('[id^=block-]' && '[id*=-ex-]')
+			var exNum = $(exRemove).attr('id').substr($(exRemove).attr('id').lastIndexOf('-')+1)
+			var blockNum = $(exRemove).attr('id').substr($(exRemove).attr('id').indexOf('-')+1,1)
+			var addExButton = $(this).parents().find('#editWorkoutModal #workoutContainer #block-'+blockNum+' [id^=addblock-]')
+			var buttonNum = $(addExButton).attr('id').substr($(addExButton).attr('id').lastIndexOf('-')+1)
+			var buttonId = $(addExButton).attr('id').substr(0,$(addExButton).attr('id').lastIndexOf('-')+1)
+			if(buttonNum == exNum) {
+				// need to subtract one from the add exercise button so more exercises can be added
+				var newId = $(addExButton).attr('id').substr(0, $(addExButton).attr('id').lastIndexOf('-')+1)
+				$(addExButton).attr('id', newId+(parseInt(buttonNum)-1))
+				$(exRemove).detach()
+			} else {
+				var siblings = $(exRemove).siblings('[id^=block-]' && '[id*=-ex-]')
+				for(var i = 0; i < siblings.length; i++) {
+					var sibNum = parseInt(siblings[i].id.substr(siblings[i].id.lastIndexOf('-')+1))
+					var sibId = siblings[i].id.substr(0,siblings[i].id.lastIndexOf('-')+1)
+					if(sibNum > exNum) {
+						$(exRemove).siblings("[id^="+siblings[i].id+"]").attr('id',sibId+(sibNum-1))
+					}
+				}
+				// subtract 1 from the button num
+				$(addExButton).attr('id', buttonId+(parseInt(buttonNum)-1))
+				// just delete the exercise
+				$(exRemove).detach()
+			}
 		} else {
-			// just delete the exercise
-			$(exRemove).detach()
+			var exRemove = $(this).parents('[id^=block-]' && '[id*=-ex-]')
+			var exNum = $(exRemove).attr('id').substr($(exRemove).attr('id').lastIndexOf('-')+1)
+			var blockNum = $(exRemove).attr('id').substr($(exRemove).attr('id').indexOf('-')+1,1)
+			var addExButton = $(this).parents().find('#workoutModal #workoutContainer #block-'+blockNum+' [id^=addblock-]')
+			var buttonNum = $(addExButton).attr('id').substr($(addExButton).attr('id').lastIndexOf('-')+1)
+			var buttonId = $(addExButton).attr('id').substr(0,$(addExButton).attr('id').lastIndexOf('-')+1)
+			if(buttonNum == exNum) {
+				// need to subtract one from the add exercise button so more exercises can be added
+				var newId = $(addExButton).attr('id').substr(0, $(addExButton).attr('id').lastIndexOf('-')+1)
+				$(addExButton).attr('id', newId+(parseInt(buttonNum)-1))
+				$(exRemove).detach()
+			} else {
+				var siblings = $(exRemove).siblings('[id^=block-]' && '[id*=-ex-]')
+				for(var i = 0; i < siblings.length; i++) {
+					var sibNum = parseInt(siblings[i].id.substr(siblings[i].id.lastIndexOf('-')+1))
+					var sibId = siblings[i].id.substr(0,siblings[i].id.lastIndexOf('-')+1)
+					if(sibNum > exNum) {
+						$(exRemove).siblings("[id^="+siblings[i].id+"]").attr('id',sibId+(sibNum-1))
+					}
+				}
+				// subtract 1 from the button num
+				$(addExButton).attr('id', buttonId+(parseInt(buttonNum)-1))
+				// just delete the exercise
+				$(exRemove).detach()
+			}
 		}
 	});
+
+	// this function will clear the modal when it is exited
+	// $('.close').click(function() {
+	// 	if($(this).attr('id') == 'e-close') {
+	// 		$('#editWorkoutModal').modal('hide');
+	// 		clearModal();
+	// 	} else {
+	// 		$('#workoutModal').modal('hide');
+	// 		clearModal();
+	// 	}
+	// });
 
 	$(".table-up").click(function() {
 		var $row = $(this).parents("tr");
