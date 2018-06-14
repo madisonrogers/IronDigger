@@ -44,6 +44,53 @@ var getTeams = (req, res, callback) => {
     );
 };
 
+//needs to get teams and groups
+var getTeamsAndGroups = (req, res, callback) => {
+    var requestOptions, path;
+    console.log('inside getTeamsAndGroups');
+    path = "/api/allTeams";
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "GET",
+        json: {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            var data = body;
+            if (response.statusCode === 200) {
+
+                callback(req, res, data);
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+};
+
+//needs to get all groups and append them to the data object
+var getGroups = (req, res, callback) => {
+    var requestOptions, path;
+    console.log('inside getTeams');
+    path = "/api/allTeams";
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "GET",
+        json: {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            var data = body;
+            if (response.statusCode === 200) {
+
+                callback(req, res, data);
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+};
 
 var renderViewgroupteam = (req, res, responseData) => {
     console.log('inside renderViewgroupteam');
@@ -51,6 +98,16 @@ var renderViewgroupteam = (req, res, responseData) => {
 		console.log(responseData);
     res.render('teams.pug', {
         title: 'View Group/Team',
+        teams: responseData
+    });
+}
+
+var renderCreatePhase = (req, res, responseData) => {
+    console.log('inside renderCreatePhase');
+
+		console.log(responseData);
+    res.render('createphase.pug', {
+        title: 'Create Phase',
         teams: responseData
     });
 }
@@ -64,9 +121,11 @@ exports.postViewgroupteam = (req, res, next) => {
 
 // GET /createphase
 exports.getCreatephase = (req, res) => {
-	res.render('createphase.pug', {
-		title: 'Create Phase'
-	});
+
+    getTeamsAndGroups(req, res, function(req, res, responseData) {
+        renderViewgroupteam(req, res, responseData);
+    });
+	
 };
 
 // POST /createphase

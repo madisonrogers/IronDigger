@@ -6,6 +6,17 @@ append scripts
     script(src='fullcalendar/fullcalendar.js')
     script(src='js/createPhaseCtrl.js')
 block content
+    #chooseTeamAlert.alert.alert-danger(role='alert')
+        | Choose a team or group before creating workout
+    .row.team-select
+        h5 Select Team/Group
+        select#recentWorkouts.form-control
+            option(value='' selected='' disabled='' hidden='') Choose Team/Group
+            option 1
+            option 2
+            option 3
+            option 4
+            option 5
     #calendar
     #chooseWorkout.modal.fade.bd-example-modal-sm(tabindex='-1' role='dialog' aria-labelledby='chooseWorkoutLabel' aria-hidden='true')
         .modal-dialog.modal-sm

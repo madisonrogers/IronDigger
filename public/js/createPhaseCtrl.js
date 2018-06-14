@@ -2,7 +2,7 @@ var last_selected_time;
 var blockCount = 1;
 var editBlockCount = 1;
 var current_event;
-
+var team_select = false;
 
 var server = window.location.origin;
 
@@ -1143,7 +1143,13 @@ $(function() {
 			console.log(date.format("LLL"));
 
 			console.log(view);
-			newEvent(date);
+
+			if(team_select){
+				$('#chooseTeamAlert').css('display', 'none');
+				newEvent(date);
+			} else {
+				$('#chooseTeamAlert').css('display', 'block');
+			}
 		},
 		// we will be able to load in workouts from the DB
 		events: [
