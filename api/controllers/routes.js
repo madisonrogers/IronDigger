@@ -74,3 +74,15 @@ exports.postCreatephase = (req, res, next) => {
 	res.redirect('/createphase.pug');
 };
 
+// GET /athlete
+exports.getAthlete = (req, res) => {
+	res.render('athlete.pug', {
+		title: 'Athlete'
+	});
+};
+
+// POST /athlete
+exports.postAthlete = (req, res, next) => {
+	res.redirect('/athlete.pug');
+};
+

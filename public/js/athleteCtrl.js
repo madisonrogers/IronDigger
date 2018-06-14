@@ -26,7 +26,8 @@ var populateAthletes = ($teamid, $groupid) => {
 								else {
 									$image = ".gravatar(60)";
 								}
-								$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">"  + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
+								//$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">"  + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
+								$( "#exampleModal .modal-body" ).append( "<div><a href='/views/athlete' value=" + athletes[i]._id + ">"  + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
 				}
 	        }
 		});
