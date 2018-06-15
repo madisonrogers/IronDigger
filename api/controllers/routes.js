@@ -10,7 +10,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 /** 
- * GET /viewteamgroup 
+ * GET /teams 
  */
 exports.getViewgroupteam = (req, res) => {
     console.log('inside getViewgroupteam in routes.js');
@@ -44,6 +44,7 @@ var getTeams = (req, res, callback) => {
     );
 };
 
+
 var renderViewgroupteam = (req, res, responseData) => {
     console.log('inside renderViewgroupteam');
 
@@ -72,4 +73,58 @@ exports.getCreatephase = (req, res) => {
 exports.postCreatephase = (req, res, next) => {
 	res.redirect('/createphase.pug');
 };
+
+/** 
+ * GET /athlete
+ */
+exports.getAthlete = (req, res) => {
+    console.log('inside getAthlete in routes.js');
+
+    getAthleteData(req, res, function(req, res, responseData) {
+        renderAthleteData(req, res, responseData);
+    });
+};
+
+var getAthleteData = (req, res, callback) => {
+    var requestOptions, path;
+    console.log('inside getAthleteData');
+		console.log(req.params.userid);
+    path = "/api/getUser/"+ req.params.userid;
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "GET",
+        json: {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            var data = body;
+            if (response.statusCode === 200) {
+
+                callback(req, res, data);
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+};
+
+
+var renderAthleteData = (req, res, responseData) => {
+    console.log('inside renderAthleteData');
+
+		console.log(responseData);
+    res.render('athlete.pug', {
+        title: 'View Athlete',
+        athletedata: responseData
+    });
+}
+
+/**
+ * POST /athlete
+ */
+exports.postAthlete= (req, res, next) => {
+    res.redirect('/athlete.pug');
+};
+
 

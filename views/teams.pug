@@ -1,5 +1,8 @@
 extends layout
 
+append scripts
+	script(src='/js/athleteCtrl.js')
+
 block content
 	h1 Teams
 	link(rel='stylesheet', href='https://use.fontawesome.com/releases/v5.0.13/css/all.css')
@@ -12,9 +15,8 @@ block content
 					button.close(type='button', data-dismiss='modal', aria-label='Close')
 					span(aria-hidden='true')
 				.modal-body
-					| ...
 				.modal-footer
-					button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+					button.btn.btn-secondary(type='button', data-dismiss='modal', onclick="$(\".modal-body\").html(\"\");") Close
 
 	mixin teamdiv(team, name, id)
 		.div
@@ -26,9 +28,9 @@ block content
 				.button.btn(class="btn-outline-primary btn-sm float-right")
 					= 'Create Group'
 				| &nbsp;
-				.h3= name
-				| &nbsp;
-				button.btn(class="btn-outline-primary btn-sm float-right", type='button', data-toggle='modal', data-target='#exampleModal') View Athletes
+				.h3=  name
+				| &nbsp; 
+				button.btn(class="btn-outline-primary btn-sm float-right", type='button', data-toggle='modal', data-target='#exampleModal' onclick="populateAllAthletes('" + id + "');") View Athletes
 				| &nbsp;
 				.navbar
 					ul.nav.navbar-nav.ml-auto
@@ -39,11 +41,14 @@ block content
 							ul.dropdown-menu
 								if team.groups != 0
 									each g in team.groups
-										li.dropdown-item
+										- var team_id = team._id
+										- var group_id = g._id
+										li.dropdown-item(data-toggle='modal', data-target='#exampleModal', onclick="populateAthletes('" + team_id + "','"+ group_id + "');")
 											a(href='#') #{g.name}
 								else
-									li.dropdown-item
-											a(href='#') No groups for this team
+									li.dropdown-item(class="disabled")
+											a(href='#', style={color:'grey'}) No groups for this team
 	each t in teams 
 		+teamdiv(t, t.name, t._id )
 		p <br>
+
