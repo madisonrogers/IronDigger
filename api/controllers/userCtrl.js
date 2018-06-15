@@ -528,11 +528,12 @@ module.exports.getAllExercises = function(req, res) {
 
                     var exObj = {
                         name: String,
-                        sets: []
+                        sets: [],
+                        _id: String
                     }
 
                     var setObj = {
-                        actualweight: Number,
+                        actweight: Number,
                         reps: String,
                         sets: Number,
                         date: String
@@ -551,17 +552,18 @@ module.exports.getAllExercises = function(req, res) {
                         }
                         if(unique) {
                             exObj.name = exercises[i].name;
+                            exObj._id = exercises[i]._id;
                         }
 
                         for(var j = 0; j < exercises[i].sets.length; j++) {
-                            setObj.actualweight = exercises[i].sets[j].actweight;
+                            setObj.actweight = exercises[i].sets[j].actweight;
                             setObj.reps = exercises[i].sets[j].reps;
                             setObj.sets = exercises[i].sets[j].set;
                             setObj.date = exercises[i].date;
                             if(unique) {
                                 exObj.sets.push(setObj);
                                 var setObj = {
-                                    actualweight: Number,
+                                    actweight: Number,
                                     reps: String,
                                     sets: Number,
                                     date: String
@@ -569,7 +571,7 @@ module.exports.getAllExercises = function(req, res) {
                             } else {
                                 uniqueExercises[duplicateIndex].sets.push(setObj);
                                 var setObj = {
-                                    actualweight: Number,
+                                    actweight: Number,
                                     reps: String,
                                     sets: Number,
                                     date: String
@@ -581,7 +583,8 @@ module.exports.getAllExercises = function(req, res) {
                             uniqueExercises.push(exObj);
                             var exObj = {
                                 name: String,
-                                sets: []
+                                sets: [],
+                                _id: String
                             }
                         }
                     }

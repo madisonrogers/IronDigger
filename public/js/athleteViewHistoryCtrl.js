@@ -5,7 +5,11 @@ var selectedExerciseId;
 var selectedExercise;
 var xData;
 var yData;
+var repData = [];
 var graphable = true;
+var earliestDate;
+var latestDate;
+var uniqueDates = [];
 
 const populateExercises = () => {
 	var path = "/api/allExercises/"+athleteid;
@@ -28,19 +32,48 @@ const populateExercises = () => {
 	});
 }
 
+const isDateInArray = (needle, haystack) => {
+  for (var i = 0; i < haystack.length; i++) {
+    if (needle.getTime() === haystack[i].getTime()) {
+      return true;
+    }
+  }
+  return false;
+}
+
 const parseData = () => {
 	count = 1;
 	xData = []; 
-	yData = []; // this will be integer numbers from 1-# of elements
+	yData = []; // this will be the dates the exercise was performed
 
 	// loop through the sets to get all of the weights
 	selectedExercise.sets.forEach(function(set) {
 		if(set.actweight == undefined || set.actweight == NaN){
 			graphable = false;
 		} else {
-			yData.push(set.actweight)
-			xData.push(count);
-			count++;
+			yData.push(set.actweight);
+			repData.push(set.reps);
+			var dateStr = set.date;
+			var month = parseInt(dateStr.substr(0,dateStr.indexOf('/')));
+			dateStr = dateStr.substr(dateStr.indexOf('/') + 1);
+			var day = parseInt(dateStr.substr(0,dateStr.indexOf('/')));
+			dateStr = dateStr.substr(dateStr.indexOf('/') + 1);
+			var year = parseInt(dateStr);
+			var date = new Date(year, month, day);
+			if(earliestDate == undefined && latestDate == undefined) {
+				earliestDate = date;
+				latestDate = date;
+			} else {
+				if(date < earliestDate) {
+					earliestDate = date;
+				} else if (date > latestDate) {
+					latestDate = date;
+				}
+			}
+			if (!isDateInArray(date, uniqueDates)) {
+			    uniqueDates.push(date);
+			}
+			xData.push(date);
 		}
 		
 	});
@@ -53,12 +86,12 @@ const createGraph = () => {
 	if (graphable) {
 		console.log('graphing')
 		var h = window.innerHeight*0.5;
-		var w = window.innerWidth*0.75;
+		var w = window.innerWidth*0.95;
 		var padding = 30;
 
 
 		var dataset = xData.map(function(e, i) {
-		  return [e, yData[i]];
+		  return [e, yData[i], repData[i]];
 		});
 
 		console.log(dataset)
@@ -66,9 +99,11 @@ const createGraph = () => {
 		d3.max(dataset, function(d) {    //Returns 480
 		    return d[0];  //References first value in each sub-array
 		});
-
-		var xScale = d3.scale.linear()
-            .domain([0, d3.max(dataset, function(d) { return d[0]; })])
+		// console.log(earliestDate.getDa())
+		earliestDate = new Date(earliestDate.getFullYear(), earliestDate.getMonth(), earliestDate.getDate()-1)
+		latestDate = new Date(latestDate.getFullYear(), latestDate.getMonth(), latestDate.getDate()+1)
+		var xScale = d3.time.scale()
+            .domain([earliestDate, latestDate])
             .range([padding, w - padding*2]);
 
         var yScale = d3.scale.linear()
@@ -103,7 +138,7 @@ const createGraph = () => {
 	            div.transition()		
 	                .duration(200)		
 	                .style("opacity", .9);		
-	            div.html('rep: '+d[0] + "<br/>weight: "  + d[1])
+	            div.html('Date: '+d[0].getMonth()+'/'+d[0].getDate()+'/'+d[0].getFullYear() + "<br/>Weight: "  + d[1]+ "<br/>Reps: " + d[2])
 	                .style("left", (d3.event.pageX) + "px")		
 	                .style("top", (d3.event.pageY - 28) + "px");	
 	            })					
@@ -116,7 +151,7 @@ const createGraph = () => {
 		var xAxis = d3.svg.axis()
           .scale(xScale)
           .orient("bottom")
-          .ticks(dataset.length+1);
+          .ticks(5);
 		
 		svg.append("g")
 		   .attr("class", "axis")  //Assign "axis" class
