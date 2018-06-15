@@ -482,7 +482,8 @@ module.exports.updateSet = function(req, res) {
 }
 
 // GET - get all exercises
-// This function will take a userid and return a list of exercises the user has done
+// This function will take a userid and return a list of unique exercises the user has done
+// the exercise object will hold dates at which the exercise was done and the sets on that date
 module.exports.getAllExercises = function(req, res) {
 	if (req.params && req.params.userid) {
         User
@@ -508,17 +509,85 @@ module.exports.getAllExercises = function(req, res) {
 
                 var blocks = [];
                 for(var i = 0; i < workouts.length; i++) {
+                    for(var j = 0; j < workouts[i].blocks.length; j++) {
+                        workouts[i].blocks[j].date = workouts[i].date
+                    }
                     blocks.push.apply(blocks, workouts[i].blocks)
                 }
-                // console.log(blocks)
 
                 var exercises = [];
                 for(var i = 0; i < blocks.length; i++) {
+                    for(var j = 0; j < blocks[i].exercises.length; j++) {
+                        blocks[i].exercises[j].date = blocks[i].date
+                    }
                     exercises.push.apply(exercises, blocks[i].exercises)
                 }
-                // console.log(exercises)
+
                 if(exercises.length > 0) {
-                    sendJsonResponse(res, 200, exercises);
+                    var uniqueExercises = [];
+
+                    var exObj = {
+                        name: String,
+                        sets: []
+                    }
+
+                    var setObj = {
+                        actualweight: Number,
+                        reps: String,
+                        sets: Number,
+                        date: String
+                    }
+
+                    for(var i = 0; i < exercises.length; i++) {
+                        var unique = true;
+                        var duplicateIndex;
+                        for(var m = 0; m < uniqueExercises.length; m++) {
+                            if(uniqueExercises[m].name == exercises[i].name) {
+                                console.log("exercise exists")
+                                unique = false;
+                                duplicateIndex = m;
+                                break;
+                            }
+                        }
+                        if(unique) {
+                            exObj.name = exercises[i].name;
+                        }
+
+                        for(var j = 0; j < exercises[i].sets.length; j++) {
+                            setObj.actualweight = exercises[i].sets[j].actweight;
+                            setObj.reps = exercises[i].sets[j].reps;
+                            setObj.sets = exercises[i].sets[j].set;
+                            setObj.date = exercises[i].date;
+                            if(unique) {
+                                exObj.sets.push(setObj);
+                                var setObj = {
+                                    actualweight: Number,
+                                    reps: String,
+                                    sets: Number,
+                                    date: String
+                                }
+                            } else {
+                                uniqueExercises[duplicateIndex].sets.push(setObj);
+                                var setObj = {
+                                    actualweight: Number,
+                                    reps: String,
+                                    sets: Number,
+                                    date: String
+                                }
+                            }
+                            
+                        }
+                        if(unique) {
+                            uniqueExercises.push(exObj);
+                            var exObj = {
+                                name: String,
+                                sets: []
+                            }
+                        }
+                    }
+                    console.log(uniqueExercises);
+
+                    sendJsonResponse(res, 200, uniqueExercises);
                 } else {
                     sendJsonResponse(res, 404, {
                         "message": "No exercises found"

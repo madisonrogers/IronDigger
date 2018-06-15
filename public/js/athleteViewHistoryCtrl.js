@@ -113,22 +113,6 @@ const createGraph = () => {
 	                .style("opacity", 0);	
 	        });
 
-		// svg.selectAll("text")
-		//   .data(dataset)
-		//   .enter()
-		//   .append("text")
-		//   .text(function(d) {
-		//     return d[1];
-		//   })
-		//   .attr("x", function(d) {
-		//     return xScale(d[0]);
-		//   })
-		//   .attr("y", function(d) {
-		//     return yScale(d[1]);
-		//   })
-		//   .attr("font-size", "15px")
-		//   .attr("fill", "black");
-
 		var xAxis = d3.svg.axis()
           .scale(xScale)
           .orient("bottom")
