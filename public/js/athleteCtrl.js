@@ -1,5 +1,6 @@
 var server = window.location.origin;
 athletes = [];
+athletesForGroup = [];
 
 var populateAthletes = ($teamid, $groupid) => {
 	$(function(){
@@ -62,8 +63,10 @@ var populateAllAthletes = ($teamid) => {
 	});
 }
 
+var $teamid_g;
 
 var populateCreateGroup = ($teamid) => {
+	$teamid_g = $teamid;
 	$(function(){
 		var path = "/api/getathletesteam/"+$teamid;
 		console.log('inside groupCtrl, getAllAthletes');
@@ -91,5 +94,19 @@ var populateCreateGroup = ($teamid) => {
 	        }
 				}
 		});
+	});
+}
+
+
+var createGroup = () => {
+	$(function(){
+			alert($teamid_g);
+			$groupname = document.getElementById('groupname').value;
+
+			$("input:checkbox:checked").each(function(){
+   			athletesForGroup.push($(this).val());
+			});
+			for (i = 0; i < athletesForGroup.length; i++)
+  			document.writeln(athletesForGroup[i]);
 	});
 }
