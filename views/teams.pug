@@ -30,7 +30,7 @@ block content
 				| &nbsp;
 				.h3=  name
 				| &nbsp; 
-				button.btn(class="btn-outline-primary btn-sm float-right", type='button', data-toggle='modal', data-target='#exampleModal') View Athletes
+				button.btn(class="btn-outline-primary btn-sm float-right", type='button', data-toggle='modal', data-target='#exampleModal' onclick="populateAllAthletes('" + id + "');") View Athletes
 				| &nbsp;
 				.navbar
 					ul.nav.navbar-nav.ml-auto

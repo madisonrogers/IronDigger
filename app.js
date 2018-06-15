@@ -146,7 +146,7 @@ app.post('/views/teams', routesController.postViewgroupteam);
 app.get('/views/teams/:teamid', routesController.getViewgroupteam);
 app.get('/createphase', routesController.getCreatephase);
 app.post('/createphase', routesController.postCreatephase);
-app.get('/views/athlete', routesController.getAthlete);
+app.get('/views/athlete/:userid', routesController.getAthlete);
 app.post('/views/athlete', routesController.postAthlete);
 
 /**
