@@ -1,0 +1,27 @@
+extends layout
+
+
+mixin table(header,data, type)
+	- var type = type || ""
+	table.table(class=type)
+		thead
+			tr(align="center")
+				each head, i in header
+					th #{head}
+		tbody
+			each row,j in data
+				tr
+					each col,k in row
+						td(align="center") #{col}
+	
+mixin table-condensed(header,data)
+	+table(header,data,"table-condensed")
+
+block content
+	h1  #{athletedata.profile.first} #{athletedata.profile.last}
+	h4 Maxs
+	-var header = ["Bench", "Clean", "Squat", "Deadlift"]
+	-var data = [[ athletedata.athlete.maxBench, athletedata.athlete.maxClean, athletedata.athlete.maxSquat, athletedata.athlete.maxDeadlift ]]
+	p 
+	+table(header, data, table-condensed) 
+
