@@ -1182,7 +1182,6 @@ $(function() {
 		let selectedWorkoutValue = $( "#recentWorkouts option:selected" ).val();
 		console.log(selectedWorkoutName);
 		console.log(selectedWorkoutValue);
-		if(selectedWorkoutName !== '') {
 			//ajax call for archiving workout
 			$(function(){
 				var path = "/api//getWorkout/" + selectedWorkoutValue;
@@ -1198,7 +1197,7 @@ $(function() {
 					}
 				});
 			});
-		} //write some error handling
+
 	});
 
 	$('#chooseCreate').click(function() {

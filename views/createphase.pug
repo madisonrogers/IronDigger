@@ -38,7 +38,8 @@ block content
                         select#recentWorkouts.form-control
                             option(value='' selected='' disabled='' hidden='') Choose Workout
                             each w in workouts
-                                option(value=w._id) #{w.name}
+                                if(w.name !== '')
+                                    option(value=w._id) #{w.name}
 
 
     #workoutModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='workoutModalLabel', aria-hidden='true')
