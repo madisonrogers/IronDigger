@@ -12,7 +12,8 @@ mixin table(header,data, type)
             each row,j in data
                 tr
                     each col,k in row
-                        td(id=k, align="center", contenteditable='true') #{col}
+                        td(id='max'+k, align="center", contenteditable='true') #{col} &nbsp
+                             i.far.fa-edit
     
 mixin table-condensed(header,data)
     +table(header,data,"table-condensed")
@@ -52,12 +53,14 @@ append scripts
         }
 block content
     h1  #{athletedata.profile.first} #{athletedata.profile.last}
-    h4 Maxs
+    h4 Maxes
+    #alert.alert.alert-success(role='alert')
+        | Success! The maxs have been updated
     -var header = ["Bench", "Clean", "Squat", "Deadlift"]
     -var data = [[ athletedata.athlete.maxBench, athletedata.athlete.maxClean, athletedata.athlete.maxSquat, athletedata.athlete.maxDeadlift ]]
     p 
     +table(header, data, table-condensed)
-    button#updateMaxs.btn.btn-primary(type='button') Update Maxs 
+    button#updateMaxs.btn.btn-primary(type='button') Update Maxes 
     hr
     h2 Athlete Lifting History
     hr
@@ -67,5 +70,5 @@ block content
             select.form-control(name='exercise', id='exerciseSelector')
     #graph
     hr
-    table.table#table
+    table.table#liftingTable
 

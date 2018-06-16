@@ -609,13 +609,11 @@ module.exports.getAllExercises = function(req, res) {
 module.exports.updateMaxs = function(req, res) {
     User.findById(req.params.userid, (err, user) => {
             if (err) { return next(err); }
-            console.log(user)
-            console.log('params'+req.params)
-            user.athlete.maxBench = req.params.bench;
-            user.athlete.maxClean = req.params.clean;
-            user.athlete.maxSquat = req.params.squat;
-            user.athlete.maxDeadlift = req.params.deadlift;
-            console.log(user)
+            console.log(req.params)
+            user.athlete.maxBench = req.body.bench;
+            user.athlete.maxClean = req.body.clean;
+            user.athlete.maxSquat = req.body.squat;
+            user.athlete.maxDeadlift = req.body.deadlift;
             user.save((err) => {
               if (err) {
                 sendJsonResponse(res, 404, err)
