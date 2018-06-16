@@ -3,7 +3,8 @@ var blockCount = 1;
 var editBlockCount = 1;
 var current_event;
 var team_select = false;
-
+var SELECTED_TEAM_NAME;
+var SELECTED_TEAM_VAL;
 var server = window.location.origin;
 
 const clearModal = () => {
@@ -1145,9 +1146,11 @@ $(function() {
 			console.log(view);
 
 			if(team_select){
+				console.log('team selected')
 				$('#chooseTeamAlert').css('display', 'none');
 				newEvent(date);
 			} else {
+				console.log('team not selected')
 				$('#chooseTeamAlert').css('display', 'block');
 			}
 		},
@@ -1181,6 +1184,22 @@ $(function() {
 	$("form").on("submit", function(e) {
 		e.preventDefault();
 	});
+
+	$( "#teamGroupSelect" ).change(function() {
+		console.log('teamGroupSelect changed');
+
+		let selectedTeamName = $( "#teamGroupSelect option:selected" ).text();
+		let selectedTeamValue = $( "#teamGroupSelect option:selected" ).val()
+		console.log(selectedTeamName);
+		console.log($(selectedTeamValue));
+		if(selectedTeamName !== '') {
+			team_select = true;
+			SELECTED_TEAM_NAME = selectedTeamName;
+			SELECTED_TEAM_VAL =selectedTeamValue;
+			
+		}
+	});
+
 
 	// Add a new block
 	$(".block-add").click(function() {

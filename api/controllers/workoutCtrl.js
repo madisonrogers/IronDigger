@@ -186,6 +186,25 @@ module.exports.getAllWorkouts = function(req, res) {
         });
 }
 
+module.exports.getLast25Workouts = function(req, res) {		
+		console.log('getting recent workouts in getLast25Workouts')
+		workouts = Workout.aggregate([
+			{ $sort: {_id: -1} }, {$limit : 25}]).exec(
+				function(err, workouts) {
+					if (!workouts){
+						sendJsonResponse(res, 404, 'No documents found');
+						return;
+					} else if (err) {
+						sendJsonResponse(res, 400, err)
+						return;
+					}
+					if(workouts) {
+						sendJsonResponse(res, 200, workouts);
+					}
+				}
+			);
+}
+
 // // Get all blocks from a specific workoutid - GET
 // // the workoutid will be passed as a param, the an array of blocks is returned
 module.exports.getAllBlocks = function(req, res) {

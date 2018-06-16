@@ -44,11 +44,11 @@ var getTeams = (req, res, callback) => {
     );
 };
 
-//needs to get teams and groups
-var getTeamsAndGroups = (req, res, callback) => {
+
+var getRecentWorkouts = (req, res, teams, callback) => {
     var requestOptions, path;
-    console.log('inside getTeamsAndGroups');
-    path = "/api/allTeams";
+    console.log('inside getRecentWorkouts');
+    path = "/api/recentWorkouts";
     requestOptions = {
         url: apiOptions.server + path,
         method: "GET",
@@ -60,7 +60,7 @@ var getTeamsAndGroups = (req, res, callback) => {
             var data = body;
             if (response.statusCode === 200) {
 
-                callback(req, res, data);
+                callback(req, res, teams, data);
             } else {
                 _showError(req, res, response.statusCode);
             }
@@ -102,13 +102,14 @@ var renderViewgroupteam = (req, res, responseData) => {
     });
 }
 
-var renderCreatePhase = (req, res, responseData) => {
+var renderCreatePhase = (req, res, teamsData, workoutData) => {
     console.log('inside renderCreatePhase');
 
 		console.log(responseData);
     res.render('createphase.pug', {
         title: 'Create Phase',
-        teams: responseData
+        teams: teamsData,
+        workouts: workoutData
     });
 }
 
@@ -122,8 +123,10 @@ exports.postViewgroupteam = (req, res, next) => {
 // GET /createphase
 exports.getCreatephase = (req, res) => {
 
-    getTeamsAndGroups(req, res, function(req, res, responseData) {
-        renderViewgroupteam(req, res, responseData);
+    getTeams(req, res, function(req, res, teamsData) {
+        getRecentWorkouts(req,res, teamsData, function(req,res, teamsData, workoutData){
+            renderCreatePhase(req, res, teamsData, workoutData);
+        })
     });
 	
 };

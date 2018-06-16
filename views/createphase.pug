@@ -10,13 +10,13 @@ block content
         | Choose a team or group before creating workout
     .row.team-select
         h5 Select Team/Group
-        select#recentWorkouts.form-control
+        select#teamGroupSelect.form-control
             option(value='' selected='' disabled='' hidden='') Choose Team/Group
-            option 1
-            option 2
-            option 3
-            option 4
-            option 5
+            each t in teams
+                option(value=t._id) #{t.name}
+                if(t.groups)
+                    each g in t.groups
+                        option(value=t._id + '/' + g._id) #{t.name} - #{g.name}
     #calendar
     #chooseWorkout.modal.fade.bd-example-modal-sm(tabindex='-1' role='dialog' aria-labelledby='chooseWorkoutLabel' aria-hidden='true')
         .modal-dialog.modal-sm
@@ -37,11 +37,8 @@ block content
                     .row
                         select#recentWorkouts.form-control
                             option(value='' selected='' disabled='' hidden='') Choose Workout
-                            option 1
-                            option 2
-                            option 3
-                            option 4
-                            option 5
+                            each w in workouts
+                                option(value=w._id) #{w.name}
 
 
     #workoutModal.modal.hide.fade(tabindex='-1', role='dialog', aria-labelledby='workoutModalLabel', aria-hidden='true')
