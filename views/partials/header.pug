@@ -21,7 +21,7 @@
               | Calendar
         if user && !user.isAdmin && !user.isCoach
           li.nav-item(class=(title === 'History') ? 'active' : undefined)
-            a.nav-link(href='#')
+            a.nav-link(href='/athleteviewhistory/'+user._id)
               i.fas.fa-chart-line.fa-lg
               | History
         if user && user.isAdmin

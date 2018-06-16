@@ -74,6 +74,7 @@ exports.postCreatephase = (req, res, next) => {
 	res.redirect('/createphase.pug');
 };
 
+
 /** 
  * GET /athlete
  */
@@ -125,6 +126,21 @@ var renderAthleteData = (req, res, responseData) => {
  */
 exports.postAthlete= (req, res, next) => {
     res.redirect('/athlete.pug');
+};
+
+
+
+// GET /athleteviewhistory
+exports.getAthleteViewHistory = (req, res) => {
+    res.render('athleteviewhistory.pug', {
+        title: 'History',
+        athleteid: req.params.athleteid
+    });
+};
+
+// POST /athleteviewhistory
+exports.postAthleteViewHistory = (req, res, next) => {
+    res.redirect('/athleteviewhistory.pug');
 };
 
 
