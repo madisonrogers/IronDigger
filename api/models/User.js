@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 
 
  const setSchema = new mongoose.Schema({
-   setnumber: {type: Number, require: true},
+   set: {type: Number, require: true},
    reps: {type: String, require: true},//string to account for reps/each and running "reps"
    percent: Number,
    calcweight: Number,
@@ -27,10 +27,14 @@ const mongoose = require('mongoose');
 
  const workoutSchema = new mongoose.Schema({
   name: {type: String, require: true},
+  title: String,
+  start: Object,
+  end: Object,
+  date: String,
+  allDay: Boolean,
   blocks: [blockSchema],
-  time: {type: Date, require: true},
-  trainingnotes: String,
-  athletenotes: String
+  time: {type: String, require: true},
+  athleteNotes: String
  });
 
  const phaseSchema = new mongoose.Schema({

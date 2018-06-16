@@ -174,7 +174,7 @@ module.exports.addPhase = function(req, res) {
                     return;
                 }
                 console.log(user.athlete)
-                allPhases = user.athlete.phases.concat(req.body.athlete.phases);
+                allPhases = user.athlete.phases.concat(req.body);
                 user.athlete.phases = allPhases
                 user.save((err) => {
 			      	if (err) {
@@ -482,55 +482,128 @@ module.exports.updateSet = function(req, res) {
 }
 
 // GET - get all exercises
-// This function will take a userid and return a list of exercises the user has done
-// module.exports.getAllExercises = function(req, res) {
-// 	if (req.params && req.params.userid) {
-//         User
-//             .findById(req.params.userid)
-//             .exec(function(err, user) {
-//                 if (!user) {
-//                     sendJsonResponse(res, 404, {
-//                         "message": "userid not found"
-//                     });
-//                     return;
-//                 } else if (err) {
-//                     console.log(err)
-//                     sendJsonResponse(res, 404, err);
-//                     return;
-//                 }
-//                 var phases = user.athlete.phases;
-//                 var workouts = [];
-//                 for (var i = 0; i < phases.length; i++) {
-//                 	console.log(phases[i].workouts)
-//                 	workouts += phases[i].workouts;
-//                 }
-//            //      if(workouts) {
-//            //      	allBlocks = [];
-//            //      	// loop through the workouts and create a list of the exercises
-//            //      	for(var i = 0; i < workouts.length; i++) {
-//            //      		allBlocks += workouts[i].blocks
-//            //      	}
-//            //      	console.log(allBlocks)
-                	
-//            //      	allExercises = [];
-//            //      	for(var i = 0; i < allBlocks.length; i++) {
-//            //      		allExercises += allBlocks[i].exercises;
-//            //      	}
-//            //      	sendJsonResponse(res, 200, allExercises);
-//            //      } else if (!workouts.length) {
-//            //      	console.log('No workout with that workoutid exists');
-// 			        // sendJsonResponse(res, 404, {
-// 			        //     "message": "No workout with the specified workoutid exists"
-// 			        // });
-//            //      }
-//             });
-//     } else {
-//         console.log('No userid specified');
-//         sendJsonResponse(res, 404, {
-//             "message": "No userid in request"
-//         });
-//     }	
-// }
+// This function will take a userid and return a list of unique exercises the user has done
+// the exercise object will hold dates at which the exercise was done and the sets on that date
+module.exports.getAllExercises = function(req, res) {
+	if (req.params && req.params.userid) {
+        User
+            .findById(req.params.userid)
+            .exec(function(err, user) {
+                if (!user) {
+                    sendJsonResponse(res, 404, {
+                        "message": "userid not found"
+                    });
+                    return;
+                } else if (err) {
+                    console.log(err)
+                    sendJsonResponse(res, 404, err);
+                    return;
+                }
+                var phases = user.athlete.phases;
+                var workouts = [];
+                for (var i = 0; i < phases.length; i++) {
+                	// console.log(phases[i].workouts)
+                	workouts.push.apply(workouts, phases[i].workouts);
+                }
+                // console.log(workouts)
+
+                var blocks = [];
+                for(var i = 0; i < workouts.length; i++) {
+                    for(var j = 0; j < workouts[i].blocks.length; j++) {
+                        workouts[i].blocks[j].date = workouts[i].date
+                    }
+                    blocks.push.apply(blocks, workouts[i].blocks)
+                }
+
+                var exercises = [];
+                for(var i = 0; i < blocks.length; i++) {
+                    for(var j = 0; j < blocks[i].exercises.length; j++) {
+                        blocks[i].exercises[j].date = blocks[i].date
+                    }
+                    exercises.push.apply(exercises, blocks[i].exercises)
+                }
+
+                if(exercises.length > 0) {
+                    var uniqueExercises = [];
+
+                    var exObj = {
+                        name: String,
+                        sets: [],
+                        _id: String
+                    }
+
+                    var setObj = {
+                        actweight: Number,
+                        reps: String,
+                        sets: Number,
+                        date: String
+                    }
+
+                    for(var i = 0; i < exercises.length; i++) {
+                        var unique = true;
+                        var duplicateIndex;
+                        for(var m = 0; m < uniqueExercises.length; m++) {
+                            if(uniqueExercises[m].name == exercises[i].name) {
+                                console.log("exercise exists")
+                                unique = false;
+                                duplicateIndex = m;
+                                break;
+                            }
+                        }
+                        if(unique) {
+                            exObj.name = exercises[i].name;
+                            exObj._id = exercises[i]._id;
+                        }
+
+                        for(var j = 0; j < exercises[i].sets.length; j++) {
+                            setObj.actweight = exercises[i].sets[j].actweight;
+                            setObj.reps = exercises[i].sets[j].reps;
+                            setObj.sets = exercises[i].sets[j].set;
+                            setObj.date = exercises[i].date;
+                            if(unique) {
+                                exObj.sets.push(setObj);
+                                var setObj = {
+                                    actweight: Number,
+                                    reps: String,
+                                    sets: Number,
+                                    date: String
+                                }
+                            } else {
+                                uniqueExercises[duplicateIndex].sets.push(setObj);
+                                var setObj = {
+                                    actweight: Number,
+                                    reps: String,
+                                    sets: Number,
+                                    date: String
+                                }
+                            }
+                            
+                        }
+                        if(unique) {
+                            uniqueExercises.push(exObj);
+                            var exObj = {
+                                name: String,
+                                sets: [],
+                                _id: String
+                            }
+                        }
+                    }
+                    console.log(uniqueExercises);
+
+                    sendJsonResponse(res, 200, uniqueExercises);
+                } else {
+                    sendJsonResponse(res, 404, {
+                        "message": "No exercises found"
+                    })
+                }
+            });
+    } else {
+        console.log('No userid specified');
+        sendJsonResponse(res, 404, {
+            "message": "No userid in request"
+        });
+    }	
+}
 
 
 

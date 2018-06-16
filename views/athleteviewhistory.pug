@@ -1,0 +1,47 @@
+extends layout
+
+append scripts
+    script(src="https://d3js.org/d3.v3.min.js")
+    script(src='/js/athleteViewHistoryCtrl.js')
+    style(type='text/css').
+        .line {
+          fill: none;
+          stroke: steelblue;
+          stroke-width: 2px;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
+
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+        div.tooltip {   
+            position: absolute;         
+            text-align: center;         
+            width: 75px;                    
+            height: 75px;                   
+            padding: 2px;               
+            font: 12px sans-serif;      
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff; 
+            border: 0px;        
+            border-radius: 2px;         
+            pointer-events: none;  
+            margin-left:10px;         
+        }
+
+block content
+    h2 Athlete Lifting History
+    hr
+    #selector
+        .row
+          .col-md-12
+            select.form-control(name='exercise', id='exerciseSelector')
+    #graph
+    hr
+    table.table#table
