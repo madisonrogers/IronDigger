@@ -24,6 +24,29 @@
 
 }
 
+#chooseTeamAlert {
+  display: none;
+}
+
+.team-select {
+  margin-bottom: 15px;  
+}
+
+#chooseWorkout  {
+  .row{
+    margin: 0 10px 10px 10px;
+    text-align: center;
+  } 
+
+  .button {
+    text-align: center;
+    margin: auto;
+  }
+
+
+}
+
+
 .block-container {
   .ex-name, .block-name {
     display: inline-block;
