@@ -1,11 +1,13 @@
 var server = window.location.origin;
 athletes = [];
 athletesForGroup = [];
+var $athletesForGroupString =  "";
+var $teamid_g;
 
 var populateAthletes = ($teamid, $groupid) => {
 	$(function(){
 		var path = "/api/getathletesgroup/"+$teamid+"/"+$groupid;
-		console.log('inside groupCtrl, getAthletes');
+		console.log('inside athleteCtrl, getAthletes');
 		console.log($teamid + ' ' + $groupid);
 		$.ajax({
 			type:'GET',
@@ -24,7 +26,6 @@ var populateAthletes = ($teamid, $groupid) => {
 								else {
 									$image = ".gravatar(60)";
 								}
-								//$( "#exampleModal .modal-body" ).append( "<div><a href='/api/getUser/" + athletes[i]._id + "' value=" + athletes[i]._id + ">"  + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
 								$userid = athletes[i]._id;
 								$( "#exampleModal .modal-body" ).append( "<div><a href='/views/athlete/" + $userid + "' value=" + athletes[i]._id + ">"  + athletes[i].profile.first+ ' ' + athletes[i].profile.last + "</option></div>" );
 	        }
@@ -36,7 +37,7 @@ var populateAthletes = ($teamid, $groupid) => {
 var populateAllAthletes = ($teamid) => {
 	$(function(){
 		var path = "/api/getathletesteam/"+$teamid;
-		console.log('inside groupCtrl, getAllAthletes');
+		console.log('inside athleteCtrl, getAllAthletes');
 		console.log($teamid);
 		$.ajax({
 			type:'GET',
@@ -63,13 +64,12 @@ var populateAllAthletes = ($teamid) => {
 	});
 }
 
-var $teamid_g;
 
 var populateCreateGroup = ($teamid) => {
-	$teamid_g = $teamid;
 	$(function(){
+		$teamid_g = $teamid;
 		var path = "/api/getathletesteam/"+$teamid;
-		console.log('inside groupCtrl, getAllAthletes');
+		console.log('inside athleteCtrl, getAllAthletes');
 		console.log($teamid);
 		$.ajax({
 			type:'GET',
@@ -100,13 +100,25 @@ var populateCreateGroup = ($teamid) => {
 
 var createGroup = () => {
 	$(function(){
-			alert($teamid_g);
 			$groupname = document.getElementById('groupname').value;
-
 			$("input:checkbox:checked").each(function(){
    			athletesForGroup.push($(this).val());
 			});
 			for (i = 0; i < athletesForGroup.length; i++)
-  			document.writeln(athletesForGroup[i]);
+  			$athletesForGroupString += (" \"_id\" : ObjectId(\"" + athletesForGroup[i] + "\"),");
+			$athletesForGroupString = $athletesForGroupString.substring(0, $athletesForGroupString.length - 1);
+			var path = "/api/createGroup/"+$teamid_g;
+			console.log('inside athleteCtrl, createGroup');
+			alert($groupname + " " + $athletesForGroupString); 
+			$.ajax({
+				type:'POST',
+				contentType: 'application/json',
+	      	  url: server + path,						
+						data: ("{ \"groups\" : [ { \"name\" : " + $groupname + ", \"athletes\" : [ { " +$athletesForGroupString  }  ] } ] })",
+	        	success: function(data) {
+								console.log(data)
+	          	  console.log('created group');
+						}
+			});
 	});
 }
