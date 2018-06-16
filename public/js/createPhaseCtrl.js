@@ -7,7 +7,42 @@ var SELECTED_TEAM_NAME;
 var SELECTED_TEAM_VAL;
 var server = window.location.origin;
 var CURR_DATE;
+
 const clearModal = () => {
+	$("#workoutModal")
+		.find("#workoutContainer")
+		.empty();
+	var $clone = $("#cloneblock-1")
+		.clone(true)
+		.attr("id", "block-1")
+		.css("display", "block");
+	$("#workoutContainer").append($clone);
+	$("#workoutTime").val("");
+	$("#workoutName").val("");
+	blockCount = 1;
+	// change all id's to have new 'block' variable
+	populateBlock("block-1", "block-1", "1");
+	$(".alert").hide();
+};
+
+const clearEditModal = () => {
+	$("#editWorkoutModal")
+		.find(".ew-clear")
+		.empty();
+	var $clone = $("#e-cloneblock-1")
+		.clone(true)
+		.attr("id", "block-1")
+		.css("display", "block");
+	$("#editWorkoutModal .ew-clear").append($clone);
+	$("#editWorkoutModal #workoutTime").val("");
+	$("#editWorkoutModal #workoutName").val("");
+	blockCount = 1;
+	// change all id's to have new 'block' variable
+	populateBlock("block-1", "block-1", "1");
+	$(".alert").hide();
+};
+
+const clearChooseModal = () => {
 	$("#workoutModal")
 		.find("#workoutContainer")
 		.empty();
@@ -32,6 +67,7 @@ const editEvent = calEvent => {
 const populateEditModal = calEvent => {
 	console.log(calEvent);
 	var blocks = calEvent.blocks;
+	blockCount = blocks.length;
 	var workoutName = calEvent.title;
 	var date = calEvent.start;
 	var time = calEvent.time;
@@ -986,6 +1022,7 @@ const newEvent = date => {
 };
 
 const parseCreateWorkout = () => {
+	console.log('inside of parseCreateWorkout')
 	var $date = $("#workoutDate").val();
 	var $time = $("#workoutTime").val();
 	var $name = $("#workoutName").val();
@@ -1046,8 +1083,107 @@ const parseCreateWorkout = () => {
 	return workout;
 };
 
+
 const getSets = (block, ex) => {
 	var $rows = $("#block-" + block + "-ex-" + ex + "-table").find(
+		"tr:not(:hidden)"
+	);
+	var headers = [];
+	var data = [];
+	// Get the headers (add special header logic here)
+	$($rows.shift())
+		.find("th:not(:empty)")
+		.each(function() {
+			headers.push(
+				$(this)
+					.text()
+					.toLowerCase()
+			);
+		});
+
+	// Turn all existing rows into a loopable array
+	$rows.each(function() {
+		var $td = $(this).find("td");
+		var h = {};
+
+		// Use the headers from earlier to name our hash keys
+		headers.forEach(function(header, i) {
+			h[header] = $td.eq(i).text();
+		});
+
+		data.push(h);
+	});
+
+	// Output the result
+	return data;
+};
+
+const parseEditWorkout = () => {
+	console.log('inside of parseEditWorkout')
+	var $date = $("#editWorkoutModal #workoutDate").val();
+	var $time = $("#editWorkoutModal #workoutTime").val();
+	var $name = $("#editWorkoutModal #workoutName").val();
+
+	var workout = {
+		name: $name,
+		blocks: [],
+		time: $time,
+		date: $date
+	};
+
+	var block = {
+		name: String,
+		exercises: []
+	};
+
+	var exercise = {
+		name: String,
+		notes: String,
+		sets: []
+	};
+
+	blocks = [];
+	// get blocks
+	console.log("blockCount: " + blockCount)
+	for (var i = 1; i <= blockCount; i++) {
+		var ex = [];
+		var blockObj = $("#editWorkoutModal #workoutContainer #block-" + i);
+		var blockName = $("#editWorkoutModal #workoutContainer #block-name-" + i).text();
+
+		var exercises = blockObj
+			.children("#editWorkoutModal [id^=block-" + i + "-ex-]")
+			.each(function() {
+				exercise = {};
+				var exerciseName = $(this)
+					.find("#editWorkoutModal [id^=ex-name-]")
+					.text();
+				var exerciseNotes = $(this)
+					.find("#editWorkoutModal .form-control.ex1")
+					.val();
+				var idStr = $(this).attr("id");
+				var exerciseNum = idStr.substr(idStr.lastIndexOf("-") + 1);
+				var sets = getEditSets(i, exerciseNum);
+
+				exercise.name = exerciseName;
+				exercise.notes = exerciseNotes;
+				exercise.sets = sets;
+				ex.push(exercise);
+			});
+
+		block.name = blockName;
+		block.exercises = ex;
+		blocks.push(block);
+
+		block = {};
+		ex = [];
+	}
+	workout.blocks = blocks;
+	console.log(blocks)
+	return workout;
+};
+
+const getEditSets = (block, ex) => {
+	var $rows = $("#editWorkoutModal #block-" + block + "-ex-" + ex + "-table").find(
 		"tr:not(:hidden)"
 	);
 	var headers = [];
@@ -1241,11 +1377,20 @@ $(function() {
 		}
 	});
 
-	$("#createWorkout").click(function() {
-		console.log("#createWorkout clicked");
+	$("[id^=createWorkout]").click(function() {
+		console.log("#createWorkout* clicked");
+		console.log($(this).attr('id'))
+		var id = $(this).attr('id');
+		var mode = id.substr(id.length-1);
 		date = CURR_DATE;
 		console.log(date.format("l"));
-		const workout = parseCreateWorkout();
+		console.log(mode)
+		if(mode !== "e"){
+			const workout = parseCreateWorkout();
+		} else {
+			const workout = parseEditWorkout();
+		}
+		console.log(workout);
 		if (workout.name && workout.time) {
 			var time = workout.time;
 			var hour = time.substr(0, time.indexOf(":"));
@@ -1273,7 +1418,7 @@ $(function() {
 		}
 	});
 
-	$('#archiveWorkout').click(function() {
+	$('[id^=archiveWorkout]').click(function() {
 		console.log('#archiveWorkout clicked')
 		date = CURR_DATE;
 		console.log(date.format('l'));
