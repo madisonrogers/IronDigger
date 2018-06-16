@@ -105,7 +105,8 @@ var renderViewgroupteam = (req, res, responseData) => {
 var renderCreatePhase = (req, res, teamsData, workoutData) => {
     console.log('inside renderCreatePhase');
 
-		console.log(responseData);
+        console.log(teamsData);
+        console.log(workoutData);
     res.render('createphase.pug', {
         title: 'Create Phase',
         teams: teamsData,

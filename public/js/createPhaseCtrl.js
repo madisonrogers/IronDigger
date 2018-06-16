@@ -6,7 +6,7 @@ var team_select = false;
 var SELECTED_TEAM_NAME;
 var SELECTED_TEAM_VAL;
 var server = window.location.origin;
-
+var CURR_DATE;
 const clearModal = () => {
 	$("#workoutModal")
 		.find("#workoutContainer")
@@ -30,14 +30,15 @@ const editEvent = calEvent => {
 };
 
 const populateEditModal = calEvent => {
+	console.log(calEvent);
 	var blocks = calEvent.blocks;
 	var workoutName = calEvent.title;
 	var date = calEvent.start;
 	var time = calEvent.time;
-
+	console.log(typeof(date));
 	// set name, date, time
 	$("#editWorkoutModal #workoutName").val(workoutName);
-	$("#editWorkoutModal #workoutDate").val(date.format("l"));
+	$("#editWorkoutModal #workoutDate").val((typeof(date) === "string") ? date : date.format("l"));
 	$("#editWorkoutModal #workoutTime").val(time);
 
 	// populate the first block
@@ -981,7 +982,7 @@ const newEvent = date => {
 
 	// $("#workoutDate").val(date.format("l"));
 	// $("#workoutModal").modal("toggle");
-	// CURR_DATE = date;
+	CURR_DATE = date;
 };
 
 const parseCreateWorkout = () => {
@@ -1191,7 +1192,7 @@ $(function() {
 		let selectedTeamName = $( "#teamGroupSelect option:selected" ).text();
 		let selectedTeamValue = $( "#teamGroupSelect option:selected" ).val()
 		console.log(selectedTeamName);
-		console.log($(selectedTeamValue));
+		console.log(selectedTeamValue);
 		if(selectedTeamName !== '') {
 			team_select = true;
 			SELECTED_TEAM_NAME = selectedTeamName;
@@ -1199,6 +1200,40 @@ $(function() {
 			
 		}
 	});
+
+	$( "#recentWorkouts" ).change(function() {
+		console.log('recentWorkouts changed');
+
+		let selectedWorkoutName = $( "#recentWorkouts option:selected" ).text();
+		let selectedWorkoutValue = $( "#recentWorkouts option:selected" ).val();
+		console.log(selectedWorkoutName);
+		console.log(selectedWorkoutValue);
+		if(selectedWorkoutName !== '') {
+			//ajax call for archiving workout
+			$(function(){
+				var path = "/api//getWorkout/" + selectedWorkoutValue;
+				console.log('getting workout');
+				// console.log('workout');
+				$.ajax({
+					type: 'GET',
+					url: server + path,
+					success: function(res) {
+						console.log(res);
+						$("#chooseWorkout").modal("hide");
+						editEvent(res);
+					}
+				});
+			});
+		} //write some error handling
+	});
+
+	$('#chooseCreate').click(function() {
+		$("#workoutDate").val(CURR_DATE.format("l"));
+		$("#chooseWorkout").modal("hide");
+		$("#workoutModal").modal("toggle");
+		
+	})
+
 
 
 	// Add a new block
