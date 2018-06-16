@@ -45,6 +45,53 @@ var getTeams = (req, res, callback) => {
 };
 
 
+var getRecentWorkouts = (req, res, teams, callback) => {
+    var requestOptions, path;
+    console.log('inside getRecentWorkouts');
+    path = "/api/recentWorkouts";
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "GET",
+        json: {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            var data = body;
+            if (response.statusCode === 200) {
+
+                callback(req, res, teams, data);
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+};
+
+//needs to get all groups and append them to the data object
+var getGroups = (req, res, callback) => {
+    var requestOptions, path;
+    console.log('inside getTeams');
+    path = "/api/allTeams";
+    requestOptions = {
+        url: apiOptions.server + path,
+        method: "GET",
+        json: {}
+    };
+    request(
+        requestOptions,
+        function(err, response, body) {
+            var data = body;
+            if (response.statusCode === 200) {
+
+                callback(req, res, data);
+            } else {
+                _showError(req, res, response.statusCode);
+            }
+        }
+    );
+};
+
 var renderViewgroupteam = (req, res, responseData) => {
     console.log('inside renderViewgroupteam');
 
@@ -52,6 +99,18 @@ var renderViewgroupteam = (req, res, responseData) => {
     res.render('teams.pug', {
         title: 'View Group/Team',
         teams: responseData
+    });
+}
+
+var renderCreatePhase = (req, res, teamsData, workoutData) => {
+    console.log('inside renderCreatePhase');
+
+        console.log(teamsData);
+        console.log(workoutData);
+    res.render('createphase.pug', {
+        title: 'Create Phase',
+        teams: teamsData,
+        workouts: workoutData
     });
 }
 
@@ -64,9 +123,13 @@ exports.postViewgroupteam = (req, res, next) => {
 
 // GET /createphase
 exports.getCreatephase = (req, res) => {
-	res.render('createphase.pug', {
-		title: 'Create Phase'
-	});
+
+    getTeams(req, res, function(req, res, teamsData) {
+        getRecentWorkouts(req,res, teamsData, function(req,res, teamsData, workoutData){
+            renderCreatePhase(req, res, teamsData, workoutData);
+        })
+    });
+	
 };
 
 // POST /createphase
