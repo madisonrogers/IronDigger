@@ -105,16 +105,16 @@ var createGroup = () => {
    			athletesForGroup.push($(this).val());
 			});
 			for (i = 0; i < athletesForGroup.length; i++)
-  			$athletesForGroupString += (" \"_id\" : ObjectId(\"" + athletesForGroup[i] + "\"),");
+  			$athletesForGroupString += (" \"" + athletesForGroup[i] + "\",");
 			$athletesForGroupString = $athletesForGroupString.substring(0, $athletesForGroupString.length - 1);
-			console.log($athletesForGroupString);
 			var path = "/api/createGroup/"+$teamid_g;
 			console.log('inside athleteCtrl, createGroup');
+			alert(" { \"name\" : \"" + $groupname + "\", \"athletes\" : [  " + $athletesForGroupString + "    ] } ");
 			$.ajax({
 				type:'POST',
 				contentType: 'application/json',
 	      	  url: server + path,						
-						data: ("{ \"groups\" : [ { \"name\" : " + $groupname + ", \"athletes\" : [ { " + $athletesForGroupString + "  }  ] } ] }"),
+						data: ("{ \"name\" : \"" + $groupname + "\" , \"athletes\" : [  " + $athletesForGroupString + "   ] }  "),
 	        	success: function(data) {
 								console.log(data)
 	          	  console.log('created group');
