@@ -24,14 +24,17 @@ append scripts
             position: absolute;         
             text-align: center;         
             width: 75px;                    
-            height: 65px;                   
+            height: 75px;                   
             padding: 2px;               
             font: 12px sans-serif;      
-            background: lightsteelblue; 
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff; 
             border: 0px;        
-            border-radius: 8px;         
-            pointer-events: none;           
+            border-radius: 2px;         
+            pointer-events: none;  
+            margin-left:10px;         
         }
+
 block content
     h2 Athlete Lifting History
     hr
@@ -40,4 +43,5 @@ block content
           .col-md-12
             select.form-control(name='exercise', id='exerciseSelector')
     #graph
-    #table
+    hr
+    table.table#table
