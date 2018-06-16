@@ -12,6 +12,8 @@ var earliestDate;
 var latestDate;
 var uniqueDates = [];
 
+var server = window.location.origin;
+
 const populateExercises = () => {
 	var path = "/api/allExercises/"+athleteid;
 	console.log('in populateExercises')
@@ -237,6 +239,27 @@ $(function() {
 		 	}
 		});
 		parseData();
+	});
+
+	// on click of update max button, parse the table and update the user
+	$('#updateMaxs').click(function() {
+		var bench = $('#0').text();
+		var clean = $('#1').text();
+		var squat = $('#2').text();
+		var deadlift = $('#3').text();
+		$(function(){
+			var path = "/api/updateMaxs/"+athleteid;
+			$.ajax({
+				type:'PUT',
+				contentType: 'application/json',
+				url: server + path,
+				data: JSON.stringify({bench: bench, clean: clean, squat: squat, deadlift: deadlift}),				
+		        success: function(data) {
+		            console.log(data);
+		            console.log('SUCCESS')
+		        }
+			});
+		});
 	});
 });
 
