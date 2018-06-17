@@ -37,7 +37,8 @@ const clearEditModal = () => {
 	$("#editWorkoutModal .ew-clear").append($clone);
 	$("#editWorkoutModal #workoutTime").val("");
 	$("#editWorkoutModal #workoutName").val("");
-	blockCount = 1;
+	editBlockCount = 1;
+	//blockCount = 1;
 	// change all id's to have new 'block' variable
 	populateBlock("block-1", "block-1", "1");
 	$(".alert").hide();
@@ -54,7 +55,7 @@ const clearChooseModal = () => {
 	$("#workoutContainer").append($clone);
 	$("#workoutTime").val("");
 	$("#workoutName").val("");
-	blockCount = 1;
+	//blockCount = 1;
 	// change all id's to have new 'block' variable
 	populateBlock("block-1", "block-1", "1");
 	$(".alert").hide();
@@ -71,7 +72,7 @@ const editEvent = calEvent => {
 const populateEditModal = calEvent => {
 	console.log(calEvent);
 	var blocks = calEvent.blocks;
-	blockCount = blocks.length;
+	editBlockCount = blocks.length;
 	var workoutName = calEvent.title;
 	var date = calEvent.start;
 	var time = calEvent.time;
@@ -1354,7 +1355,7 @@ $(function() {
 	// Add a new block
 	$(".block-add").click(function() {
 		var idStr = $(this).attr("id");
-		if(idStr.substr(0,1) == 'e'){
+		if(idStr.substr(0,1) == 'e' && EDIT_EVENT){
 			var block = idStr.substr(idStr.lastIndexOf("-") + 1);
 			var id = "block-" + block;
 			var newId = "block-" + (editBlockCount + 1);
@@ -1364,7 +1365,20 @@ $(function() {
 				.clone(true)
 				.attr("id", newId)
 				.css("display", "block")
-				.insertAfter("#block-" + editBlockCount);
+				.insertAfter("#editWorkoutModal #block-" + editBlockCount);
+			editBlockCount++;
+			populateEditBlock(id, newId, block);
+		} else if(idStr.substr(0,1) == 'e' && !EDIT_EVENT){
+			var block = idStr.substr(idStr.lastIndexOf("-") + 1);
+			var id = "block-" + block;
+			var newId = "block-" + (editBlockCount);
+			console.log("id: " + id);
+			console.log("newId: " + newId);
+			$("#e-cloneblock-1")
+				.clone(true)
+				.attr("id", newId)
+				.css("display", "block")
+				.insertAfter("#editWorkoutModal #block-" + (editBlockCount - 1));
 			editBlockCount++;
 			populateEditBlock(id, newId, block);
 		} else {

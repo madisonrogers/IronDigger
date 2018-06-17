@@ -28,6 +28,18 @@
   display: none;
 }
 
+/* Important part */
+// .modal-dialog{
+//   overflow-y: initial !important
+// }
+// .modal-body{
+//   //height: 250px;
+//   overflow-y: auto;
+// }
+.modal {
+  overflow-y:auto; 
+}
+
 .team-select {
   margin-bottom: 15px;  
 }
