@@ -1,12 +1,13 @@
-var last_selected_time;
 var blockCount = 1;
 var editBlockCount = 1;
-var current_event;
+// var current_event;
 var team_select = false;
 var SELECTED_TEAM_NAME;
 var SELECTED_TEAM_VAL;
 var server = window.location.origin;
 var CURR_DATE;
+var CURRENT_EVENT;
+var EDIT_EVENT = false;
 
 const clearModal = () => {
 	$("#workoutModal")
@@ -60,6 +61,9 @@ const clearChooseModal = () => {
 };
 
 const editEvent = calEvent => {
+	console.log('about to log calEvent')
+	console.log(calEvent)
+	CURR_DATE = calEvent;
 	console.log("in editEvent");
 	populateEditModal(calEvent);
 };
@@ -1010,8 +1014,8 @@ const populateEditBlock = (id, newId, block) => {
 const newEvent = date => {
 
 	$('#chooseWorkout').modal("toggle");
-
-	
+	console.log('about to log date in newEvent')
+	console.log(date);
 	//going to write the logic for the choose workout modal in a choose workout click handler
 
 
@@ -1151,14 +1155,14 @@ const parseEditWorkout = () => {
 		var blockName = $("#editWorkoutModal #workoutContainer #block-name-" + i).text();
 
 		var exercises = blockObj
-			.children("#editWorkoutModal [id^=block-" + i + "-ex-]")
+			.children("[id^=block-" + i + "-ex-]")
 			.each(function() {
 				exercise = {};
 				var exerciseName = $(this)
-					.find("#editWorkoutModal [id^=ex-name-]")
+					.find("[id^=ex-name-]")
 					.text();
 				var exerciseNotes = $(this)
-					.find("#editWorkoutModal .form-control.ex1")
+					.find(".form-control.ex1")
 					.val();
 				var idStr = $(this).attr("id");
 				var exerciseNum = idStr.substr(idStr.lastIndexOf("-") + 1);
@@ -1179,6 +1183,7 @@ const parseEditWorkout = () => {
 	}
 	workout.blocks = blocks;
 	console.log(blocks)
+	console.log(workout);
 	return workout;
 };
 
@@ -1255,7 +1260,7 @@ $(function() {
 			console.log(date.format("LLL"));
 
 			console.log(view);
-
+			CURRENT_EVENT = date;
 			if(team_select){
 				console.log('team selected')
 				$('#chooseTeamAlert').css('display', 'none');
@@ -1287,7 +1292,8 @@ $(function() {
 			console.log(view);
 			// change the border color just for fun
 			$(this).css("border-color", "red");
-			var current_event = calEvent;
+			CURRENT_EVENT = calEvent;
+			EDIT_EVENT = true;
 			editEvent(calEvent);
 		}
 	});
@@ -1383,15 +1389,16 @@ $(function() {
 		var id = $(this).attr('id');
 		var mode = id.substr(id.length-1);
 		date = CURR_DATE;
-		console.log(date.format("l"));
+		//console.log(date.format("l"));
 		console.log(mode)
+		let workout = {};
 		if(mode !== "e"){
-			const workout = parseCreateWorkout();
+			workout = parseCreateWorkout();
 		} else {
-			const workout = parseEditWorkout();
+			workout = parseEditWorkout();
 		}
 		console.log(workout);
-		if (workout.name && workout.time) {
+		if (workout.name && workout.time && mode !== 'e') {
 			var time = workout.time;
 			var hour = time.substr(0, time.indexOf(":"));
 			var min = time.substr(time.indexOf(":") + 1);
@@ -1412,7 +1419,64 @@ $(function() {
 			$("#workoutModal").modal("hide");
 			clearModal();
 			//date = '';
-		} else {
+		} else if(workout.name && workout.time && mode === 'e' && !EDIT_EVENT) {
+			var time = workout.time;
+			var hour = time.substr(0, time.indexOf(":"));
+			var min = time.substr(time.indexOf(":") + 1);
+			console.log("hour: " + hour + " min: " + min);
+			console.log(date)
+			date = moment(date);
+			date.add(parseInt(hour), "hour");
+			date.add(parseInt(min), "minute");
+
+			console.log(date.format("LLL"));
+
+			workout.title = workout.name;
+			workout.start = date;
+			workout.end = date;
+			workout.allDay = false;
+			workout.time = time;
+			console.log(workout.start.format("l"));
+			$("#calendar").fullCalendar("renderEvent", workout, true);
+			$("#editWorkoutModal").modal("hide");
+			clearEditModal();
+		} else if(workout.name && workout.time && mode === 'e' && EDIT_EVENT){
+			var time = workout.time;
+			var hour = time.substr(0, time.indexOf(":"));
+			var min = time.substr(time.indexOf(":") + 1);
+			console.log("hour: " + hour + " min: " + min);
+
+			date.start.add(parseInt(hour), "hour");
+			date.start.add(parseInt(min), "minute");
+
+			console.log(date.start.format("LLL"));
+
+			workout.title = workout.name;
+			workout.start = date.start;
+			workout.end = date.start;
+			workout.allDay = false;
+			workout.time = time;
+			CURRENT_EVENT.blocks = workout.blocks;
+			CURRENT_EVENT.date = workout.date;
+			CURRENT_EVENT.end = workout.end;
+			CURRENT_EVENT.name = workout.name;
+			CURRENT_EVENT.start = workout.start;
+			CURRENT_EVENT.time = workout.time;
+			CURRENT_EVENT.title = workout.title;
+			console.log(workout.start.format("l"));
+			console.log(workout)
+			console.log(CURRENT_EVENT);
+			//let merged = {...workout, ...CURRENT_EVENT};
+			// console.log(merged);
+			$("#calendar").fullCalendar("updateEvent", CURRENT_EVENT);
+			$("#editWorkoutModal").modal("hide");
+			CURRENT_EVENT = {};
+			CURR_DATE = '';
+			EDIT_EVENT = false;
+			clearEditModal();
+		}
+		else{
+			// console.log
 			// put some error handling
 			$(".alert").css("display", "block");
 		}
