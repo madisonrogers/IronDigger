@@ -72,7 +72,8 @@ const editEvent = calEvent => {
 const populateEditModal = calEvent => {
 	console.log(calEvent);
 	var blocks = calEvent.blocks;
-	editBlockCount = blocks.length;
+	
+	//editBlockCount = blocks.length;
 	var workoutName = calEvent.title;
 	var date = calEvent.start;
 	var time = calEvent.time;
@@ -1149,8 +1150,8 @@ const parseEditWorkout = () => {
 
 	blocks = [];
 	// get blocks
-	console.log("blockCount: " + blockCount)
-	for (var i = 1; i <= blockCount; i++) {
+	console.log("editBlockCount: " + editBlockCount)
+	for (var i = 1; i <= editBlockCount; i++) {
 		var ex = [];
 		var blockObj = $("#editWorkoutModal #workoutContainer #block-" + i);
 		var blockName = $("#editWorkoutModal #workoutContainer #block-name-" + i).text();
@@ -1418,8 +1419,8 @@ $(function() {
 			var min = time.substr(time.indexOf(":") + 1);
 			console.log("hour: " + hour + " min: " + min);
 
-			date.add(parseInt(hour), "hour");
-			date.add(parseInt(min), "minute");
+			date.add(parseInt(hour), "hours");
+			date.add(parseInt(min), "minutes");
 
 			console.log(date.format("LLL"));
 
@@ -1440,8 +1441,8 @@ $(function() {
 			console.log("hour: " + hour + " min: " + min);
 			console.log(date)
 			date = moment(date);
-			date.add(parseInt(hour), "hour");
-			date.add(parseInt(min), "minute");
+			date.add(parseInt(hour), "hours");
+			date.add(parseInt(min), "minutes");
 
 			console.log(date.format("LLL"));
 
@@ -1459,9 +1460,11 @@ $(function() {
 			var hour = time.substr(0, time.indexOf(":"));
 			var min = time.substr(time.indexOf(":") + 1);
 			console.log("hour: " + hour + " min: " + min);
+			hour = Number(hour);
+			min = Number(min);
 
-			date.start.add(parseInt(hour), "hour");
-			date.start.add(parseInt(min), "minute");
+			date.start.add(hour, "hours");
+			date.start.add(min, "minutes");
 
 			console.log(date.start.format("LLL"));
 
