@@ -40,7 +40,7 @@ const clearEditModal = () => {
 	editBlockCount = 1;
 	//blockCount = 1;
 	// change all id's to have new 'block' variable
-	populateBlock("block-1", "block-1", "1");
+	populateEditBlock("block-1", "block-1", "1");
 	$(".alert").hide();
 };
 
@@ -57,7 +57,7 @@ const clearChooseModal = () => {
 	$("#workoutName").val("");
 	//blockCount = 1;
 	// change all id's to have new 'block' variable
-	populateBlock("block-1", "block-1", "1");
+	//populateBlock("block-1", "block-1", "1");
 	$(".alert").hide();
 };
 
@@ -410,7 +410,7 @@ const populateEditModal = calEvent => {
 			.css("display", "block")
 			.insertAfter("#editWorkoutModal #workoutContainer #block-" + m);
 
-		populateBlock(id, newId, block);
+		populateEditBlock(id, newId, block);
 		editBlockCount++; // increase the block count by 1
 		$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
 			.find("#block-name-1")
