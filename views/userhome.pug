@@ -1,0 +1,15 @@
+extends layout
+
+append scripts
+  script(src='/js/athleteHomeCtrl.js')
+  script.
+      getUserId('#{user._id}');
+block content
+  h1 Workouts
+  hr
+  #selector
+    .row
+      .col-md-12
+        select.form-control(name='phase', id='phaseSelector')
+  #w
+    

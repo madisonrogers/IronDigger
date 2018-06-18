@@ -96,7 +96,6 @@ $(document).ready(function() {
         selectedPhase = phase;
       }
     });
-    console.log(selectedPhase);
     populateWorkouts();
   });
 });
