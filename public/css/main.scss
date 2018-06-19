@@ -46,6 +46,43 @@
 
 }
 
+div[id^="workout"] {
+  background-color: #22324C;
+  opacity:0.85;
+  color: white;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+}
+div[id^="block"] {
+  background-color: white;
+  color: #22324C;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+}
+button[id^="button"] {
+  background-color: #D04A32;
+  display:block;
+}
+div[id^=exercise] {
+  background-color:#22324C;
+  color:white;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+}
+table[id^="liftingTable"] {
+  background-color: white;
+  color: #22324C;
+  padding: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  border-radius: 2px;
+}
 
 .block-container {
   .ex-name, .block-name {
