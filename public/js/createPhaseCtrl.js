@@ -410,8 +410,9 @@ const populateEditModal = calEvent => {
 			.css("display", "block")
 			.insertAfter("#editWorkoutModal #workoutContainer #block-" + m);
 
-		populateEditBlock(id, newId, block);
 		editBlockCount++; // increase the block count by 1
+		populateEditBlock(id, newId, block);
+		
 		$("#editWorkoutModal #workoutContainer #block-" + (m + 1))
 			.find("#block-name-1")
 			.text(blocks[m].name);
@@ -1358,7 +1359,7 @@ $(function() {
 	// Add a new block
 	$(".block-add").click(function() {
 		var idStr = $(this).attr("id");
-		if(idStr.substr(0,1) == 'e' && EDIT_EVENT){
+		if(idStr.substr(0,1) == 'e'){ // && EDIT_EVENT){
 			var block = idStr.substr(idStr.lastIndexOf("-") + 1);
 			var id = "block-" + block;
 			var newId = "block-" + (editBlockCount + 1);
@@ -1371,20 +1372,22 @@ $(function() {
 				.insertAfter("#editWorkoutModal #block-" + editBlockCount);
 			editBlockCount++;
 			populateEditBlock(id, newId, block);
-		} else if(idStr.substr(0,1) == 'e' && !EDIT_EVENT){
-			var block = idStr.substr(idStr.lastIndexOf("-") + 1);
-			var id = "block-" + block;
-			var newId = "block-" + (editBlockCount);
-			console.log("id: " + id);
-			console.log("newId: " + newId);
-			$("#e-cloneblock-1")
-				.clone(true)
-				.attr("id", newId)
-				.css("display", "block")
-				.insertAfter("#editWorkoutModal #block-" + (editBlockCount - 1));
-			editBlockCount++;
-			populateEditBlock(id, newId, block);
-		} else {
+		} 
+		// else if(idStr.substr(0,1) == 'e' && !EDIT_EVENT){
+		// 	var block = idStr.substr(idStr.lastIndexOf("-") + 1);
+		// 	var id = "block-" + block;
+		// 	var newId = "block-" + (editBlockCount);
+		// 	console.log("id: " + id);
+		// 	console.log("newId: " + newId);
+		// 	$("#e-cloneblock-1")
+		// 		.clone(true)
+		// 		.attr("id", newId)
+		// 		.css("display", "block")
+		// 		.insertAfter("#editWorkoutModal #block-" + (editBlockCount - 1));
+		// 	editBlockCount++;
+		// 	populateEditBlock(id, newId, block);
+		// } 
+		else {
 			var block = idStr.substr(idStr.indexOf("-") + 1);
 			var id = "block-" + block;
 			var newId = "block-" + (blockCount + 1);
