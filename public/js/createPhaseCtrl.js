@@ -616,6 +616,8 @@ const populateEditModal = calEvent => {
 					$(
 						"#editWorkoutModal #workoutContainer #block-" +
 							(m + 1) +
+							"-ex-" +
+							(k + 1) +
 							" #clone-notes-1"
 					)
 						.attr("id", "notes-" + (k + 1))
@@ -942,7 +944,7 @@ const populateEditModal = calEvent => {
 			}
 		}
 	}
-
+	$('#e-cloneblock-1-ex-1').hide()
 	$("#editWorkoutModal").modal("toggle");
 };
 
@@ -1154,7 +1156,7 @@ const parseEditWorkout = () => {
 	for (var i = 1; i <= editBlockCount; i++) {
 		var ex = [];
 		var blockObj = $("#editWorkoutModal #workoutContainer #block-" + i);
-		var blockName = $("#editWorkoutModal #workoutContainer #block-name-" + i).text();
+		var blockName = $("#editWorkoutModal #workoutContainer #block-"+i+" #block-name-1").text();
 
 		var exercises = blockObj
 			.children("[id^=block-" + i + "-ex-]")
@@ -1535,8 +1537,29 @@ $(function() {
 			// put some error handling
 			$('.alert').css('display','block')
 		}
-	})
+	});
 
+	// clear modal button pressed
+	$("#closeModal").click(function() {
+		console.log('close modal pressed');
+		clearModal();
+	});
+
+	$('#closeEditModal').click(function() {
+		console.log('close edit modal pressed');
+		clearEditModal();
+	});
+
+	// close and clear modals when 'x' is pressed
+	$('#e-close').click(function() {
+		$("#editWorkoutModal").modal("toggle");
+		clearEditModal();
+	});
+
+	$('#close').click(function() {
+		$("#workoutModal").modal("toggle");
+		clearModal();
+	});
 
 	// Add a new exercise block
 	$("[id^=addblock-").click(function() {
@@ -1956,17 +1979,6 @@ $(function() {
 			}
 		}
 	});
-
-	// this function will clear the modal when it is exited
-	// $('.close').click(function() {
-	// 	if($(this).attr('id') == 'e-close') {
-	// 		$('#editWorkoutModal').modal('hide');
-	// 		clearModal();
-	// 	} else {
-	// 		$('#workoutModal').modal('hide');
-	// 		clearModal();
-	// 	}
-	// });
 
 	$(".table-up").click(function() {
 		var $row = $(this).parents("tr");
