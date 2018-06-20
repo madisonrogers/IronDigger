@@ -13,6 +13,11 @@
 /*Editable Table Styles*/
 //@import "compass/css3";
 
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+
 .table-editable {
   position: relative;
   
@@ -45,7 +50,6 @@
 
 
 }
-
 
 .block-container {
   .ex-name, .block-name {

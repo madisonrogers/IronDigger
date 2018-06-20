@@ -1,0 +1,54 @@
+extends layout
+
+append scripts
+  script(src='/js/athleteHomeCtrl.js')
+  script.
+      getUserId('#{user._id}');
+  style(type='text/css').
+    div[id^="workout"] {
+      background-color: #22324C;
+      opacity:0.85;
+      color: white;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border-radius: 2px;
+    }
+    div[id^="block"] {
+      background-color: white;
+      color: #22324C;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border-radius: 2px;
+    }
+    button[id^="button"] {
+      background-color: #D04A32;
+      display:block;
+    }
+    div[id^=exercise] {
+      background-color:#22324C;
+      color:white;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border-radius: 2px;
+    }
+    table[id^="liftingTable"] {
+      background-color: white;
+      color: #22324C;
+      padding: 5px;
+      margin-top: 5px;
+      margin-bottom: 5px;
+      border-radius: 2px;
+    }
+block content
+  h1 Workouts
+  hr
+  #selector
+    .row
+      .col-md-12
+        select.form-control(name='phase', id='phaseSelector')
+  #alert
+  #w
+    
