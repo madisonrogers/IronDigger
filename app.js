@@ -125,6 +125,7 @@ app.use('/api', routeApi);
  * Primary app routes.
  */
 app.get('/', homeController.index);
+app.get('/userhome', homeController.userHome);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);
