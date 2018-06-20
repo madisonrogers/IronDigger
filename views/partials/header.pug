@@ -10,15 +10,10 @@
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         if user
-          li.active.nav-item(class=(title === 'Home') ? 'active' : undefined)
-            a.nav-link(href='/') 
+          li.nav-item(class=(title === 'User Home') ? 'active' : undefined)
+            a.nav-link(href='/userhome') 
               i.fas.fa-home.fa-lg
-              | Home
-        if user && !user.isCoach
-          li.nav-item(class=(title === 'Calendar') ? 'active' : undefined)
-            a.nav-link(href='#')
-              i.far.fa-calendar-alt.fa-lg
-              | Calendar
+              | Workouts
         if user && !user.isAdmin && !user.isCoach
           li.nav-item(class=(title === 'History') ? 'active' : undefined)
             a.nav-link(href='/athleteviewhistory/'+user._id)
@@ -34,21 +29,11 @@
             a.nav-link(href='/views/teams')
               i.fas.fa-users.fa-lg
               | Teams
-        if user && (user.isAdmin || user.isCoach)
-          li.nav-item(class=(title === 'View User') ? 'active' : undefined)
-            a.nav-link(href='#')
-              i.fas.fa-user.fa-lg
-              | View User
-        if user
-          li.nav-item(class=(title === 'Leaderboard') ? 'active' : undefined)
-            a.nav-link(href='/status') 
-              i.fas.fa-trophy.fa-lg
-              | Leaderboard
-        if user && (user.isAdmin || user.isCoach)
-          li.nav-item(class=(title === 'Send Message') ? 'active' : undefined)
-            a.nav-link(href='#')
-              i.fas.fa-mobile-alt.fa-lg
-              | Send Message
+        //if user && (user.isAdmin || user.isCoach)
+          //li.nav-item(class=(title === 'Send Message') ? 'active' : undefined)
+            //a.nav-link(href='#')
+              //i.fas.fa-mobile-alt.fa-lg
+              //| Send Message
       ul.nav.navbar-nav.ml-auto
         if !user
           li.nav-item(class=(title === 'Login') ? 'active' : undefined)
