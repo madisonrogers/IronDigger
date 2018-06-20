@@ -181,7 +181,7 @@ block content
                             hr
                             
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    button#closeModal.btn.btn-secondary(type='button', data-dismiss='modal') Close
                     button#archiveWorkout.btn.btn-light(type='button') Archive and Create Workout 
                     button#createWorkout.btn.btn-light(type='button') Create Workout
 
@@ -206,7 +206,7 @@ block content
                         .form-group
                             label(for='workoutName') Workout Name
                             input#workoutName.form-control(type='text', placeholder='Skills Monday Workout')
-                        #workoutContainer
+                        #workoutContainer.ew-clear
                             .form-group#block-1.container.block-container
                                 h5.block-name#block-name-1(contenteditable="true") Block Name   
                                 i.fas.fa-edit.edit.fa-lg
@@ -322,8 +322,38 @@ block content
                                     button.btn.btn-success.btn-sm#addblock-e-1-ex-1 Add Exercise &nbsp;
                                         i.fas.fa-plus
                                 .col
-                            hr      
+                            hr  
+                            #e-cloneblock-1-ex-1(style={'display':'none'})
+                                .row
+                                    .col-5
+                                        h6.ex-name#clone-ex-name-1(contenteditable='true') Exercise Name            
+                                        i.fas.fa-edit.edit.fa-lg
+                                        textarea#clone-notes-1.form-control.ex1(rows="5" placeholder='Exercise Notes')
+                                    .col-6
+                                        #clone-block-1-ex-1-table.table-editable
+                                            i.fas.fa-plus.table-add#e-clone-block-1-ex-1-tr-1(data-toggle='tooltip', data-placement='bottom', title='Add Row')
+                                            table.table
+                                                tr#header
+                                                    th Set
+                                                    th Reps
+                                                    th Percent
+                                                    th
+                                                tr#clone-trblock-1-ex-1-tr-1
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove#e(class='row', data-toggle='tooltip', data-placement='bottom', title='Delete Row')
+                                                // This is our clonable table line
+                                                tr#e-clonetrblock-1-ex-1-tr-1.clone
+                                                    td(contenteditable='true') 1
+                                                    td(contenteditable='true') 5
+                                                    td(contenteditable='true') 50
+                                                    td
+                                                        i.fas.fa-times.table-remove#e(class='row', data-toggle='tooltip', data-placement='bottom', title='Delete Row')
+                                    .col-1
+                                        i.fas.fa-times.ex-remove#e-delete-ex(data-toggle='tooltip', data-placement='right', title='Delete Exercise')    
                 .modal-footer
-                    button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                    button#archiveWorkout.btn.btn-light(type='button') Archive Workout 
-                    button#createWorkout.btn.btn-light(type='button') Create Workout
+                    button#closeEditModal.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                    button#archiveWorkout-e.btn.btn-light(type='button') Archive Workout 
+                    button#createWorkout-e.btn.btn-light(type='button') Create Workout
