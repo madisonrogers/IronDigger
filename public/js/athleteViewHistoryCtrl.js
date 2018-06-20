@@ -12,6 +12,8 @@ var earliestDate;
 var latestDate;
 var uniqueDates = [];
 
+var server = window.location.origin;
+
 const populateExercises = () => {
 	var path = "/api/allExercises/"+athleteid;
 	console.log('in populateExercises')
@@ -200,7 +202,7 @@ const createGraph = () => {
 const createTable = () => {
 	// create a th for each distinct date
 	for(var i = 0; i < uniqueDates.length; i++) {
-		$('#table').append("<thead id="+i+"><tr><th>Date: "+uniqueDates[i].getMonth()+"/"+uniqueDates[i].getDate()+"/"+uniqueDates[i].getFullYear()+"</th></tr></thead>")
+		$('#liftingTable').append("<thead id="+i+"><tr><th>Date: "+uniqueDates[i].getMonth()+"/"+uniqueDates[i].getDate()+"/"+uniqueDates[i].getFullYear()+"</th></tr></thead>")
 
 		// loop through all the exercises and make rows for the ones with the matching dates
 		$('#'+i).append("<tr id='header'><td>Set</td><td>Rep</td><td>Weight</td></tr>")
@@ -214,21 +216,22 @@ const createTable = () => {
 			var year = parseInt(dateStr);
 			if(month == uniqueDates[i].getMonth() && day == uniqueDates[i].getDate() && year == uniqueDates[i].getFullYear()) {
 				// same date
-				$('#table').append("<tr><td>"+selectedExercise.sets[j].sets+"</td><td>"+selectedExercise.sets[j].reps+"</td><td>"+selectedExercise.sets[j].actweight+"</td></tr>");
+				$('#liftingTable').append("<tr><td>"+selectedExercise.sets[j].sets+"</td><td>"+selectedExercise.sets[j].reps+"</td><td>"+selectedExercise.sets[j].actweight+"</td></tr>");
 			}
 		}
 	}
-	$('#table').append('</tbody>');
+	$('#liftingTable').append('</tbody>');
 }
 
 $(function() {
 	populateExercises(athleteid);
+	$('#alert').hide()
 
 	$('select').on('change',function() {
 		// remove alert if it exists
 		$('.alert').detach();
 		$('#graph').empty();
-		$('#table').empty();
+		$('#liftingTable').empty();
 		selectedExerciseId = this.value;
 		// get the selected exercise obj
 		exercises.forEach(function(exercise) {
@@ -237,6 +240,27 @@ $(function() {
 		 	}
 		});
 		parseData();
+	});
+
+	// on click of update max button, parse the table and update the user
+	$('#updateMaxs').click(function() {
+		var bench = $('#max0').text();
+		var clean = $('#max1').text();
+		var squat = $('#max2').text();
+		var deadlift = $('#max3').text();
+		$(function(){
+			var path = "/api/updateMaxs/"+athleteid;
+			$.ajax({
+				type:'PUT',
+				contentType: 'application/json',
+				url: server + path,
+				data: JSON.stringify({bench: bench, clean: clean, squat: squat, deadlift: deadlift}),				
+		        success: function(data) {
+		            console.log(data);
+		            $('#alert').css('display', 'block');
+		        }
+			});
+		});
 	});
 });
 

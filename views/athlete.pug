@@ -2,26 +2,73 @@ extends layout
 
 
 mixin table(header,data, type)
-	- var type = type || ""
-	table.table(class=type)
-		thead
-			tr(align="center")
-				each head, i in header
-					th #{head}
-		tbody
-			each row,j in data
-				tr
-					each col,k in row
-						td(align="center") #{col}
-	
+    - var type = type || ""
+    table.table(class=type)
+        thead
+            tr(align="center")
+                each head, i in header
+                    th #{head}
+        tbody
+            each row,j in data
+                tr
+                    each col,k in row
+                        td(id='max'+k, align="center", contenteditable='true') #{col} &nbsp
+                             i.far.fa-edit
+    
 mixin table-condensed(header,data)
-	+table(header,data,"table-condensed")
+    +table(header,data,"table-condensed")
+append scripts
+    script(src="https://d3js.org/d3.v3.min.js")
+    script(src='/js/athleteViewHistoryCtrl.js')
+    style(type='text/css').
+        .line {
+          fill: none;
+          stroke: steelblue;
+          stroke-width: 2px;
+        }
+        .axis path,
+        .axis line {
+            fill: none;
+            stroke: black;
+            shape-rendering: crispEdges;
+        }
 
+        .axis text {
+            font-family: sans-serif;
+            font-size: 11px;
+        }
+        div.tooltip {   
+            position: absolute;         
+            text-align: center;         
+            width: 75px;                    
+            height: 75px;                   
+            padding: 2px;               
+            font: 12px sans-serif;      
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff; 
+            border: 0px;        
+            border-radius: 2px;         
+            pointer-events: none;  
+            margin-left:10px;         
+        }
 block content
-	h1  #{athletedata.profile.first} #{athletedata.profile.last}
-	h4 Maxs
-	-var header = ["Bench", "Clean", "Squat", "Deadlift"]
-	-var data = [[ athletedata.athlete.maxBench, athletedata.athlete.maxClean, athletedata.athlete.maxSquat, athletedata.athlete.maxDeadlift ]]
-	p 
-	+table(header, data, table-condensed) 
+    h1  #{athletedata.profile.first} #{athletedata.profile.last}
+    h4 Maxes
+    #alert.alert.alert-success(role='alert')
+        | Success! The maxs have been updated
+    -var header = ["Bench", "Clean", "Squat", "Deadlift"]
+    -var data = [[ athletedata.athlete.maxBench, athletedata.athlete.maxClean, athletedata.athlete.maxSquat, athletedata.athlete.maxDeadlift ]]
+    p 
+    +table(header, data, table-condensed)
+    button#updateMaxs.btn.btn-primary(type='button') Update Maxes 
+    hr
+    h2 Athlete Lifting History
+    hr
+    #selector
+        .row
+          .col-md-12
+            select.form-control(name='exercise', id='exerciseSelector')
+    #graph
+    hr
+    table.table#liftingTable
 
