@@ -13,6 +13,11 @@
 /*Editable Table Styles*/
 //@import "compass/css3";
 
+.modal-body {
+    max-height: calc(100vh - 210px);
+    overflow-y: auto;
+}
+
 .table-editable {
   position: relative;
   
@@ -44,44 +49,6 @@
   }
 
 
-}
-
-div[id^="workout"] {
-  background-color: #22324C;
-  opacity:0.85;
-  color: white;
-  padding: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-radius: 2px;
-}
-div[id^="block"] {
-  background-color: white;
-  color: #22324C;
-  padding: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-radius: 2px;
-}
-button[id^="button"] {
-  background-color: #D04A32;
-  display:block;
-}
-div[id^=exercise] {
-  background-color:#22324C;
-  color:white;
-  padding: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-radius: 2px;
-}
-table[id^="liftingTable"] {
-  background-color: white;
-  color: #22324C;
-  padding: 5px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  border-radius: 2px;
 }
 
 .block-container {

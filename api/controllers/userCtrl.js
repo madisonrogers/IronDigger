@@ -606,7 +606,7 @@ module.exports.getAllExercises = function(req, res) {
 }
 
 
-module.exports.updateMaxs = function(req, res) {
+module.exports.updateMaxes = function(req, res) {
     User.findById(req.params.userid, (err, user) => {
             if (err) { return next(err); }
             console.log(req.params)
@@ -621,6 +621,45 @@ module.exports.updateMaxs = function(req, res) {
               sendJsonResponse(res, 200, user);
             });
       });
+}
+
+module.exports.updateWorkout = function(req, res) {
+    User.findById(req.params.userid, (err, user) => {
+        if (err) { return next(err); }
+        var phaseFound = false;
+        var phaseIndex = 0;
+        for(var i = 0; i < user.athlete.phases.length; i++) {
+            if(user.athlete.phases[i]._id == req.params.phaseid) {
+                phaseIndex = i;
+                phaseFound = true;
+                break;
+            }
+        }  
+        if(phaseFound == false) {
+            sendJsonResponse(res, 404, {"message":"No phase found with that id"});
+        } else {
+            var workoutFound = false;
+            console.log(user)
+            for(var i = 0; i < user.athlete.phases[phaseIndex].workouts.length; i++) {
+                console.log(user.athlete.phases[phaseIndex].workouts[i]._id)
+                if (user.athlete.phases[phaseIndex].workouts[i]._id == req.params.workoutid) {
+                    user.athlete.phases[phaseIndex].workouts[i] = req.body;
+                    workoutFound = true;
+                    break;
+                }
+            }
+            if(workoutFound == false) {
+                sendJsonResponse(res, 404, {"message":"No workout found with that id"});
+            } else {
+               user.save((err) => {
+                  if (err) {
+                    sendJsonResponse(res, 404, err)
+                  }
+                  sendJsonResponse(res, 200, user);
+                }); 
+            }
+        }
+  });
 }
 
 

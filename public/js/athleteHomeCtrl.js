@@ -50,7 +50,7 @@ const populateWorkouts = () => {
           $('#liftingTable'+i+j+z).attr('onclick', 'showTable(event)').append("<tr id='set"+i+''+j+''+z+''+s+"'><td>"+sets[s].set+"</td><td>"+sets[s].reps+"</td><td>"+sets[s].percent+"</td><td id='actualWeight' contenteditable='true'></td></tr>");
         }
       }
-      $('#workout'+i).append("<button id='button"+i+"' type='button' class='btn btn-secondary btn-sm'>Submit Workout</button>")
+      $('#workout'+i).append("<button id='button"+i+"' type='button' class='btn btn-secondary btn-sm' onclick='saveWorkout("+i+",event)'>Submit Workout</button>");
     }
   }
 }
@@ -89,8 +89,42 @@ const showTable = (event) => {
   event.stopPropagation();
 }
 
+const saveWorkout = (i, event) => {
+  event.stopPropagation();
+
+  var workout = selectedPhase.workouts[i];
+  
+  // loop through blocks
+  for(var j = 0; j < workout.blocks.length; j++) {
+    var currBlock = workout.blocks[j];
+    // loop through current block to get exercises
+    for(var k = 0; k < currBlock.exercises.length; k++) {
+      var currExercise = currBlock.exercises[k];
+      // loop through exercises to get sets
+      for(var l = 0; l < currExercise.sets.length; l++) {
+        // in the workout object, set the inputted value for the current set
+        workout.blocks[j].exercises[k].sets[l].actweight = $('#set'+i+j+k+l+' #actualWeight').text(); 
+      }
+    }
+  }
+  console.log(workout);
+  console.log(server+'api/updateWorkout/'+athleteId+'/'+selectedPhase._id+'/'+workout._id)
+  // save workout 
+  $.ajax({
+      url: server+'/api/updateWorkout/'+athleteId+'/'+selectedPhase._id+'/'+workout._id,
+      type: 'PUT',    
+      data: JSON.stringify(workout),
+      contentType: 'application/json',
+      success: function(result) {
+          console.log('Workout has been submitted')
+          $('#alert').append("<div class='alert alert-success' role='alert'>Your Workout Has Been Saved</div>")
+      }
+  });
+}
+
 $(document).ready(function() {
   getPhases();
+  $('#alert').empty();
 
   $('select').on('change',function() {
     $('#w').empty();

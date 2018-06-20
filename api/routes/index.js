@@ -16,7 +16,8 @@ router.get('/allWorkouts/:userid', userCtrl.getAllWorkouts);
 router.get('/workout/:userid/:workoutid', userCtrl.getWorkout);
 router.put('/updateSet/:userid/:phaseid/:workoutid/:blockid/:exerciseid/:setid', userCtrl.updateSet);
 router.get('/allExercises/:userid', userCtrl.getAllExercises);
-router.put('/updateMaxs/:userid', userCtrl.updateMaxs);
+router.put('/updateMaxes/:userid', userCtrl.updateMaxes);
+router.put('/updateWorkout/:userid/:phaseid/:workoutid', userCtrl.updateWorkout);
 
 
 // teamCtrl routes
