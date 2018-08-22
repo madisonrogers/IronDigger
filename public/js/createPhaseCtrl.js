@@ -1256,52 +1256,52 @@ $(function() {
 
 	//page is now ready, initialize the calendar...
 
-	$("#calendar").fullCalendar({
-		// put your options and callbacks here
-		selectable: true,
-		height: "auto",
-		contentHeight: "auto",
-		dayClick: function(date, jsEvent, view) {
-			console.log(date.format("LLL"));
+	// $("#calendar").fullCalendar({
+	// 	// put your options and callbacks here
+	// 	selectable: true,
+	// 	height: "auto",
+	// 	contentHeight: "auto",
+	// 	dayClick: function(date, jsEvent, view) {
+	// 		console.log(date.format("LLL"));
 
-			console.log(view);
-			CURRENT_EVENT = date;
-			if(team_select){
-				console.log('team selected')
-				$('#chooseTeamAlert').css('display', 'none');
-				newEvent(date);
-			} else {
-				console.log('team not selected')
-				$('#chooseTeamAlert').css('display', 'block');
-			}
-		},
-		// we will be able to load in workouts from the DB
-		events: [
-			{
-				title: "Softball Workout",
-				start: "2018-06-22T16:00:00",
-				allDay: false,
-				blocks: []
-			},
-			{
-				title: "Football Workout",
-				start: "2018-06-22T02:30:00",
-				allDay: false,
-				blocks: []
-			}
-		],
+	// 		console.log(view);
+	// 		CURRENT_EVENT = date;
+	// 		if(team_select){
+	// 			console.log('team selected')
+	// 			$('#chooseTeamAlert').css('display', 'none');
+	// 			newEvent(date);
+	// 		} else {
+	// 			console.log('team not selected')
+	// 			$('#chooseTeamAlert').css('display', 'block');
+	// 		}
+	// 	},
+	// 	// we will be able to load in workouts from the DB
+	// 	events: [
+	// 		{
+	// 			title: "Softball Workout",
+	// 			start: "2018-06-22T16:00:00",
+	// 			allDay: false,
+	// 			blocks: []
+	// 		},
+	// 		{
+	// 			title: "Football Workout",
+	// 			start: "2018-06-22T02:30:00",
+	// 			allDay: false,
+	// 			blocks: []
+	// 		}
+	// 	],
 
-		eventClick: function(calEvent, jsEvent, view) {
-			console.log(calEvent);
-			console.log("Coordinates: " + jsEvent.pageX + "," + jsEvent.pageY);
-			console.log(view);
-			// change the border color just for fun
-			$(this).css("border-color", "red");
-			CURRENT_EVENT = calEvent;
-			EDIT_EVENT = true;
-			editEvent(calEvent);
-		}
-	});
+	// 	eventClick: function(calEvent, jsEvent, view) {
+	// 		console.log(calEvent);
+	// 		console.log("Coordinates: " + jsEvent.pageX + "," + jsEvent.pageY);
+	// 		console.log(view);
+	// 		// change the border color just for fun
+	// 		$(this).css("border-color", "red");
+	// 		CURRENT_EVENT = calEvent;
+	// 		EDIT_EVENT = true;
+	// 		editEvent(calEvent);
+	// 	}
+	// });
 
 	$("form").on("submit", function(e) {
 		e.preventDefault();

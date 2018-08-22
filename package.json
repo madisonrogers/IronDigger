@@ -12,7 +12,8 @@
     "postinstall": "cp node_modules/popper.js/dist/popper.min.* public/js/lib && cp node_modules/bootstrap/dist/js/bootstrap.min.* public/js/lib && cp node_modules/jquery/dist/jquery.min.* public/js/lib && npm rebuild node-sass",
     "start": "node app.js",
     "test": "nyc mocha --timeout=3000 --exit",
-    "lint": "eslint **/*.js"
+    "lint": "eslint **/*.js",
+    "build": "webpack --mode production"
   },
   "dependencies": {
     "@ladjs/bootstrap-social": "^7.0.2",
@@ -63,6 +64,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "popper.js": "^1.14.3",
     "pug": "^2.0.3",
+    "react-calendar": "^2.17.1",
     "request": "^2.85.0",
     "stripe": "^5.8.0",
     "tumblr.js": "^1.1.1",
@@ -80,7 +82,9 @@
     "nyc": "^11.7.2",
     "sinon": "^4.5.0",
     "sinon-mongoose": "^2.1.1",
-    "supertest": "^3.0.0"
+    "supertest": "^3.0.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
   },
   "engines": {
     "node": ">=8.11.1",

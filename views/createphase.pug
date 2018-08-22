@@ -5,6 +5,9 @@ append scripts
     script(src='js/lib/moment.min.js')
     script(src='fullcalendar/fullcalendar.js')
     script(src='js/createPhaseCtrl.js')
+    //-   <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    script(src="https://unpkg.com/react@16/umd/react.development.js" crossorigin)
+    script(src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin)
 block content
     #chooseTeamAlert.alert.alert-danger(role='alert')
         | Choose a team or group before creating workout
@@ -357,3 +360,4 @@ block content
                     button#closeEditModal.btn.btn-secondary(type='button', data-dismiss='modal') Close
                     button#archiveWorkout-e.btn.btn-light(type='button') Archive Workout 
                     button#createWorkout-e.btn.btn-light(type='button') Create Workout
+            script(src="js/calendar.js" type="module")
